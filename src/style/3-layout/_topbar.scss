@@ -1,0 +1,27 @@
+.navigation-top{
+  background-color: $white;
+  height: 80px;
+  position:fixed;
+  width: 100%;
+  z-index: 2;
+  display: inline;
+  @include clearfix;
+
+  .logo {
+    width: 120px;
+    height: 100%;
+    background-color: $light-blue;
+    float:left;
+  }
+
+  .user-ctrl{
+    width: 300px;
+    height: 100%;
+    float:right;
+    a, p {
+      padding-left: 10%;
+      line-height:80px;
+      display:inline;
+    }
+  }
+}

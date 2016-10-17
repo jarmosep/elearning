@@ -1,0 +1,10 @@
+.navigation-side{
+  background-color: $sidebar-bg;
+  height: 100%;
+  position: fixed;
+  top:80px;
+  width: 120px;
+  z-index: 1;
+  .navigation-side__nav{
+  }
+}
