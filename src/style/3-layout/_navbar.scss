@@ -2,9 +2,35 @@
   background-color: $sidebar-bg;
   height: 100%;
   position: fixed;
-  top:80px;
-  width: 120px;
+  top:65px;
+  width: 100px;
   z-index: 1;
   .navigation-side__nav{
+    ul{
+      li{
+        border-bottom: solid 1px $sidebar-dark-blue;
+        border-top: solid 1px $sidebar-medium-blue;
+        &:first-of-type{
+          border-top: none;
+        }
+        &:last-of-type{
+          border-bottom: none;
+        }
+        span{
+          color: $sidebar-icon-color;
+          display:block;
+          text-align: center;
+          font-size: 2em;
+        }
+        .ion{
+          padding-top:20%;
+        }
+        .icon-name{
+          font-size: 12px;
+          padding-top:8%;
+          padding-bottom:20%;
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,17 @@
+.container{
+  @include outer-container;
+  @include align-items(stretch);
+  @include display(flex);
+  @include flex-direction(row);
+  @include justify-content(flex-start);
+  background-color: blue;
+  .block{
+    @include span-columns(3);
+    @include flex(1);
+    height: 350px;
+    background-color: red;
+    &:last-of-type{
+      margin-right:0;
+    }
+  }
+}

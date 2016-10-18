@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
     grunt.initConfig({
+        /*
         postcss: {
             options: {
                 processors: [
@@ -10,6 +11,7 @@ module.exports = function(grunt) {
                 src: 'build/style.css'
             }
         },
+        */
         sass: {
             files: ['src/style/0-utility/*', 'src/style/1-base/*', 'src/style/2-blocks/*', 'src/style/3-layout/*', '!src/style/0-utility/bourbon', '!src/style/0-utility/neat'],
             dist: {
@@ -45,14 +47,14 @@ module.exports = function(grunt) {
                 livereload: true
             },
             files: ['<%= sass.files %>', '<%= concat.files %>', '**/*.html'],
-            tasks: ['sass', 'concat', 'uglify', 'postcss'],
+            tasks: ['sass', 'concat', 'uglify'],
         },
         connect: {
             server: {
                 options: {
                     port: 4000,
                     hostname: 'localhost',
-                    base: 'C:/Users/Jarmo/development/elearning', // Project folder root, put your own
+                    base: 'C:/Users/Puliukkeli/development/elearning', // Project folder root, put your own
                     livereload: true
                 }
             }
@@ -64,7 +66,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-postcss');
 
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('server', "Serving the app", [
