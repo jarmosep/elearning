@@ -7,28 +7,36 @@
   z-index: 1;
   .navigation-side__nav{
     ul{
+      background-color: $white;
       li{
+        @include clearfix;
+        background-color: $sidebar-bg;
         border-bottom: solid 1px $sidebar-dark-blue;
         border-top: solid 1px $sidebar-medium-blue;
+        @include hoverColor;
         &:first-of-type{
           border-top: none;
         }
         &:last-of-type{
           border-bottom: none;
         }
-        span{
-          color: $sidebar-icon-color;
-          display:block;
-          text-align: center;
-          font-size: 2em;
-        }
-        .ion{
-          padding-top:20%;
-        }
-        .icon-name{
-          font-size: 12px;
-          padding-top:8%;
-          padding-bottom:20%;
+        a{
+          span{
+            color: $sidebar-icon-color;
+            display:block;
+            text-align: center;
+            font-size: 2em;
+          }
+          .ion{
+            padding-top:20%;
+          }
+          @include paragraph;
+          p {
+            color: $sidebar-icon-color;
+            padding-top:5%;
+            padding-bottom:20%;
+            text-align: center;
+          }
         }
       }
     }

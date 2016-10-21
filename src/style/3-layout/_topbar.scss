@@ -5,23 +5,22 @@
   width: 100%;
   z-index: 2;
   display: inline;
+  @include paragraph;
   @include clearfix;
 
   .logo {
     width: 100px;
     height: 100%;
-    background-color: $light-blue;
+    background-color: $blue;
     float:left;
   }
-
-  .user-ctrl{
-    width: 300px;
-    height: 100%;
-    float:right;
-    a, p {
-      padding-left: 10%;
-      line-height:65px;
-      display:inline;
-    }
+  a, p {
+    float: right;
+    font-size: 16px;
+    padding-top: 20px;
+    padding-right: 30px;
+  }
+  a{
+    font-size:20px;
   }
 }

@@ -1,9 +1,29 @@
 @import "0-utility/bourbon/bourbon";
 @import "0-utility/neat/neat";
 @import "0-utility/variables";
+@import "0-utility/mixins";
+@import "0-utility/fonts";
 @import "1-base/reset";
+@import "3-layout/grid";
 @import "3-layout/wrapper";
 @import "3-layout/container";
 @import "3-layout/navbar";
 @import "3-layout/topbar";
 @import "3-layout/frontpage";
+@import "3-layout/wordbank";
+
+::-webkit-input-placeholder {
+   color: $border-color-grey;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: $border-color-grey;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: $border-color-grey;
+}
+
+:-ms-input-placeholder {
+   color: $border-color-grey;
+}

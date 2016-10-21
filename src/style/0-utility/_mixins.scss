@@ -1,0 +1,30 @@
+
+// Convert font size to REM units with pixel fallback
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: calculateRem($size);
+}
+
+// Border colors for menu dashboard menu items
+@mixin border-coloring-icon($arg){
+  border-top: 1px solid $arg;
+  border-bottom: 1px solid $arg;
+  border-left: 1px solid $arg;
+}
+@mixin border-coloring-text($arg){
+  border-top: 1px solid $arg;
+  border-bottom: 1px solid $arg;
+  border-right: 1px solid $arg;
+}
+
+// Hover effect for icons
+@mixin hoverColor{
+  transition: all 0.1s ease;
+  &:hover{
+      opacity: 0.8;
+  }
+}

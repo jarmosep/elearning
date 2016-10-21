@@ -1,0 +1,46 @@
+.wordbank{
+  @include outer-container;
+  @include bigHeading;
+  @include mediumHeading;
+  @include smallHeading;
+  @include miniHeading;
+  @include paragraph;
+  .heading{
+    border-bottom: 1px solid $sidebar-bg;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .search{
+    padding-top:40px;
+    margin-left: 0;
+    margin-right: 0 !important;
+    @include span-columns(11);
+    .textfield{
+      width:100%;
+      height:75px;
+      font-size: 24px;
+      padding-left: 12px;
+      border: 1px solid $border-color-grey;
+      border-right:none;
+      outline:none;
+    }
+  }
+  .icon{
+    padding-top:40px;
+    margin-left: 0;
+    margin-right: 0;
+    @include span-columns(1);
+      div{
+        height:75px;
+        width:100%;
+        background-color:$white;
+        border: 1px solid $border-color-grey;
+        border-left: none;
+        text-align: center;
+        span{
+          line-height: 75px;
+          font-size: 24px;
+        }
+      }
+    }
+}

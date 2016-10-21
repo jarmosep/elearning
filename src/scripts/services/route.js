@@ -36,6 +36,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         .state('dashboard.askteacher', {
             templateUrl: 'templates/partials/ask.html'
         });
-        // urlRouterProvider redirects back to landing page, if url matches none from above
+        // urlRouterProvider redirects back to landing page, if url doesn't match /dashboard
         $urlRouterProvider.otherwise('/');
 }]);
