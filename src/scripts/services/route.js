@@ -18,23 +18,23 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         .state('dashboard.front', {
             url: '',
             page: 'DashboardFront',
-            templateUrl: 'templates/partials/frontpage.html'
+            templateUrl: 'templates/mainviews/frontpage.html'
         })
 
         .state('dashboard.wordbank', {
-            templateUrl: 'templates/partials/wordbank.html'
+            templateUrl: 'templates/mainviews/wordbank.html'
         })
 
         .state('dashboard.assignments', {
-            templateUrl: 'templates/partials/assignment.html'
+            templateUrl: 'templates/mainviews/assignment.html'
         })
 
         .state('dashboard.addword', {
-            templateUrl: 'templates/partials/addword.html'
+            templateUrl: 'templates/mainviews/addword.html'
         })
 
         .state('dashboard.askteacher', {
-            templateUrl: 'templates/partials/ask.html'
+            templateUrl: 'templates/mainviews/ask.html'
         });
         // urlRouterProvider redirects back to landing page, if url doesn't match /dashboard
         $urlRouterProvider.otherwise('/');

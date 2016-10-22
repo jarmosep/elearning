@@ -27,28 +27,112 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         .state('dashboard.front', {
             url: '',
             page: 'DashboardFront',
-            templateUrl: 'templates/partials/frontpage.html'
+            templateUrl: 'templates/mainviews/frontpage.html'
         })
 
         .state('dashboard.wordbank', {
-            templateUrl: 'templates/partials/wordbank.html'
+            templateUrl: 'templates/mainviews/wordbank.html'
         })
 
         .state('dashboard.assignments', {
-            templateUrl: 'templates/partials/assignment.html'
+            templateUrl: 'templates/mainviews/assignment.html'
         })
 
         .state('dashboard.addword', {
-            templateUrl: 'templates/partials/addword.html'
+            templateUrl: 'templates/mainviews/addword.html'
         })
 
         .state('dashboard.askteacher', {
-            templateUrl: 'templates/partials/ask.html'
+            templateUrl: 'templates/mainviews/ask.html'
         });
         // urlRouterProvider redirects back to landing page, if url doesn't match /dashboard
         $urlRouterProvider.otherwise('/');
 }]);
 
+app.controller('AllWordsCtrl', ['$scope', function($scope){
+  $scope.words = [
+    {
+      japanese: "深い",
+      english: "Deep",
+      tag: [
+        "i-adjective",
+        "Common"
+      ]
+    },
+    {
+      japanese: "ダサい",
+      english: "Lame",
+      tag: [
+        "i-adjective",
+        "Common",
+        "Slang"
+      ]
+    },
+    {
+      japanese: "行う",
+      english: "To conduct, to carry out",
+      tag: [
+        "Verb",
+        "Common"
+      ]
+    },
+    {
+      japanese: "モバイル最適化",
+      english: "Mobile optimization",
+      tag:[
+        "Noun",
+        "Suru-verb"
+      ]
+    },
+    {
+      japanese: "招待",
+      english: "Invitation",
+      tag:[
+        "Noun",
+        "Slang",
+        "No-adjective"
+      ]
+    }
+  ];
+}]);
+
 app.controller('DashboardCtrl', ['$scope', '$state', function($scope, $state){
     $scope.state = $state;
 }]);
+
+app.controller('RecentActivityCtrl', ['$scope', function($scope){
+  $scope.blocks = [
+          {
+            activity: "くそ食らえ was added to the wordbank",
+            occurance: "30 min ago"
+          },
+          {
+            activity: "帰国憂鬱 was added to the wordbank",
+            occurance: "32 min ago"
+          },
+          {
+            activity: "Teacher returned your assignment",
+            occurance: "3 days ago"
+          }
+        ];
+  }]);
+
+app.directive('allWords', function(){
+  return{
+    restrict: 'E',
+    scope: {
+      data: '='
+    },
+    templateUrl: '../templates/mainviews/partials/wordbank/allwords.html'
+  };
+});
+
+app.directive('recentActivities',function(){
+  return{
+    restrict: 'E',
+    scope: {
+      data: '='
+    },
+    templateUrl: "../templates/mainviews/partials/frontpage/recentactivities.html"
+  }
+});

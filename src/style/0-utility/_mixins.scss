@@ -8,7 +8,12 @@
   font-size: $size;
   font-size: calculateRem($size);
 }
-
+@mixin border-colors($top, $sides, $bottom) {
+  border-top: 1px solid $top;
+  border-left: 1px solid $sides;
+  border-right: 1px solid $sides;
+  border-bottom: 1px solid $bottom;
+}
 // Border colors for menu dashboard menu items
 @mixin border-coloring-icon($arg){
   border-top: 1px solid $arg;

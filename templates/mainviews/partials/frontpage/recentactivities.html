@@ -1,0 +1,21 @@
+<!-- Recent activities / quickselection -->
+<!-- Controller loops this structure in to  the view whenever a new activity is occurs. -->
+
+<div class="recent" ng-controller="RecentActivityCtrl">
+  <div class="activity" ng-repeat="block in blocks">
+    <div class="what-and-when">
+      <p class="event">{{block.activity}}</p>
+      <p class="occurance">{{block.occurance}}</p>
+    </div>
+    <div class="operations">
+      <p class="view">
+        <span class="action ion-chevron-down"></span>
+        <span class="mobile-text"> View notification</span>
+      </p>
+      <p class="delete">
+        <span class="action ion-trash-a"></span>
+        <span class="mobile-text"> Delete notification</span>
+      </p>
+    </div>
+  </div>
+</div>
