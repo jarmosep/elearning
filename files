@@ -49,7 +49,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         $urlRouterProvider.otherwise('/');
 }]);
 
-app.controller('AllWordsCtrl', ['$scope', function($scope){
+app.controller('AllWordsCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
   $scope.limit = 5;
   $scope.showMore = function(){
     $scope.limit += 5;
@@ -59,7 +59,7 @@ app.controller('AllWordsCtrl', ['$scope', function($scope){
       japanese: "深い",
       english: "Deep",
       tags: [
-        "i-adjective",
+        "I-adjective",
         "Common"
       ]
     },
@@ -67,7 +67,7 @@ app.controller('AllWordsCtrl', ['$scope', function($scope){
       japanese: "ダサい",
       english: "Lame",
       tags: [
-        "i-adjective",
+        "I-adjective",
         "Common",
         "Slang"
       ]
@@ -93,7 +93,6 @@ app.controller('AllWordsCtrl', ['$scope', function($scope){
       english: "Invitation",
       tags:[
         "Noun",
-        "Slang",
         "No-adjective"
       ]
     },
@@ -145,11 +144,52 @@ app.controller('AllWordsCtrl', ['$scope', function($scope){
       japanese: "めんどくさい",
       english: "Can't be bothered, troublesome",
       tags: [
-        "i-adjective",
+        "I-adjective",
         "Common"
       ]
     },
   ];
+  $scope.filters = [
+          "Noun",
+          "Slang",
+          "No-adjective",
+          "I-adjective",
+          "Sensitive",
+          "Colloquialism",
+          "Suru-verb",
+          "Adverb"
+      ];
+
+  $rootScope.activeFilters = [];
+
+  $scope.toggleFilter = function($event, filter) {
+      var element = angular.element($event.currentTarget),
+          index = $rootScope.activeFilters.indexOf(filter)
+      if (index >= 0) {
+          $rootScope.activeFilters.splice(index, 1);
+          element.removeClass('active');
+          $scope.updateWords();
+      } else {
+          $rootScope.activeFilters.push(filter);
+          element.addClass('active');
+          $scope.updateWords();
+      }
+  };
+
+  $scope.updateWords = function() {
+      var words = $scope.words,
+      filters = $scope.activeFilters.sort(),
+      tags;
+
+      for (var i=0, x=words.length; i < x; i++) {
+          tags = words[i].tags.sort();
+          var subset = filters.every(function(val) {
+              return tags.indexOf(val) >= 0;
+          });
+
+          words[i].visible = subset;
+      }
+  };
 }]);
 
 app.controller('DashboardCtrl', ['$scope', '$state', function($scope, $state){
@@ -179,7 +219,7 @@ app.directive('recentActivity',function(){
     scope: {
       data: '='
     },
-    templateUrl: "../templates/mainviews/partials/frontpage/recentactivity.html"
+    templateUrl: "../templates/mainviews/partials/recentactivity.html"
   }
 });
 
@@ -189,6 +229,6 @@ app.directive('word', function(){
     scope: {
       word: '='
     },
-    templateUrl: '../templates/mainviews/partials/wordbank/word.html'
+    templateUrl: '../templates/mainviews/partials/word.html'
   };
 });

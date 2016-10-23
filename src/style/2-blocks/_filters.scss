@@ -1,4 +1,4 @@
-.filters{
+.filter-container{
   @include span-columns(3);
   background-color:$white;
   border: 1px solid $border-color-grey;
@@ -13,22 +13,36 @@
       padding-top: 5%;
     }
   }
-  .filter, .more-filters{
-    background-color: $light-grey;
-    border: 1px solid $border-color-grey;
+  .filters{
     margin-left: 15px;
     margin-right: 15px;
-    margin-bottom: 7px;
-    text-align: center;
-    padding: 10px 8px;
-    p{
-      color: $sidebar-bg;
+
+    .filter{
+      background-color: $light-grey;
+      border: 1px solid $border-color-grey;
+      display:inline-block;
+      text-align: center;
+      padding: 4px 4px;
+      margin:0 0 4px 4px;
+      cursor:pointer;
+      p{
+        color: $sidebar-bg;
+      }
     }
+    .active{
+      background-color: $green;
+      border: 1px solid $green-dark;
+    p{
+      color: $white;
+    }
+  }
   }
   .more-filters{
     background-color: $sidebar-bg;
     border: none;
-    margin-bottom: 15px;
+    margin: 10px 15px 15px 15px;
+    padding: 14px 14px;
+    text-align: center;
     p{
       color: $white;
     }

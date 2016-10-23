@@ -4,6 +4,6 @@ app.directive('recentActivity',function(){
     scope: {
       data: '='
     },
-    templateUrl: "../templates/mainviews/partials/frontpage/recentactivity.html"
+    templateUrl: "../templates/mainviews/partials/recentactivity.html"
   }
 });

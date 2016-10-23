@@ -20,12 +20,15 @@
       <p ng-click="showMore()">Show more</p>
     </div>
   </div>
-  <div class="filters">
+  <div class="filter-container">
     <h2> Filters </h2>
-    <div class="filter"> <p>Alphabetic</p> </div>
-    <div class="filter"> <p>Noun</p> </div>
-    <div class="filter"> <p>Adjective</p> </div>
-    <div class="filter"> <p>Verb</p> </div>
-    <div class="more-filters"><p>Show more</p></div>
+    <div class="filters">
+      <div class="filter" ng-repeat="filter in filters track by $index" ng-click="toggleFilter($event, filter)">
+        <p>{{filter}}</p>
+      </div>
+    </div>
+    <div class="more-filters">
+      <p>Show more</p>
+    </div>
   </div>
 </div>
