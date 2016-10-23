@@ -1,11 +1,9 @@
 <!-- Recent activities / quickselection -->
 <!-- Controller loops this structure in to  the view whenever a new activity is occurs. -->
-
-<div class="recent" ng-controller="RecentActivityCtrl">
-  <div class="activity" ng-repeat="block in blocks">
+  <div class="activity">
     <div class="what-and-when">
-      <p class="event">{{block.activity}}</p>
-      <p class="occurance">{{block.occurance}}</p>
+      <p class="event">{{data.activity}}</p>
+      <p class="occurance">{{data.occurance}}</p>
     </div>
     <div class="operations">
       <p class="view">
@@ -18,4 +16,3 @@
       </p>
     </div>
   </div>
-</div>

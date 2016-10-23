@@ -5,11 +5,7 @@
   @include smallHeading;
   @include miniHeading;
   @include paragraph;
-  .heading{
-    border-bottom: 1px solid $sidebar-bg;
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
+
   .subheading{
     padding-top: 25px;
     padding-bottom: 15px;

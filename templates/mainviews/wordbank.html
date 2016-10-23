@@ -1,14 +1,31 @@
-<div class="container wordbank">
+<div class="container wordbank" ng-controller="AllWordsCtrl">
   <div class="heading">
     <h1>Wordbank</h1>
   </div>
-  <all-words></all-words>
+  <div class="search-container">
+    <div class="search">
+      <input type="text" class="textfield" placeholder="Seach a word in English or in Japanese" ng-model="searchWord"></input>
+    </div>
+    <div class="icon">
+      <div>
+      <span class="ion-android-search"></span>
+      </div>
+    </div>
+  </div>
+  <div class="word-container">
+    <div class="all-words">
+      <word ng-repeat="word in words | filter: searchWord | limitTo: limit" word="word"></word>
+    </div>
+    <div class="more-words" ng-hide="limit >= words.length">
+      <p ng-click="showMore()">Show more</p>
+    </div>
+  </div>
   <div class="filters">
     <h2> Filters </h2>
     <div class="filter"> <p>Alphabetic</p> </div>
     <div class="filter"> <p>Noun</p> </div>
     <div class="filter"> <p>Adjective</p> </div>
     <div class="filter"> <p>Verb</p> </div>
-    <div class="more"><p>Show more</p></div>
+    <div class="more-filters"><p>Show more</p></div>
   </div>
 </div>

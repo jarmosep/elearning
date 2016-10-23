@@ -1,0 +1,67 @@
+.all-words{
+  overflow-y: scroll;
+  max-height: 500px;
+}
+.word{
+  @include clearfix;
+  background-color: $blue;
+  cursor: pointer;
+  @include border-colors($blue-light, $blue-dark, $blue-shadow);
+  @include hoverColor;
+  &:first-of-type{
+    border-top-color: $blue-dark;
+  }
+  &:last-of-type{
+    border-bottom-color: $blue-dark;
+  }
+  .mobile-text{  display:none;  }
+  span {
+    font-size:22px;
+    line-height: 14px;
+  }
+  p{
+    padding: 18px 16px;
+    display:inline-block;
+    color: $white;
+    font-size:16px;
+  }
+  .word-data{
+    width: 75%;
+    float:left;
+    @include media(max-width $mobile){  width: 100% }
+    .japanese{
+      width: 50%;
+    }
+  }
+  .operations{
+    float:right;
+    .view,.delete{
+      @include hoverColor;
+     }
+    @include media(max-width $mobile){
+      float:left;
+      width:100%;
+      .view, .delete{
+        border-top: 1px dotted rgba(0,0,0,0.1);
+        display:block;
+      }
+      .mobile-text{
+        display:inline-block;
+        float:right;
+        font-size: 14px;
+        padding-top:4px;
+       }
+    }
+  }
+}
+
+.more-words{
+  background-color: $sidebar-bg;
+  cursor: pointer;
+  p{
+    padding: 18px 16px;
+    text-align: center;
+    color: $white;
+    font-size:18px;
+  }
+}

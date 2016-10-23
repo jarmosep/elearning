@@ -2,21 +2,18 @@
   h1{
     @include font-size(32px);
     font-family: 'Titillium Web', sans-serif;
-    color: $sidebar-bg;
   }
 }
 @mixin mediumHeading{
   h2{
     @include font-size(24px);
     font-family: 'Titillium Web', sans-serif;
-    color: $sidebar-bg;
   }
 }
 @mixin smallHeading {
   h3{
     @include font-size(20px);
     font-family: 'Titillium Web', sans-serif;
-    color: $sidebar-bg;
   }
 }
 @mixin miniHeading {
@@ -24,7 +21,6 @@
     @include font-size(20px);
     font-family: 'Mada', sans-serif;
     font-weight: 500;
-    color: $sidebar-bg;
   }
 }
 
@@ -32,6 +28,5 @@
   p{
     @include font-size(14px);
     font-family: 'Mada', sans-serif;
-    color: $sidebar-bg;
   }
 }

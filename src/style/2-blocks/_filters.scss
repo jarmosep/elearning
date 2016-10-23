@@ -1,0 +1,36 @@
+.filters{
+  @include span-columns(3);
+  background-color:$white;
+  border: 1px solid $border-color-grey;
+  float:right;
+  h2{
+    padding-top: 10%;
+    padding-bottom: 20px;
+    color: $sidebar-bg;
+    @include font-size(24px);
+    text-align: center;
+    @include media(max-width $mobile) {
+      padding-top: 5%;
+    }
+  }
+  .filter, .more-filters{
+    background-color: $light-grey;
+    border: 1px solid $border-color-grey;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 7px;
+    text-align: center;
+    padding: 10px 8px;
+    p{
+      color: $sidebar-bg;
+    }
+  }
+  .more-filters{
+    background-color: $sidebar-bg;
+    border: none;
+    margin-bottom: 15px;
+    p{
+      color: $white;
+    }
+  }
+}

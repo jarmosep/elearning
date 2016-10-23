@@ -1,9 +1,9 @@
-app.directive('recentActivities',function(){
+app.directive('recentActivity',function(){
   return{
     restrict: 'E',
     scope: {
       data: '='
     },
-    templateUrl: "../templates/mainviews/partials/frontpage/recentactivities.html"
+    templateUrl: "../templates/mainviews/partials/frontpage/recentactivity.html"
   }
 });

@@ -1,9 +1,13 @@
 app.controller('AllWordsCtrl', ['$scope', function($scope){
+  $scope.limit = 5;
+  $scope.showMore = function(){
+    $scope.limit += 5;
+  }
   $scope.words = [
     {
       japanese: "深い",
       english: "Deep",
-      tag: [
+      tags: [
         "i-adjective",
         "Common"
       ]
@@ -11,7 +15,7 @@ app.controller('AllWordsCtrl', ['$scope', function($scope){
     {
       japanese: "ダサい",
       english: "Lame",
-      tag: [
+      tags: [
         "i-adjective",
         "Common",
         "Slang"
@@ -20,7 +24,7 @@ app.controller('AllWordsCtrl', ['$scope', function($scope){
     {
       japanese: "行う",
       english: "To conduct, to carry out",
-      tag: [
+      tags: [
         "Verb",
         "Common"
       ]
@@ -28,7 +32,7 @@ app.controller('AllWordsCtrl', ['$scope', function($scope){
     {
       japanese: "モバイル最適化",
       english: "Mobile optimization",
-      tag:[
+      tags:[
         "Noun",
         "Suru-verb"
       ]
@@ -36,11 +40,63 @@ app.controller('AllWordsCtrl', ['$scope', function($scope){
     {
       japanese: "招待",
       english: "Invitation",
-      tag:[
+      tags:[
         "Noun",
         "Slang",
         "No-adjective"
       ]
-    }
+    },
+    {
+      japanese: "行く",
+      english: "To go",
+      tags:[
+        "Verb",
+        "Common",
+        "Godan-verb"
+      ]
+    },
+    {
+      japanese: "全く",
+      english: "Wholly, completely, really",
+      tags:[
+        "Adverb",
+        "No-adjective",
+        "Common"
+      ]
+    },
+    {
+      japanese: "自殺",
+      english: "Suicide",
+      tags:[
+        "Noun",
+        "Suru-verb",
+        "Common"
+      ]
+    },
+    {
+      japanese: "オタク",
+      english: "Geek, nerd, 'enthusiast'",
+      tags:[
+        "Noun",
+        "Common",
+        "Colloquialism"
+      ]
+    },
+    {
+      japanese: "土方",
+      english: "Construction worker, laborer",
+      tags:[
+        "Noun",
+        "Sensitive"
+      ]
+    },
+    {
+      japanese: "めんどくさい",
+      english: "Can't be bothered, troublesome",
+      tags: [
+        "i-adjective",
+        "Common"
+      ]
+    },
   ];
 }]);

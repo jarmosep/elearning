@@ -1,10 +1,14 @@
 @import "0-utility/bourbon/bourbon";
 @import "0-utility/neat/neat";
+@import "0-utility/breakpoints";
 @import "0-utility/variables";
 @import "0-utility/mixins";
 @import "0-utility/fonts";
 @import "1-base/reset";
-@import "3-layout/grid";
+@import "2-blocks/heading";
+@import "2-blocks/searchbar";
+@import "2-blocks/wordbank-word";
+@import "2-blocks/filters";
 @import "3-layout/wrapper";
 @import "3-layout/container";
 @import "3-layout/navbar";

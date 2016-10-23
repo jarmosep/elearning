@@ -28,7 +28,7 @@
 
 // Hover effect for icons
 @mixin hoverColor{
-  transition: all 0.1s ease;
+  transition: opacity 0.1s ease;
   &:hover{
       opacity: 0.8;
   }

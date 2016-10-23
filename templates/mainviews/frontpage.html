@@ -77,7 +77,7 @@
   <div class="subheading">
     <h3>Recent activity</h3>
   </div>
-
-  <recent-activities></recent-activities>
-
+  <div class="recent" ng-controller="RecentActivityCtrl">
+    <recent-activity ng-repeat="block in blocks" data="block"> </recent-activity>
+  </div>
 </div>
