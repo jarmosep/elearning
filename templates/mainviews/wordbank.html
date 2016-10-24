@@ -13,22 +13,20 @@
     </div>
   </div>
   <div class="word-container">
-    <div class="all-words">
+    <div class="all-words" id="autoscroll">
       <word ng-repeat="word in words | filter: searchWord | limitTo: limit" word="word"></word>
     </div>
     <div class="more-words" ng-hide="limit >= words.length">
       <p ng-click="showMore()">Show more</p>
     </div>
+
   </div>
-  <div class="filter-container">
+  <div class="filter-box">
     <h2> Filters </h2>
-    <div class="filters">
+    <div class="filter-container">
       <div class="filter" ng-repeat="filter in filters track by $index" ng-click="toggleFilter($event, filter)">
         <p>{{filter}}</p>
       </div>
-    </div>
-    <div class="more-filters">
-      <p>Show more</p>
     </div>
   </div>
 </div>

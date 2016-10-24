@@ -1,19 +1,14 @@
 .all-words{
   overflow-y: scroll;
-  max-height: 500px;
+  max-height: 497px;
+  border-top: 1px solid $blue-dark;
 }
 .word{
   @include clearfix;
   background-color: $blue;
   cursor: pointer;
-  @include border-colors($blue-light, $blue-dark, $blue-shadow);
   @include hoverColor;
-  &:first-of-type{
-    border-top-color: $blue-dark;
-  }
-  &:last-of-type{
-    border-bottom-color: $blue-dark;
-  }
+  @include border-colors($blue-light, $blue-dark, $blue-shadow);
   .mobile-text{  display:none;  }
   span {
     font-size:22px;

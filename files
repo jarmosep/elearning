@@ -49,11 +49,16 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         $urlRouterProvider.otherwise('/');
 }]);
 
-app.controller('AllWordsCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
+app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($scope, $rootScope, $timeout){
   $scope.limit = 5;
   $scope.showMore = function(){
     $scope.limit += 5;
+    $timeout(function() {
+          var scroller = document.getElementById("autoscroll");
+          scroller.scrollTop = scroller.scrollHeight;
+        }, 0, false);
   }
+
   $scope.words = [
     {
       japanese: "深い",
@@ -93,7 +98,8 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', function($scope, $rootSc
       english: "Invitation",
       tags:[
         "Noun",
-        "No-adjective"
+        "No-adjective",
+        "Suru-verb"
       ]
     },
     {
@@ -151,10 +157,12 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', function($scope, $rootSc
   ];
   $scope.filters = [
           "Noun",
+          "Godan-verb",
           "Slang",
           "No-adjective",
           "I-adjective",
           "Sensitive",
+          "Verb",
           "Colloquialism",
           "Suru-verb",
           "Adverb"
@@ -213,13 +221,13 @@ app.controller('RecentActivityCtrl', ['$scope', function($scope){
         ];
   }]);
 
-app.directive('recentActivity',function(){
+app.directive('activity', function(){
   return{
     restrict: 'E',
     scope: {
       data: '='
     },
-    templateUrl: "../templates/mainviews/partials/recentactivity.html"
+    templateUrl: "templates/mainviews/partials/activity.html"
   }
 });
 
@@ -229,6 +237,6 @@ app.directive('word', function(){
     scope: {
       word: '='
     },
-    templateUrl: '../templates/mainviews/partials/word.html'
+    templateUrl: "templates/mainviews/partials/word.html"
   };
 });

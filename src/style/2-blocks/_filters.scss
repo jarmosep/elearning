@@ -1,4 +1,4 @@
-.filter-container{
+.filter-box{
   @include span-columns(3);
   background-color:$white;
   border: 1px solid $border-color-grey;
@@ -13,10 +13,11 @@
       padding-top: 5%;
     }
   }
-  .filters{
-    margin-left: 15px;
-    margin-right: 15px;
-
+  .filter-container{
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 15px;
+    text-align: center;
     .filter{
       background-color: $light-grey;
       border: 1px solid $border-color-grey;
@@ -36,15 +37,5 @@
       color: $white;
     }
   }
-  }
-  .more-filters{
-    background-color: $sidebar-bg;
-    border: none;
-    margin: 10px 15px 15px 15px;
-    padding: 14px 14px;
-    text-align: center;
-    p{
-      color: $white;
-    }
   }
 }

@@ -4,6 +4,6 @@ app.directive('word', function(){
     scope: {
       word: '='
     },
-    templateUrl: '../templates/mainviews/partials/word.html'
+    templateUrl: "templates/mainviews/partials/word.html"
   };
 });

@@ -13,7 +13,7 @@ module.exports = function(grunt) {
         },
         */
         sass: {
-            files: ['src/style/0-utility/*', 'src/style/1-base/*', 'src/style/2-blocks/*', 'src/style/3-layout/*', '!src/style/0-utility/bourbon', '!src/style/0-utility/neat'],
+            files: ['src/style/style.scss', 'src/style/0-utility/*', 'src/style/1-base/*', 'src/style/2-blocks/*', 'src/style/3-layout/*', '!src/style/0-utility/bourbon', '!src/style/0-utility/neat'],
             dist: {
                 options: {
                     style: 'compressed',
@@ -54,7 +54,7 @@ module.exports = function(grunt) {
                 options: {
                     port: 4000,
                     hostname: 'localhost',
-                    base: 'C:/Users/Jarmo/development/elearning', // Project folder root, put your own
+                    base: 'C:/Users/Puliukkeli/development/elearning', // Project folder root, put your own
                     livereload: true
                 }
             }
