@@ -34,6 +34,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             templateUrl: 'templates/mainviews/wordbank.html'
         })
 
+        .state('dashboard.word', {
+            url: '/dashboard.wordbank/:wordId',
+            templateUrl: 'templates/mainviews/singleword.html'
+        })
+
         .state('dashboard.assignments', {
             templateUrl: 'templates/mainviews/assignment.html'
         })
@@ -61,6 +66,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
 
   $scope.words = [
     {
+      id: 1,
       japanese: "深い",
       english: "Deep",
       tags: [
@@ -69,6 +75,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
+      id: 2,
       japanese: "ダサい",
       english: "Lame",
       tags: [
@@ -78,6 +85,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
+      id: 3,
       japanese: "行う",
       english: "To conduct, to carry out",
       tags: [
@@ -86,6 +94,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
+      id: 4,
       japanese: "モバイル最適化",
       english: "Mobile optimization",
       tags:[
@@ -94,6 +103,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
+      id: 5,
       japanese: "招待",
       english: "Invitation",
       tags:[
@@ -103,6 +113,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
+      id: 6,
       japanese: "行く",
       english: "To go",
       tags:[
@@ -112,6 +123,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
+      id: 7,
       japanese: "全く",
       english: "Wholly, completely, really",
       tags:[
@@ -121,6 +133,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
+      id: 8,
       japanese: "自殺",
       english: "Suicide",
       tags:[
@@ -130,6 +143,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
+      id: 9,
       japanese: "オタク",
       english: "Geek, nerd, 'enthusiast'",
       tags:[
@@ -139,6 +153,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
+      id: 10,
       japanese: "土方",
       english: "Construction worker, laborer",
       tags:[
@@ -147,6 +162,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
+      id: 11,
       japanese: "めんどくさい",
       english: "Can't be bothered, troublesome",
       tags: [

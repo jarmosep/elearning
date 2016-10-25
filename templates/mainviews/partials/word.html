@@ -1,8 +1,10 @@
 <div class="word" ng-show="word.visible" ng-init="word.visible = true">
+  <a href="dashboard.word({id: word.id})">
   <div class="word-data">
     <p class="japanese"><b>{{word.japanese}}</b></p>
     <p class="english">{{word.english}}</p>
   </div>
+  </a>
   <div class="operations">
     <p class="view">
       <span class="action ion-chevron-down"></span>

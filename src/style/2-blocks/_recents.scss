@@ -1,0 +1,54 @@
+.recent{
+  background-color: $white;
+  border: 1px solid $border-color-grey;
+  .activity{
+    margin: 2px 5px 2px 5px;
+    background-color: $light-grey;
+    @include clearfix;
+    &:first-of-type{  margin-top: 5px;  }
+    &:last-of-type{  margin-bottom: 5px;  }
+    @include media(max-width $mobile){  margin-top: 5px;  }
+    .mobile-text{  display:none;  }
+    span {
+      font-size:22px;
+      line-height: 14px;
+    }
+    p{
+      padding: 16px 14px;
+      display:inline-block;
+    }
+    .what-and-when{
+      width: 70%;
+      float:left;
+      @include media(max-width $mobile){  width: 100% }
+      .event{
+        width: 55%;
+      }
+      .occurance{
+        float:right;
+        color: $sidebar-icon-color;
+      }
+    }
+    .operations{
+      float:right;
+      .view,.delete{
+        cursor: pointer;
+        @include hoverColor;
+       }
+      @include media(max-width $mobile){
+        float:left;
+        width:100%;
+        .view, .delete{
+          border-top: 1px dotted rgba(0,0,0,0.1);
+          display:block;
+        }
+        .mobile-text{
+          display:inline-block;
+          float:right;
+          font-size: 14px;
+          padding-top:4px;
+         }
+      }
+    }
+  }
+}
