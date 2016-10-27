@@ -14,7 +14,7 @@
   </div>
   <div class="word-container">
     <div class="all-words" id="autoscroll">
-      <word ng-repeat="word in words | filter: searchWord | limitTo: limit" word="word"></word>
+      <word ng-repeat="word in words | filter: searchWord | limitTo: limit" word="word" ng-click="go(word)"></word>
     </div>
     <div class="more-words" ng-hide="limit >= words.length">
       <p ng-click="showMore()">Show more</p>
@@ -29,4 +29,7 @@
       </div>
     </div>
   </div>
+</div>
+<div class="empty">
+
 </div>

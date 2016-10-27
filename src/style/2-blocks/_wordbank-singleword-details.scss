@@ -1,0 +1,42 @@
+.word-details{
+  @include span-columns(8);
+  .fields{
+    background-color: $white;
+    border: 1px solid $border-color-grey;
+    .field{
+      @include clearfix;
+      border-bottom: 1px dotted rgba(0,0,0,0.3);
+      &:last-of-type{
+        border: none;
+      }
+      .title{
+        float:left;
+        min-width: 150px;
+      }
+      .content{
+        float:left;
+        max-width: 500px;
+      }
+    }
+    h4{
+      padding: 20px 15px;
+    }
+    p{
+      @include font-size(18px);
+      padding: 22px 5px 15px;
+    }
+    .tag{
+      @include clearfix;
+      float: left;
+      padding: 20px 15px;
+      p{
+        @include font-size(18px);
+        background-color: $green;
+        border-radius:3px;
+        border: 1px solid $green-dark;
+        color:white;
+        padding: 10px 14px;
+      }
+    }
+  }
+}

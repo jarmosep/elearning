@@ -1,29 +1,29 @@
-.all-words{
-  overflow-y: scroll;
-  max-height: 497px;
-  border-top: 1px solid $blue-dark;
-}
-.word{
+ .wordblock{
+  @include border-colors($blue-light, $blue-dark, $blue-shadow);
   @include clearfix;
+  @include hoverColor;
   background-color: $blue;
   cursor: pointer;
-  @include hoverColor;
-  @include border-colors($blue-light, $blue-dark, $blue-shadow);
   .mobile-text{  display:none;  }
+
+  a {
+    @include clearfix;
+    display: block;
+  }
   span {
     font-size:22px;
     line-height: 14px;
   }
   p{
-    padding: 18px 16px;
-    display:inline-block;
     color: $white;
+    display:inline-block;
     font-size:16px;
+    padding: 18px 16px;
   }
   .word-data{
-    width: 75%;
     float:left;
-    @include media(max-width $mobile){  width: 100% }
+    width: 75%;
+    @include media(max-width $mobile){ width: 100% }
     .japanese{
       width: 50%;
     }
@@ -54,9 +54,13 @@
   background-color: $sidebar-bg;
   cursor: pointer;
   p{
-    padding: 18px 16px;
-    text-align: center;
     color: $white;
     font-size:18px;
+    padding: 18px 16px;
+    text-align: center;
   }
+}
+.empty{
+  clear:left;
+  height:100px;
 }

@@ -26,8 +26,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.word', {
-            url: '/dashboard.wordbank/:wordId',
-            templateUrl: 'templates/mainviews/singleword.html'
+            url: '/word',
+            templateUrl: 'templates/mainviews/singleword.html',
+            params: {
+                obj: null
+            }
         })
 
         .state('dashboard.assignments', {

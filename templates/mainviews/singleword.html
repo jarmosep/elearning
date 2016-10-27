@@ -1,4 +1,54 @@
-<div>
-  boob
-  {{word.japanese}}
+<div class="container singleword" ng-controller="WordDetailsCtrl">
+  <div class="heading">
+    <h1>Wordbank</h1>
+  </div>
+  <div class="japaneseword">
+    <h2>{{word.japanese}}</h2>
+  </div>
+  <div class="word-details">
+
+    <div class="fields">
+      <div class="field">
+        <div class="title">
+          <h4>Reading:</h4>
+        </div>
+        <div class="content">
+          <p>{{word.reading}}</p>
+        </div>
+      </div>
+      <div class="field">
+        <div class="title">
+          <h4>Meaning:</h4>
+        </div>
+        <div class="content">
+          <p>{{word.english}}</p>
+        </div>
+      </div>
+      <div class="field">
+        <div class="title">
+          <h4>Sentences:</h4>
+        </div>
+        <div class="content">
+          <p>{{word.sentence}}</p>
+        </div>
+      </div>
+      <div class="field">
+        <div class="tag" ng-repeat="tag in word.tags">
+          <p>{{tag}}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="word-additional">
+    <div class="dummy-image">
+      <span class="ion-images"></span>
+    </div>
+    <div class="image">
+      <img src="http://placehold.it/750x555" alt="placeholder">
+    </div>
+    <div class="kanji">
+      <p> null </p>
+    </div>
+  </div>
 </div>

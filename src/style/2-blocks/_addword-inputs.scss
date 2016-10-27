@@ -1,0 +1,55 @@
+.form{
+  padding-top: 40px;
+  .fields{
+    background-color: $white;
+    border: 1px solid $border-color-grey;
+    .field{
+      @include clearfix;
+      border-bottom: 1px dotted rgba(0,0,0,0.3);
+      &:last-of-type{
+        border: none;
+      }
+      .title{
+        float:left;
+        min-width: 130px;
+      }
+      .content{
+        overflow: hidden;
+        padding: 13px 13px;
+        .textinput, .upload{
+          @include font-size(16px);
+          background-color: $light-grey;
+          border-radius: 2px;
+          border: 1px solid $border-color-grey;
+          height:42px;
+          outline:none;
+          padding-left: 12px;
+          width: 100%;
+        }
+        textarea{
+          padding-top:12px;
+          font-family: arial;
+          min-height: 100px;
+        }
+      }
+      #toHide{
+        display:none;
+      }
+      .upload{
+        background-color: $light-grey;
+        transition: all 0.1s ease;
+        cursor:pointer;
+        text-align:left;
+        color: $border-color-grey;
+        &:hover{
+          background-color: $border-color-grey;
+          border-color: darken($border-color-grey, 15%);
+          color: darken($border-color-grey, 15%);
+        }
+      }
+    }
+    h4{
+      padding: 20px 15px;
+    }
+  }
+}

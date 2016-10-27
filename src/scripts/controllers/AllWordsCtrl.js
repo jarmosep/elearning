@@ -1,4 +1,4 @@
-app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($scope, $rootScope, $timeout){
+app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', function($scope, $rootScope, $timeout, $state){
   $scope.limit = 5;
   $scope.showMore = function(){
     $scope.limit += 5;
@@ -8,20 +8,25 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
         }, 0, false);
   }
 
+  $scope.go = function(word) {
+    console.log(word);
+    $state.go('dashboard.word', {obj:word});
+  }
+
   $scope.words = [
     {
-      id: 1,
       japanese: "深い",
       english: "Deep",
+      reading: "ふかい",
       tags: [
         "I-adjective",
         "Common"
       ]
     },
     {
-      id: 2,
       japanese: "ダサい",
       english: "Lame",
+      reading: "",
       tags: [
         "I-adjective",
         "Common",
@@ -29,27 +34,28 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
-      id: 3,
       japanese: "行う",
       english: "To conduct, to carry out",
+      reading: "おこなう",
       tags: [
         "Verb",
         "Common"
       ]
     },
     {
-      id: 4,
       japanese: "モバイル最適化",
       english: "Mobile optimization",
+      reading: "もばいるさいてきか",
+      sentence: "日本のWebサイトと中で、モバイル最適化は新興の技術だと思う。 - I think mobile optimization is a rising technology in Japanese websites.",
       tags:[
         "Noun",
         "Suru-verb"
       ]
     },
     {
-      id: 5,
       japanese: "招待",
       english: "Invitation",
+      reading: "しょうたい",
       tags:[
         "Noun",
         "No-adjective",
@@ -57,9 +63,9 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
-      id: 6,
       japanese: "行く",
       english: "To go",
+      reading: "いく",
       tags:[
         "Verb",
         "Common",
@@ -67,9 +73,9 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
-      id: 7,
       japanese: "全く",
       english: "Wholly, completely, really",
+      reading: "まったく",
       tags:[
         "Adverb",
         "No-adjective",
@@ -77,9 +83,9 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
-      id: 8,
       japanese: "自殺",
       english: "Suicide",
+      reading: "じさつ",
       tags:[
         "Noun",
         "Suru-verb",
@@ -87,9 +93,9 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
-      id: 9,
       japanese: "オタク",
       english: "Geek, nerd, 'enthusiast'",
+      reading: "",
       tags:[
         "Noun",
         "Common",
@@ -97,23 +103,23 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', function($sc
       ]
     },
     {
-      id: 10,
       japanese: "土方",
       english: "Construction worker, laborer",
+      reading: "どかた",
       tags:[
         "Noun",
         "Sensitive"
       ]
     },
     {
-      id: 11,
       japanese: "めんどくさい",
       english: "Can't be bothered, troublesome",
+      reading: "null",
       tags: [
         "I-adjective",
         "Common"
       ]
-    },
+    }
   ];
   $scope.filters = [
           "Noun",

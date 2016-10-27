@@ -12,5 +12,12 @@
       width: 100%;
       @include span-columns(12);
     }
+    .all-words{
+      /*
+      overflow-y: scroll;
+      max-height: 497px;
+      */
+      border-top: 1px solid $blue-dark;
+    }
   }
 }

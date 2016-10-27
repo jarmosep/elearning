@@ -1,0 +1,11 @@
+.addword{
+  @include outer-container;
+  @include bigHeading;
+  @include mediumHeading;
+  @include smallHeading;
+  @include miniHeading;
+  @include paragraph;
+  h4{
+    color: $sidebar-bg;
+  }
+}

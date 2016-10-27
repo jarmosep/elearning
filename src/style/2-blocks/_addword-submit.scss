@@ -1,0 +1,27 @@
+.erase, .submit{
+  @include hoverColor;
+  @include span-columns(6 of 12);
+  cursor: pointer;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  p{
+    @include font-size(18px);
+    color: $white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+}
+.erase{
+    padding-left: 15px;
+  p{
+    background-color: $sidebar-bg;
+  }
+}
+.submit{
+    padding-right: 15px;
+  p{
+    background-color: $green;
+    border: 1px solid $green-dark;
+  }
+}

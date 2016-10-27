@@ -1,0 +1,27 @@
+.word-additional{
+  @include span-columns(4);
+
+  .image{
+    display:none;
+    min-height: 200px;
+    img{
+      width: 100%;
+    }
+  }
+  .dummy-image{
+    border: 1px dashed $border-color-grey;
+    min-height: 235px;
+    text-align: center;
+    span{
+      @include font-size(100px);
+      color:$border-color-grey;
+      display:block;
+      padding: 60px 60px;
+    }
+  }
+  .kanji{
+    margin-top: 25px;
+    background-color: $white;
+    border: 1px solid $border-color-grey;
+  }
+}

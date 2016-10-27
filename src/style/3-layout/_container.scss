@@ -1,8 +1,8 @@
 // Subview - every view is fetched under this class.
 .subview{
   position:absolute;
-  top: 73px;
+  bottom: 0;
   left: 130px;
   right: 25px;
-  bottom: 0;
+  top: 73px;
 }

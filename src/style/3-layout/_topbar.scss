@@ -1,24 +1,24 @@
 .navigation-top{
-  background-color: $white;
-  height: 65px;
   position:fixed;
+  background-color: $white;
+  display: inline;
+  height: 65px;
   width: 100%;
   z-index: 2;
-  display: inline;
   @include paragraph;
   @include clearfix;
 
   .logo {
-    width: 100px;
-    height: 100%;
     background-color: $blue;
     float:left;
+    height: 100%;
+    width: 100px;
   }
   a, p {
     float: right;
     font-size: 16px;
-    padding-top: 20px;
     padding-right: 30px;
+    padding-top: 20px;
   }
   a{
     font-size:20px;
