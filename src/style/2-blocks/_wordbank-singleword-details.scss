@@ -25,17 +25,30 @@
       @include font-size(18px);
       padding: 22px 5px 15px;
     }
-    .tag{
-      @include clearfix;
-      float: left;
-      padding: 20px 15px;
+    .add, .edit, .delete{
+      @include hoverColor;
+      @include span-columns(2.6 of 8);
+      cursor: pointer;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      text-align: center;
       p{
         @include font-size(18px);
+        color: $white;
+        padding-top: 7px;
+        padding-bottom: 7px;
+      }
+    }
+    .delete{
+        padding-left: 15px;
+      p{
+        background-color: $sidebar-bg;
+      }
+    }
+    .add, .edit{
+      p{
         background-color: $green;
-        border-radius:3px;
         border: 1px solid $green-dark;
-        color:white;
-        padding: 10px 14px;
       }
     }
   }

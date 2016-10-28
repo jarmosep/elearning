@@ -1,0 +1,20 @@
+.assignment{
+  @include outer-container;
+  @include bigHeading;
+  @include mediumHeading;
+  @include smallHeading;
+  @include miniHeading;
+  @include paragraph;
+
+  .newest{
+    padding-top: 40px;
+    li{
+      @include span-columns(3);
+      @include omega(4n);
+      background-color: $white;
+      border: 1px solid $border-color-grey;
+      height: 100px;
+      margin-bottom: 20px;
+    }
+  }
+}

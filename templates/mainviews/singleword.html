@@ -33,8 +33,22 @@
         </div>
       </div>
       <div class="field">
-        <div class="tag" ng-repeat="tag in word.tags">
-          <p>{{tag}}</p>
+        <div class="title">
+          <h4>Tags:</h4>
+        </div>
+        <div class="content">
+          <p class="tag">{{word.tags.join(", ")}}</p>
+        </div>
+      </div>
+      <div class="field">
+        <div class="delete">
+          <p>Delete word</p>
+        </div>
+        <div class="add">
+          <p>Add to quizlist</p>
+        </div>
+        <div class="edit">
+          <p>Edit word</p>
         </div>
       </div>
     </div>
