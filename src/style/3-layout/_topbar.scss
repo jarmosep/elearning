@@ -13,6 +13,9 @@
     float:left;
     height: 100%;
     width: 100px;
+    @include media(max-width $mobile){
+      width: 70px;
+    }
   }
   a, p {
     float: right;

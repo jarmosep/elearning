@@ -1,9 +1,9 @@
  .wordblock{
-  @include border-colors($blue-light, $blue-dark, $blue-shadow);
   @include clearfix;
   @include hoverColor;
   background-color: $blue;
   cursor: pointer;
+  margin-top: 5px;
   .mobile-text{  display:none;  }
 
   a {
@@ -51,6 +51,8 @@
 }
 
 .more-words{
+  @include hoverColor;
+  margin-top: 5px;
   background-color: $sidebar-bg;
   cursor: pointer;
   p{

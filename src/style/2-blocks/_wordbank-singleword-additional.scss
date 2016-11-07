@@ -1,6 +1,9 @@
 .word-additional{
-  @include span-columns(4);
-
+  @include span-columns(6);
+  margin-top: 40px;
+  @include media(max-width $mobile){
+    @include span-columns(12);
+  }
   .image{
     display:none;
     min-height: 200px;
@@ -10,7 +13,7 @@
   }
   .dummy-image{
     border: 1px dashed $border-color-grey;
-    min-height: 235px;
+    min-height: 250px;
     text-align: center;
     span{
       @include font-size(100px);
@@ -20,6 +23,7 @@
     }
   }
   .kanji{
+    @include boxShadow;
     margin-top: 25px;
     background-color: $white;
     border: 1px solid $border-color-grey;

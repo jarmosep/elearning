@@ -22,12 +22,14 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.wordbank', {
-            templateUrl: 'templates/mainviews/wordbank.html'
+            templateUrl: 'templates/mainviews/wordbank.html',
+            controller: 'AllWordsCtrl'
         })
 
         .state('dashboard.word', {
             url: '/word',
             templateUrl: 'templates/mainviews/singleword.html',
+            controller: 'WordDetailsCtrl',
             params: {
                 obj: null
             }

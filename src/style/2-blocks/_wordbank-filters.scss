@@ -1,4 +1,5 @@
 .filter-box{
+  @include boxShadow;
   @include span-columns(3);
   background-color:$white;
   border: 1px solid $border-color-grey;

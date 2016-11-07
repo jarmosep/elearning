@@ -1,85 +1,87 @@
-<div class="container frontpage">
-  <div class="heading">
-    <h1>Dashboard</h1>
-  </div>
-  <div class="actions">
-    <!-- Wordbank -->
-    <div class="one-third">
-      <h2>Wordbank</h2>
-      <div class="block__action">
-        <a ui-sref="dashboard.wordbank">
-          <span class="ion-chevron-right"></span>
-          <h4>View</h4>
-        </a>
+<div class="wrapper">
+  <div class="container frontpage">
+    <div class="heading">
+      <h1>Dashboard</h1>
+    </div>
+    <div class="actions">
+      <!-- Wordbank -->
+      <div class="one-third">
+        <h2>Wordbank</h2>
+        <div class="block__action">
+          <a ui-sref="dashboard.wordbank">
+            <span class="ion-chevron-right"></span>
+            <h4>View</h4>
+          </a>
+        </div>
+        <div class="block__action">
+          <a ui-sref="dashboard">
+            <span class="ion-android-expand"></span>
+            <p>456 words <br>
+            Edited 2 h ago</p>
+          </a>
+        </div>
+        <div class="block__action">
+          <a ui-sref="dashboard">
+            <span class="info">i</span>
+            <p>Database for <br>storing words</p>
+          </a>
+        </div>
       </div>
-      <div class="block__action">
-        <a ui-sref="dashboard">
-          <span class="ion-android-expand"></span>
-          <p>456 words <br>
-          Edited 2 h ago</p>
-        </a>
+      <!-- Assignments -->
+      <div class="one-third">
+        <h2>Assignments</h2>
+        <div class="block__action">
+          <a ui-sref="dashboard.assignments">
+            <span class="ion-chevron-right"></span>
+            <h4>View</h4>
+          </a>
+        </div>
+        <div class="block__action">
+          <a ui-sref="dashboard">
+            <span class="ion-android-expand"></span>
+            <p>456 words <br>
+            Edited 2 h ago</p>
+          </a>
+        </div>
+        <div class="block__action">
+          <a ui-sref="dashboard">
+            <span class="info">i</span>
+            <p>Assignments & <br> quizes</p>
+          </a>
+        </div>
       </div>
-      <div class="block__action">
-        <a ui-sref="dashboard">
-          <span class="info">i</span>
-          <p>Database for <br>storing words</p>
-        </a>
+
+      <!-- Word adding -->
+      <div class="one-third">
+        <h2>Add a word</h2>
+        <div class="block__action">
+          <a ui-sref="dashboard.addword">
+            <span class="ion-chevron-right"></span>
+            <h4>View</h4>
+          </a>
+        </div>
+        <div class="block__action">
+          <a ui-sref="dashboard">
+            <span class="ion-android-expand"></span>
+            <p>456 words <br>
+            Edited 2 h ago</p>
+          </a>
+        </div>
+        <div class="block__action">
+          <a ui-sref="dashboard">
+            <span class="info">i</span>
+            <p>Add words or<br> expressions</p>
+          </a>
+        </div>
       </div>
     </div>
-    <!-- Assignments -->
-    <div class="one-third">
-      <h2>Assignments</h2>
-      <div class="block__action">
-        <a ui-sref="dashboard.assignments">
-          <span class="ion-chevron-right"></span>
-          <h4>View</h4>
-        </a>
-      </div>
-      <div class="block__action">
-        <a ui-sref="dashboard">
-          <span class="ion-android-expand"></span>
-          <p>456 words <br>
-          Edited 2 h ago</p>
-        </a>
-      </div>
-      <div class="block__action">
-        <a ui-sref="dashboard">
-          <span class="info">i</span>
-          <p>Assignments & <br> quizes</p>
-        </a>
-      </div>
+    <div class="subheading">
+      <h3>Recent activity</h3>
     </div>
 
-    <!-- Word adding -->
-    <div class="one-third">
-      <h2>Add a word</h2>
-      <div class="block__action">
-        <a ui-sref="dashboard.addword">
-          <span class="ion-chevron-right"></span>
-          <h4>View</h4>
-        </a>
-      </div>
-      <div class="block__action">
-        <a ui-sref="dashboard">
-          <span class="ion-android-expand"></span>
-          <p>456 words <br>
-          Edited 2 h ago</p>
-        </a>
-      </div>
-      <div class="block__action">
-        <a ui-sref="dashboard">
-          <span class="info">i</span>
-          <p>Add words or<br> expressions</p>
-        </a>
-      </div>
+    <div class="recent" ng-controller="RecentActivityCtrl">
+      <activity ng-repeat="block in blocks" data="block"> </activity>
     </div>
   </div>
-  <div class="subheading">
-    <h3>Recent activity</h3>
-  </div>
 
-  <div class="recent" ng-controller="RecentActivityCtrl">
-    <activity ng-repeat="block in blocks" data="block"> </activity>
-  </div>
-  
 </div>

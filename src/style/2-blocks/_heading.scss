@@ -1,6 +1,11 @@
 .heading{
   border-bottom: 1px solid $sidebar-bg;
-  padding-top: 20px;
+  padding-top: 28px;
   padding-bottom: 20px;
   color: $sidebar-bg;
+  @include media(max-width $mobile){
+    padding-bottom: 12px;
+    padding-top: 15px;
+    text-align: center;
+  }
 }

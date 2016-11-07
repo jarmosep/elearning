@@ -1,0 +1,6 @@
+.wrapper {
+  @include pad(0 5%);
+  @include media(max-width $mobile){
+    @include pad(0 3%);
+  }
+}

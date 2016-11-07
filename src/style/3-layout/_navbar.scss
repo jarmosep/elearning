@@ -5,6 +5,9 @@
   top:65px;
   width: 100px;
   z-index: 1;
+  @include media(max-width $mobile){
+    width: 70px;
+  }
   .navigation-side__nav{
     ul{
       background-color: $white;
@@ -13,7 +16,7 @@
         background-color: $sidebar-bg;
         border-bottom: solid 1px $sidebar-dark-blue;
         border-top: solid 1px $sidebar-medium-blue;
-        @include hoverColor;
+        transition: all 0.1s ease;
         &:first-of-type{
           border-top: none;
         }
@@ -29,6 +32,10 @@
           }
           .ion{
             padding-top:20%;
+            @include media(max-width $mobile){
+              padding-top:30%;
+              padding-bottom:30%;
+            }
           }
           @include paragraph;
           p {
@@ -36,7 +43,16 @@
             padding-bottom:20%;
             padding-top:5%;
             text-align: center;
+            @include media(max-width $mobile){
+              display:none;
+            }
           }
+        }
+        &:hover{
+          p, span{
+            color: $white;
+          }
+          background-color: $sidebar-dark-blue;
         }
       }
     }

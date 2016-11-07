@@ -1,5 +1,6 @@
 .form{
-  padding-top: 40px;
+  @include boxShadow;
+  margin-top: 40px;
   .fields{
     background-color: $white;
     border: 1px solid $border-color-grey;

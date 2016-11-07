@@ -6,8 +6,11 @@
   @include miniHeading;
   @include paragraph;
   .word-container{
+    @include boxShadow;
     @include span-columns(9);
     background-color: $white;
+    border: 1px solid $border-color-grey;
+    padding: 15px 15px 15px 15px;
     @include media(max-width $mobile){
       width: 100%;
       @include span-columns(12);
@@ -17,7 +20,6 @@
       overflow-y: scroll;
       max-height: 497px;
       */
-      border-top: 1px solid $blue-dark;
     }
   }
 }

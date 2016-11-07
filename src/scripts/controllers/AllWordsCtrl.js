@@ -114,7 +114,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
     {
       japanese: "めんどくさい",
       english: "Can't be bothered, troublesome",
-      reading: "null",
+      reading: "",
       tags: [
         "I-adjective",
         "Common"

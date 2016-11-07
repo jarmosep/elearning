@@ -1,4 +1,8 @@
 .subheading{
   padding-top: 25px;
   padding-bottom: 15px;
+  @include media(max-width $mobile){
+    padding-top: 10px;
+    text-align: center;
+  }
 }

@@ -1,5 +1,10 @@
 .word-details{
-  @include span-columns(8);
+  @include span-columns(6);
+  @include boxShadow;
+  margin-top: 40px;
+  @include media(max-width $mobile){
+    @include span-columns(12);
+  }
   .fields{
     background-color: $white;
     border: 1px solid $border-color-grey;
@@ -9,47 +14,13 @@
       &:last-of-type{
         border: none;
       }
-      .title{
-        float:left;
-        min-width: 150px;
-      }
-      .content{
-        float:left;
-        max-width: 500px;
-      }
     }
     h4{
-      padding: 20px 15px;
+      padding: 20px 15px 0;
     }
     p{
-      @include font-size(18px);
-      padding: 22px 5px 15px;
-    }
-    .add, .edit, .delete{
-      @include hoverColor;
-      @include span-columns(2.6 of 8);
-      cursor: pointer;
-      padding-top: 15px;
-      padding-bottom: 15px;
-      text-align: center;
-      p{
-        @include font-size(18px);
-        color: $white;
-        padding-top: 7px;
-        padding-bottom: 7px;
-      }
-    }
-    .delete{
-        padding-left: 15px;
-      p{
-        background-color: $sidebar-bg;
-      }
-    }
-    .add, .edit{
-      p{
-        background-color: $green;
-        border: 1px solid $green-dark;
-      }
+      @include font-size(16px);
+      padding: 15px 15px 15px;
     }
   }
 }

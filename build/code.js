@@ -31,12 +31,14 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.wordbank', {
-            templateUrl: 'templates/mainviews/wordbank.html'
+            templateUrl: 'templates/mainviews/wordbank.html',
+            controller: 'AllWordsCtrl'
         })
 
         .state('dashboard.word', {
             url: '/word',
             templateUrl: 'templates/mainviews/singleword.html',
+            controller: 'WordDetailsCtrl',
             params: {
                 obj: null
             }
@@ -173,7 +175,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
     {
       japanese: "めんどくさい",
       english: "Can't be bothered, troublesome",
-      reading: "null",
+      reading: "",
       tags: [
         "I-adjective",
         "Common"

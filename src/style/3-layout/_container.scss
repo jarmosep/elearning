@@ -5,4 +5,7 @@
   left: 130px;
   right: 25px;
   top: 73px;
+  @include media(max-width $mobile){
+    left: 70px !important;
+  }
 }
