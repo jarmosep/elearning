@@ -3,14 +3,14 @@
     <div class="heading">
       <h1> Add a word</h1>
     </div>
-    <div class="form">
+    <form name="submitWord" novalidate>
       <div class="fields">
         <div class="field">
           <div class="title">
             <h4>Expression:</h4>
           </div>
           <div class="content">
-            <input type="text" class="textinput" placeholder="Type Japanese word or expression in Kanji"></input>
+            <input type="text" name="expression" ng-model="form.expression" class="textinput" placeholder="Type Japanese word or expression in Kanji" required></input>
           </div>
         </div>
         <div class="field">
@@ -18,7 +18,7 @@
             <h4>Reading:</h4>
           </div>
           <div class="content">
-            <input type="text" class="textinput" placeholder="Type the same word or expression in hiragana or in romaji"></input>
+            <input type="text" name="reading" ng-model="form.reading" class="textinput" placeholder="Type the same word or expression in hiragana or in romaji"></input>
           </div>
         </div>
         <div class="field">
@@ -26,7 +26,7 @@
             <h4>Meaning:</h4>
           </div>
           <div class="content">
-            <input type="text" class="textinput" placeholder="Describe the meaning in your language"></input>
+            <input type="text" name="meaning" ng-model="form.meaning" class="textinput" placeholder="Describe the meaning in your language" required></input>
           </div>
         </div>
         <div class="field">
@@ -34,7 +34,7 @@
             <h4>Tags:</h4>
           </div>
           <div class="content">
-            <input type="text" class="textinput" placeholder="Give the word or expression suitable tags"></input>
+            <input type="text" name="tags" ng-model="form.tags" class="textinput" placeholder="Give the word or expression suitable tags" required></input>
           </div>
         </div>
         <div class="field">
@@ -43,7 +43,7 @@
           </div>
           <div class="content">
             <input type="file" id="toHide"></input>
-            <input type="button" value="Click to upload a picture to aid word memorization" align="left" class="upload" onClick="document.getElementById('toHide').click();"></input>
+            <input type="button" name="image" ng-model="form.image" value="Click to upload a picture to aid word memorization" align="left" class="upload" onClick="document.getElementById('toHide').click();"></input>
           </div>
         </div>
         <div class="field">
@@ -51,18 +51,20 @@
             <h4>Sentences:</h4>
           </div>
           <div class="content">
-            <textarea type="text" class="textinput" placeholder="Give the word or expression example sentences"></textarea>
+            <textarea type="text" name="sentences" ng-model="form.sentences" class="textinput" placeholder="Give the word or expression example sentences"></textarea>
           </div>
         </div>
         <div class="field">
-          <div class="erase">
-            <p>Erase fields</p>
-          </div>
-          <div class="submit">
-            <p>Submit</p>
+          <div class="submit-actions">
+            <button class="erase" ng-click="clearFields()">
+              <p>Erase fields</p>
+            </button>
+            <button class="submit" ng-submit="onSubmit()" ng-disabled="submitWord.$invalid">
+              <p>Submit</p>
+            </button>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>

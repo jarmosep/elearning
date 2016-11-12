@@ -36,11 +36,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.assignments', {
-            templateUrl: 'templates/mainviews/assignment.html'
+            templateUrl: 'templates/mainviews/assignment.html',
+            controller: 'AssignmentsCtrl'
         })
 
         .state('dashboard.addword', {
-            templateUrl: 'templates/mainviews/addword.html'
+            templateUrl: 'templates/mainviews/addword.html',
+            controller: 'WordSubmitCtrl'
         })
 
         .state('dashboard.askteacher', {

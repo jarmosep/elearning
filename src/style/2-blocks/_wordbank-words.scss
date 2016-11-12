@@ -16,7 +16,6 @@
   }
   p{
     color: $white;
-    display:inline-block;
     font-size:16px;
     padding: 18px 16px;
   }
@@ -25,13 +24,30 @@
     width: 75%;
     @include media(max-width $mobile){ width: 100% }
     .japanese{
-      width: 50%;
+      display:inline-block;
+      @include media(max-width $mobile){
+        @include font-size(22px);
+        display:block;
+        padding-bottom:5px;
+        text-align: center;
+      }
     }
+    .english{
+      float:right;
+      @include media(max-width $mobile){
+        display:block;
+        float:none;
+        padding-top:5px;
+        text-align: center;
+      }
+    }
+
   }
   .operations{
     float:right;
     .view,.delete{
       @include hoverColor;
+      display:inline-block;
      }
     @include media(max-width $mobile){
       float:left;

@@ -1,4 +1,4 @@
-.form{
+form{
   @include boxShadow;
   margin-top: 40px;
   .fields{
@@ -13,6 +13,14 @@
       .title{
         float:left;
         min-width: 130px;
+        @include media(max-width $mobile){
+          float:none;
+        }
+        h4{
+          @include media(max-width $mobile){
+            padding-bottom: 0;
+          }
+        }
       }
       .content{
         overflow: hidden;

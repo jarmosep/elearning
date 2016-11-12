@@ -13,11 +13,11 @@
 
       <div class="fields">
         <div class="field">
-            <h4>Example sentences</h4>
+            <h3>Example sentences</h3>
             <p>{{word.sentence}}</p>
         </div>
         <div class="field">
-            <h4>Tags</h4>
+            <h3>Tags</h3>
             <p class="tag">{{word.tags.join(", ")}}</p>
         </div>
       </div>
@@ -30,8 +30,10 @@
       <div class="image">
         <img src="http://placehold.it/750x555" alt="placeholder">
       </div>
-      <div class="kanji">
-        <p> null </p>
+      <div class="kanjis">
+        <div class="kanji" ng-repeat="kanji in kanjis track by $index">
+          <p>{{kanji}}</p>
+        </div>
       </div>
     </div>
   </div>

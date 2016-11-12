@@ -6,15 +6,78 @@
   @include miniHeading;
   @include paragraph;
 
-  .newest{
-    padding-top: 40px;
-    li{
+  .assignments{
+    margin-top: 40px;
+    @include outer-container;
+    @include row;
+    .block{
       @include span-columns(3);
       @include omega(4n);
+      @include boxShadow;
       background-color: $white;
       border: 1px solid $border-color-grey;
-      height: 100px;
       margin-bottom: 20px;
+      position: relative;
+      @include media(max-width 1090px){
+        @include omega-reset(4n);
+        @include omega(3n);
+        @include span-columns(4);
+      }
+      @include media(max-width 768px){
+        @include omega-reset(3n);
+        @include span-columns(6);
+        @include omega(2n);
+      }
+      @include media(max-width 540px){
+        @include omega-reset(2n);
+        @include span-columns(12);
+      }
+      .success{
+        border-radius: 100%;
+        border: 5px solid $red;
+        bottom: 0;
+        float:right;
+        height: 56px;
+        line-height: 50px;
+        margin: 15px;
+        position: absolute;
+        right:0;
+        text-align: center;
+        width: 56px;
+        p{
+          @include font-size(36px);
+          color: $red;
+        }
+      }
+      .title{
+        margin: 0 15px 0;
+        h3{
+          border-bottom: 1px dotted $border-color-grey;
+          padding: 15px 0 10px;
+
+        }
+      }
+      .description{
+        padding:15px;
+        h4{
+          @include font-size(16px);
+          padding: 0 0 10px;
+        }
+      }
+      .bottom{
+        @include clearfix;
+        border-top: 1px dotted $border-color-grey;
+        margin: 0 15px 0;
+        padding: 15px 0;
+        p{
+          float:left;
+          padding-left: 5px;
+          line-height: 20px;
+         }
+        span{line-height: 20px;}
+        span:first-of-type{ float:left }
+        span:last-of-type{ float:right }
+      }
     }
   }
 }

@@ -45,11 +45,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.assignments', {
-            templateUrl: 'templates/mainviews/assignment.html'
+            templateUrl: 'templates/mainviews/assignment.html',
+            controller: 'AssignmentsCtrl'
         })
 
         .state('dashboard.addword', {
-            templateUrl: 'templates/mainviews/addword.html'
+            templateUrl: 'templates/mainviews/addword.html',
+            controller: 'WordSubmitCtrl'
         })
 
         .state('dashboard.askteacher', {
@@ -227,6 +229,46 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
   };
 }]);
 
+app.controller("AssignmentsCtrl", ["$scope", function($scope){
+  $scope.assignments = [
+    {
+      title: "Basic Japanese - Quiz 4/8",
+      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ad soluta perspiciatis totam incidunt officiis doloribus!",
+      due: "29.11.2016 18:30",
+      completed: false,
+      grade: ""
+    },
+    {
+      title: "Basic Japanese - Quiz 3/8",
+      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ad soluta perspiciatis totam incidunt officiis doloribus!",
+      due: "22.11.2016 18:30",
+      completed: true,
+      grade: "A"
+    },
+    {
+      title: "Basic Japanese - Quiz 2/8",
+      description: "Necessitatibus ad soluta perspiciatis totam incidunt officiis doloribus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. ",
+      due: "15.11.2016 18:30",
+      completed: true,
+      grade: "S"
+    },
+    {
+      title: "Basic Japanese - Quiz 1/8",
+      description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      due: "15.11.2016 18:30",
+      completed: true,
+      grade: "S"
+    },
+    {
+      title: "Listening comprehension 1/2",
+      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ad soluta perspiciatis totam incidunt officiis doloribus!",
+      due: "7.11.2016 18:30",
+      completed: true,
+      grade: "C"
+    }
+  ];
+}]);
+
 app.controller('DashboardCtrl', ['$scope', '$state', function($scope, $state){
     $scope.state = $state;
 }]);
@@ -250,6 +292,24 @@ app.controller('RecentActivityCtrl', ['$scope', function($scope){
 
 app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', function($scope, $state, $stateParams){
   $scope.word = $stateParams.obj;
+  var letters = $scope.word.japanese.split("");
+  $scope.kanjis = [];
+  for(var i=0; i < letters.length; i++){
+    if(letters[i].match(/^[\u4e00-\u9faf]+$/)){
+      $scope.kanjis.push(letters[i]);
+    }
+  }
+}]);
+
+app.controller("WordSubmitCtrl", ["$scope", function($scope){
+  $scope.form = {};
+  $scope.onSubmit = function(){
+    console.log($scope.form);
+    $scope.form = null;
+  }
+  $scope.clearFields = function(){
+    $scope.form = null;
+  }
 }]);
 
 app.directive('activity', function(){
@@ -259,6 +319,17 @@ app.directive('activity', function(){
       data: '='
     },
     templateUrl: "templates/mainviews/partials/frontpage-activity.html"
+  }
+});
+
+app.directive('assignment', function(){
+  return{
+    restrict: 'E',
+    replace: true,
+    scope: {
+      data: '='
+    },
+    templateUrl: 'templates/mainviews/partials/assignment-test.html'
   }
 });
 

@@ -19,3 +19,8 @@
 @mixin boxShadow{
     box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.2);
 }
+// Reset for Omega margin glutter
+@mixin omega-reset($nth) {
+  &:nth-child(#{$nth}) { margin-right: flex-gutter(); }
+  &:nth-child(#{$nth}+1) { clear: none }
+}

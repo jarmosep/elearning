@@ -1,27 +1,34 @@
-.erase, .submit{
-  @include hoverColor;
-  @include span-columns(6 of 12);
-  cursor: pointer;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  text-align: center;
-  p{
-    @include font-size(18px);
-    color: $white;
-    padding-top: 15px;
-    padding-bottom: 15px;
+.submit-actions{
+  @include clearfix;
+  margin: 15px 15px 15px 15px;
+  .erase, .submit{
+    @include hoverColor;
+    @include span-columns(6 of 12);
+    cursor: pointer;
+    text-align: center;
+    @include media(max-width 530px){
+      @include span-columns(12 of 12);
+    }
+    p{
+      @include font-size(18px);
+      color: $white;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
   }
-}
-.erase{
-    padding-left: 15px;
-  p{
-    background-color: $sidebar-bg;
+  .erase{
+      background-color: $sidebar-bg;
+      border: none;
+      @include media(max-width 530px){
+        margin-bottom: 15px;
+      }
   }
-}
-.submit{
-    padding-right: 15px;
-  p{
-    background-color: $green;
-    border: 1px solid $green-dark;
+  .submit{
+      background-color: $green;
+      border: 1px solid $green-dark;
+  }
+  .submit:disabled{
+      background-color: lightgray;
+      border: 1px solid gray;
   }
 }

@@ -17,12 +17,12 @@
     text-align: center;
     span{
       @include font-size(100px);
-      color:$border-color-grey;
+      color: $border-color-grey;
       display:block;
       padding: 60px 60px;
     }
   }
-  .kanji{
+  .kanjis{
     @include boxShadow;
     margin-top: 25px;
     background-color: $white;
