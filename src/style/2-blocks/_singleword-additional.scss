@@ -5,27 +5,29 @@
     @include span-columns(12);
   }
   .image{
-    display:none;
     min-height: 200px;
+    margin-bottom: 25px;
     img{
       width: 100%;
     }
   }
-  .dummy-image{
-    border: 1px dashed $border-color-grey;
-    min-height: 250px;
-    text-align: center;
-    span{
-      @include font-size(100px);
-      color: $border-color-grey;
-      display:block;
-      padding: 60px 60px;
-    }
-  }
   .kanjis{
     @include boxShadow;
-    margin-top: 25px;
     background-color: $white;
     border: 1px solid $border-color-grey;
+    h3{
+      padding: 20px 15px 0;
+      color: $sidebar-bg;
+    }
+    .kanji{
+      border-bottom: 1px dotted rgba(0,0,0,0.3);
+      &:last-of-type{
+        border: none;
+      }
+      p{
+        @include font-size(30px);
+        padding: 15px 15px 15px;
+      }
+    }
   }
 }

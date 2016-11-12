@@ -24,13 +24,11 @@
 
     </div>
     <div class="word-additional">
-      <div class="dummy-image">
-        <span class="ion-images"></span>
-      </div>
-      <div class="image">
+      <div class="image" ng-if="!word.image.length == 0">
         <img src="http://placehold.it/750x555" alt="placeholder">
       </div>
-      <div class="kanjis">
+      <div class="kanjis" ng-if="kanjis.length > 0">
+        <h3>Kanji</h3>
         <div class="kanji" ng-repeat="kanji in kanjis track by $index">
           <p>{{kanji}}</p>
         </div>

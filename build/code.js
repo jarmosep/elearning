@@ -81,6 +81,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       japanese: "深い",
       english: "Deep",
       reading: "ふかい",
+      image: "",
       tags: [
         "I-adjective",
         "Common"
@@ -90,6 +91,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       japanese: "ダサい",
       english: "Lame",
       reading: "",
+      image: "",
       tags: [
         "I-adjective",
         "Common",
@@ -100,6 +102,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       japanese: "行う",
       english: "To conduct, to carry out",
       reading: "おこなう",
+      image: "",
       tags: [
         "Verb",
         "Common"
@@ -110,6 +113,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       english: "Mobile optimization",
       reading: "もばいるさいてきか",
       sentence: "日本のWebサイトと中で、モバイル最適化は新興の技術だと思う。 - I think mobile optimization is a rising technology in Japanese websites.",
+      image: "",
       tags:[
         "Noun",
         "Suru-verb"
@@ -119,6 +123,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       japanese: "招待",
       english: "Invitation",
       reading: "しょうたい",
+      image: "",
       tags:[
         "Noun",
         "No-adjective",
@@ -129,6 +134,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       japanese: "行く",
       english: "To go",
       reading: "いく",
+      image: "",
       tags:[
         "Verb",
         "Common",
@@ -139,6 +145,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       japanese: "全く",
       english: "Wholly, completely, really",
       reading: "まったく",
+      image: "",
       tags:[
         "Adverb",
         "No-adjective",
@@ -149,6 +156,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       japanese: "自殺",
       english: "Suicide",
       reading: "じさつ",
+      image: "",
       tags:[
         "Noun",
         "Suru-verb",
@@ -159,6 +167,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       japanese: "オタク",
       english: "Geek, nerd, 'enthusiast'",
       reading: "",
+      image: "",
       tags:[
         "Noun",
         "Common",
@@ -178,6 +187,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       japanese: "めんどくさい",
       english: "Can't be bothered, troublesome",
       reading: "",
+      image: "",
       tags: [
         "I-adjective",
         "Common"
