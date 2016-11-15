@@ -7,6 +7,25 @@ Angular module - initializing dependencies, which the application will use.
 
 var app = angular.module('eLearning', ['ui.router', 'ngSanitize', 'ngAnimate']);
 
+app.service('kanjiSearch', ['$http', function($http){
+  return {
+    getAll: function(){
+      var response = $http(
+        {
+          url: '../api/kanjidict.json',
+          method: 'GET',
+          dataType: 'jsonp',
+          contentType: 'jsonp'
+        }
+    );
+    response.then(function(data){
+          return response.data;
+      });
+      return response;
+    }
+  };
+}]);
+
 /****************************************************************************************
 Routing unit - used to alternate between different views through nested states.
 ****************************************************************************************/
@@ -82,6 +101,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       english: "Deep",
       reading: "ふかい",
       image: "",
+      maturity: 0,
       tags: [
         "I-adjective",
         "Common"
@@ -92,6 +112,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       english: "Lame",
       reading: "",
       image: "",
+      maturity: 0,
       tags: [
         "I-adjective",
         "Common",
@@ -103,6 +124,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       english: "To conduct, to carry out",
       reading: "おこなう",
       image: "",
+      maturity: 0,
       tags: [
         "Verb",
         "Common"
@@ -114,6 +136,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       reading: "もばいるさいてきか",
       sentence: "日本のWebサイトと中で、モバイル最適化は新興の技術だと思う。 - I think mobile optimization is a rising technology in Japanese websites.",
       image: "",
+      maturity: 0,
       tags:[
         "Noun",
         "Suru-verb"
@@ -124,6 +147,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       english: "Invitation",
       reading: "しょうたい",
       image: "",
+      maturity: 0,
       tags:[
         "Noun",
         "No-adjective",
@@ -135,6 +159,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       english: "To go",
       reading: "いく",
       image: "",
+      maturity: 0,
       tags:[
         "Verb",
         "Common",
@@ -146,6 +171,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       english: "Wholly, completely, really",
       reading: "まったく",
       image: "",
+      maturity: 0,
       tags:[
         "Adverb",
         "No-adjective",
@@ -157,6 +183,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       english: "Suicide",
       reading: "じさつ",
       image: "",
+      maturity: 0,
       tags:[
         "Noun",
         "Suru-verb",
@@ -168,6 +195,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       english: "Geek, nerd, 'enthusiast'",
       reading: "",
       image: "",
+      maturity: 0,
       tags:[
         "Noun",
         "Common",
@@ -178,6 +206,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       japanese: "土方",
       english: "Construction worker, laborer",
       reading: "どかた",
+      maturity: 0,
       tags:[
         "Noun",
         "Sensitive"
@@ -188,6 +217,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       english: "Can't be bothered, troublesome",
       reading: "",
       image: "",
+      maturity: 0,
       tags: [
         "I-adjective",
         "Common"
@@ -300,14 +330,38 @@ app.controller('RecentActivityCtrl', ['$scope', function($scope){
         ];
   }]);
 
-app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', function($scope, $state, $stateParams){
+app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', 'kanjiSearch', function($scope, $state, $stateParams, kanjiSearch){
   $scope.word = $stateParams.obj;
   var letters = $scope.word.japanese.split("");
   $scope.kanjis = [];
+  $scope.results = []
+
   for(var i=0; i < letters.length; i++){
     if(letters[i].match(/^[\u4e00-\u9faf]+$/)){
       $scope.kanjis.push(letters[i]);
     }
+  }
+
+  $scope.searchCharacter = function(kanjis){
+    var getAll = kanjiSearch.getAll();
+    getAll.then(function(data){ // get all the data from the dictionary
+        if($scope.kanjis.length >= 1){ //if the word contains kanjis, execute the following
+          for(var i=0; i<$scope.kanjis.length; i++){
+          var result = data.data.filter(function(wordobj){
+            return wordobj.literal[0] == kanjis[i]; //get the corresponding kanji
+          });
+          //todo: get meanings and readings.
+          if(result){
+            $scope.results.push(result);
+          }
+        }
+      }
+    });
+  }
+  if(!$scope.kanjis.length == 0){
+    $scope.searchCharacter($scope.kanjis);
+  }else{
+    console.log("No kanjis here.");
   }
 }]);
 

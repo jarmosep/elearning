@@ -31,6 +31,7 @@
         <h3>Kanji</h3>
         <div class="kanji" ng-repeat="kanji in kanjis track by $index">
           <p>{{kanji}}</p>
+          <p ng-repeat="result in results track by $index">{{result | json }}</p>
         </div>
       </div>
     </div>
