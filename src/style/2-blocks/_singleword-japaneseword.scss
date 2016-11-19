@@ -1,6 +1,7 @@
 .word-meanings{
   @include paragraph;
   @include boxShadow;
+  min-height: 250px;
   background-color: $blue;
   position: relative;
   h2, p{
@@ -25,9 +26,9 @@
       padding-bottom: 0;
     }
     @include media(max-width 540px){
-      padding: 6% 0 3%;
+      padding: 10% 0 5%;
       h2{
-        @include font-size(22px);
+        @include font-size(26px);
       }
     }
   }
@@ -38,7 +39,7 @@
     p{
       padding: 3% 0 8%;
       @include media(max-width 540px){
-        padding: 4% 0 12%;
+        padding: 8% 0 12%;
       }
     }
   }

@@ -3,7 +3,7 @@
   @include hoverColor;
   background-color: $blue;
   cursor: pointer;
-  margin-top: 5px;
+  margin-top: 1px;
   .mobile-text{  display:none;  }
 
   a {
@@ -68,7 +68,7 @@
 
 .more-words{
   @include hoverColor;
-  margin-top: 5px;
+  margin-top: 1px;
   background-color: $sidebar-bg;
   cursor: pointer;
   p{

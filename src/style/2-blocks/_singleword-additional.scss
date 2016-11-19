@@ -12,21 +12,69 @@
     }
   }
   .kanjis{
+    @include clearfix;
     @include boxShadow;
     background-color: $white;
     border: 1px solid $border-color-grey;
+    margin-bottom: 40px;
     h3{
       padding: 20px 15px 0;
       color: $sidebar-bg;
     }
     .kanji{
+      @include span-columns(12);
       border-bottom: 1px dotted rgba(0,0,0,0.3);
       &:last-of-type{
         border: none;
       }
-      p{
-        @include font-size(30px);
+      .special{
+        @include span-columns(9);
+        margin-right:0;
+        float:right;
+        .misc{
+          @include font-size(14px);
+          color: $sidebar-icon-color;
+          padding: 15px 15px 10px 0;
+        }
+      }
+      .character{
+        @include span-columns(3);
         padding: 15px 15px 15px;
+        text-align:center;
+        p{
+          @include font-size(50px);
+        }
+      }
+      .rmgroup{
+        @include span-columns(9);
+        padding: 0 15px 15px 0;
+        h4,p{
+          display:inline-block;
+        }
+        h4{
+          padding-right: 8px;
+          padding-bottom: 8px;
+          &::after{
+            content:", ";
+          }
+          &:last-of-type{
+            &::after{
+              content: "";
+            }
+          }
+        }
+        .reading_types{
+          @include font-size(14px);
+          color: $sidebar-bg;
+          width: 35px;
+        }
+        .ons, .kuns{
+          @include font-size(18px);
+          padding-right: 10px;
+          &:first-of-type{
+            padding-right: 0;
+          }
+        }
       }
     }
   }

@@ -1,4 +1,4 @@
-app.service('kanjiSearch', ['$http', function($http){
+app.factory('kanjiSearch', ['$http', function($http){
   return {
     getAll: function(){
       var response = $http(

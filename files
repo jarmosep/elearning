@@ -7,7 +7,7 @@ Angular module - initializing dependencies, which the application will use.
 
 var app = angular.module('eLearning', ['ui.router', 'ngSanitize', 'ngAnimate']);
 
-app.service('kanjiSearch', ['$http', function($http){
+app.factory('kanjiSearch', ['$http', function($http){
   return {
     getAll: function(){
       var response = $http(
@@ -63,14 +63,14 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             }
         })
 
+        .state('dashboard.quiz', {
+            templateUrl: 'templates/mainviews/quiz.html',
+            controller: 'QuizCtrl'
+        })
+
         .state('dashboard.assignments', {
             templateUrl: 'templates/mainviews/assignment.html',
             controller: 'AssignmentsCtrl'
-        })
-
-        .state('dashboard.addword', {
-            templateUrl: 'templates/mainviews/addword.html',
-            controller: 'WordSubmitCtrl'
         })
 
         .state('dashboard.askteacher', {
@@ -85,7 +85,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
   $scope.showMore = function(){
     $scope.limit += 5;
     $timeout(function() {
-          var scroller = document.getElementById("autoscroll");
+          var scroller = document.getElementsByTagName('body')[0];
           scroller.scrollTop = scroller.scrollHeight;
         }, 0, false);
   }
@@ -131,6 +131,17 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       ]
     },
     {
+      japanese: "歩行者天国",
+      english: "pedestrian mall, car-free mall",
+      reading: "ほこうしゃてんごく",
+      image: "",
+      maturity: 0,
+      tags: [
+        "Noun",
+        "Common"
+      ]
+    },
+    {
       japanese: "モバイル最適化",
       english: "Mobile optimization",
       reading: "もばいるさいてきか",
@@ -143,15 +154,14 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       ]
     },
     {
-      japanese: "招待",
-      english: "Invitation",
-      reading: "しょうたい",
+      japanese: "憂鬱",
+      english: "Depression, melancholy, gloom",
+      reading: "ゆううつ",
       image: "",
       maturity: 0,
       tags:[
-        "Noun",
-        "No-adjective",
-        "Suru-verb"
+        "Na-adjective",
+        "Noun"
       ]
     },
     {
@@ -334,7 +344,7 @@ app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', 'kanjiSea
   $scope.word = $stateParams.obj;
   var letters = $scope.word.japanese.split("");
   $scope.kanjis = [];
-  $scope.results = []
+  $scope.results = [];
 
   for(var i=0; i < letters.length; i++){
     if(letters[i].match(/^[\u4e00-\u9faf]+$/)){
@@ -347,17 +357,29 @@ app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', 'kanjiSea
     getAll.then(function(data){ // get all the data from the dictionary
         if($scope.kanjis.length >= 1){ //if the word contains kanjis, execute the following
           for(var i=0; i<$scope.kanjis.length; i++){
-          var result = data.data.filter(function(wordobj){
-            return wordobj.literal[0] == kanjis[i]; //get the corresponding kanji
-          });
-          //todo: get meanings and readings.
-          if(result){
-            $scope.results.push(result);
+            var matchingKanji = data.data.filter(function(wordobj){
+              return wordobj.literal[0] == kanjis[i]; //get the corresponding kanji
+            });
+
+            if(matchingKanji){
+              var results = [];
+              results = matchingKanji[0];
+              console.log(results);
+              $scope.results.push(results);
+            }
           }
-        }
       }
     });
   }
+
+  $scope.chinese = function(reading){
+    return reading.$.r_type == "ja_on";
+  };
+
+  $scope.japanese = function(reading){
+    return reading.$.r_type == "ja_kun";
+  };
+
   if(!$scope.kanjis.length == 0){
     $scope.searchCharacter($scope.kanjis);
   }else{

@@ -21,6 +21,7 @@
     .what-and-when{
       width: 70%;
       float:left;
+      color: $sidebar-bg;
       @include media(max-width $mobile){  width: 100% }
       .event{
         width: 55%;
@@ -31,6 +32,7 @@
       }
     }
     .operations{
+      color: $sidebar-bg;
       float:right;
       .view,.delete{
         cursor: pointer;

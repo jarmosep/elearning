@@ -28,10 +28,23 @@
         <img src="http://placehold.it/750x555" alt="placeholder">
       </div>
       <div class="kanjis" ng-if="kanjis.length > 0">
-        <h3>Kanji</h3>
-        <div class="kanji" ng-repeat="kanji in kanjis track by $index">
-          <p>{{kanji}}</p>
-          <p ng-repeat="result in results track by $index">{{result | json }}</p>
+        <h3 ng-if="kanjis.length == 1">Kanji</h3>
+        <h3 ng-if="kanjis.length > 1">Kanjis</h3>
+        <div class="kanji" ng-repeat="data in results">
+          <div class="special" ng-repeat="misc in data.misc">
+            <p class="misc">{{misc.stroke_count[0]}} strokes.
+                  JLPT N{{misc.jlpt[0]}}.
+                  Taught in grade {{misc.grade[0]}}
+            </p>
+          </div>
+          <div class="character" ng-repeat="kanji in data.literal">
+            <p>{{kanji}}</p>
+          </div>
+          <div class="rmgroup" ng-repeat="rms in data.reading_meaning[0].rmgroup">
+            <h4 ng-repeat="meaning in rms.meaning">{{meaning}}</h4><br>
+            <p class="reading_types">On:</p><p class="ons" ng-repeat="readings in rms.reading | filter: chinese"> {{readings._}} </p><br>
+            <p class="reading_types">Kun:</p><p class="kuns" ng-repeat="readings in rms.reading | filter: japanese"> {{readings._}} </p>
+          </div>
         </div>
       </div>
     </div>

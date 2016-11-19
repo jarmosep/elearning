@@ -1,0 +1,11 @@
+.mission{
+  border-top: 1px solid $white;
+  background-color: $blue;
+  @include outer-container;
+  p{
+    padding: 3% 0 8%;
+    @include media(max-width 540px){
+      padding: 8% 0 12%;
+    }
+  }
+}

@@ -3,7 +3,7 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
   $scope.showMore = function(){
     $scope.limit += 5;
     $timeout(function() {
-          var scroller = document.getElementById("autoscroll");
+          var scroller = document.getElementsByTagName('body')[0];
           scroller.scrollTop = scroller.scrollHeight;
         }, 0, false);
   }
@@ -49,6 +49,17 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       ]
     },
     {
+      japanese: "歩行者天国",
+      english: "pedestrian mall, car-free mall",
+      reading: "ほこうしゃてんごく",
+      image: "",
+      maturity: 0,
+      tags: [
+        "Noun",
+        "Common"
+      ]
+    },
+    {
       japanese: "モバイル最適化",
       english: "Mobile optimization",
       reading: "もばいるさいてきか",
@@ -61,15 +72,14 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
       ]
     },
     {
-      japanese: "招待",
-      english: "Invitation",
-      reading: "しょうたい",
+      japanese: "憂鬱",
+      english: "Depression, melancholy, gloom",
+      reading: "ゆううつ",
       image: "",
       maturity: 0,
       tags:[
-        "Noun",
-        "No-adjective",
-        "Suru-verb"
+        "Na-adjective",
+        "Noun"
       ]
     },
     {
