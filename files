@@ -5,7 +5,51 @@ Angular module - initializing dependencies, which the application will use.
 - ngAnimate module provides support for CSS- and (partially) JS-based animations.
 ****************************************************************************************/
 
-var app = angular.module('eLearning', ['ui.router', 'ngSanitize', 'ngAnimate']);
+var app = angular.module('eLearning', ['ui.router', 'firebase', 'ngSanitize', 'ngAnimate']);
+
+app.factory('authFactory', ['$state', function authFactory($state){
+  var userRef = firebase.database().ref('users'); // create 'users' node in Firebase, if it doesn't exist
+  var auth = firebase.auth(); // creating authentication namespace
+
+  // Registration method
+  authFactory.signup = function(email, passwd, username){
+    var promise = auth.createUserWithEmailAndPassword(email, passwd); // creating username with pw in firebase
+    promise.then(function(user){
+      userRef.child(user.uid).set({
+        displayName: username,
+        recentActivities: '',
+        wordbank: '',
+        tags: '',
+        assignments: '',
+        quickMessage: '',
+      });
+      $state.go('dashboard.front');
+      console.log(user);
+    }).catch(function(err){
+      console.log(err);
+    });
+    return promise;
+  }
+
+  // Login method
+  authFactory.login = function(email, passwd){
+    var promise = auth.signInWithEmailAndPassword(email, passwd);
+    promise.then(function(user){
+      $state.go('dashboard.front'); // if login is successful, redirect to frontpage
+      console.log(user);
+    }).catch(function(err){
+      console.log(err)
+    });
+    return promise;
+  }
+
+  authFactory.auth = function(){
+    console.log(currentUser);
+    return auth.currentUser;
+  }
+
+  return authFactory;
+}]);
 
 app.factory('kanjiSearch', ['$http', function($http){
   return {
@@ -26,6 +70,16 @@ app.factory('kanjiSearch', ['$http', function($http){
   };
 }]);
 
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyAQCgMuMpoQvh6wlJbVp14t68pOq76y-Kk",
+  authDomain: "elearning-1c775.firebaseapp.com",
+  databaseURL: "https://elearning-1c775.firebaseio.com",
+  storageBucket: "elearning-1c775.appspot.com",
+  messagingSenderId: "595697014369"
+};
+firebase.initializeApp(config);
+
 /****************************************************************************************
 Routing unit - used to alternate between different views through nested states.
 ****************************************************************************************/
@@ -35,7 +89,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     $stateProvider // stateProvider changes UI view upon an action
         .state('landing', {
             url: '/', // when state is 'landing', url is redirected to root
-            templateUrl: 'templates/landing.html' // in this state, landingpage.html is being used.
+            templateUrl: 'templates/landing.html', // in this state, landingpage.html is being used.
+            controller: 'LoginCtrl'
         })
         .state('dashboard', {
             url: '/dashboard',
@@ -319,8 +374,41 @@ app.controller("AssignmentsCtrl", ["$scope", function($scope){
   ];
 }]);
 
-app.controller('DashboardCtrl', ['$scope', '$state', function($scope, $state){
+app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($scope, $state, authFactory){
     $scope.state = $state;
+    $scope.obj = {};
+    console.log(firebase);
+    firebase.auth().onAuthStateChanged(function(user){
+      if(user){
+        var currentUser = firebase.database().ref('users').child(user.uid);
+        currentUser.on('value', function(snapshot){
+          $scope.$apply(function(){
+            $scope.obj = {
+              "displayName": snapshot.val().displayName
+            }
+          })
+        });
+      }else{
+        console.log("Not logged in.");
+      }
+    });
+
+    $scope.logout = function(){
+      var promise = firebase.auth().signOut(); // signing the user out
+      promise.then(function(){
+        $state.go('landing'); // redirecting back to landingpage
+      });
+    };
+
+}]);
+
+app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $scope){
+  $scope.signup = function(email, passwd, username){
+    authFactory.signup(email, passwd, username);
+  };
+  $scope.login = function(email, passwd){
+    authFactory.login(email, passwd);
+  }
 }]);
 
 app.controller('RecentActivityCtrl', ['$scope', function($scope){

@@ -5,4 +5,4 @@ Angular module - initializing dependencies, which the application will use.
 - ngAnimate module provides support for CSS- and (partially) JS-based animations.
 ****************************************************************************************/
 
-var app = angular.module('eLearning', ['ui.router', 'ngSanitize', 'ngAnimate']);
+var app = angular.module('eLearning', ['ui.router', 'firebase', 'ngSanitize', 'ngAnimate']);

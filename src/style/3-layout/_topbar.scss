@@ -17,13 +17,15 @@
       width: 70px;
     }
   }
-  a, p {
+  span, p {
     float: right;
     font-size: 16px;
     padding-right: 30px;
     padding-top: 20px;
   }
-  a{
+  span{
+    color: $sidebar-bg;
+    cursor: pointer;
     font-size:20px;
   }
 }

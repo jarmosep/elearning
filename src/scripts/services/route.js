@@ -1,3 +1,13 @@
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyAQCgMuMpoQvh6wlJbVp14t68pOq76y-Kk",
+  authDomain: "elearning-1c775.firebaseapp.com",
+  databaseURL: "https://elearning-1c775.firebaseio.com",
+  storageBucket: "elearning-1c775.appspot.com",
+  messagingSenderId: "595697014369"
+};
+firebase.initializeApp(config);
+
 /****************************************************************************************
 Routing unit - used to alternate between different views through nested states.
 ****************************************************************************************/
@@ -7,7 +17,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     $stateProvider // stateProvider changes UI view upon an action
         .state('landing', {
             url: '/', // when state is 'landing', url is redirected to root
-            templateUrl: 'templates/landing.html' // in this state, landingpage.html is being used.
+            templateUrl: 'templates/landing.html', // in this state, landingpage.html is being used.
+            controller: 'LoginCtrl'
         })
         .state('dashboard', {
             url: '/dashboard',
