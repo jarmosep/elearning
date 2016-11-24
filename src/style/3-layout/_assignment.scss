@@ -15,7 +15,6 @@
       @include omega(4n);
       @include boxShadow;
       background-color: $white;
-      border: 1px solid $border-color-grey;
       margin-bottom: 20px;
       position: relative;
       @include media(max-width 1090px){

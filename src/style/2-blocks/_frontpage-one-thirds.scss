@@ -1,19 +1,15 @@
 .one-third{
   @include boxShadow;
-  @include flex(1);
-  @include span-columns(3);
+  @include span-columns(4);
   background-color: $white;
-  border: 1px solid $border-color-grey;
   @include media(max-width $mobile) {
     @include span-columns(12);
-    @include flex(1 0 auto); /* flex(100%) would break IE11 */
     margin-bottom: 40px;
   }
 
   &:last-of-type{  margin-right:0;  }
 
   h2{
-    @include font-size(24px);
     color: $sidebar-bg;
     padding-bottom: 20px;
     padding-top: 10%;
@@ -31,6 +27,7 @@
 
     a{
       @include clearfix;
+      display: block;
       text-align: center;
       transition: all 0.1s ease;
       .info{
@@ -40,33 +37,29 @@
         font-family: "Times New Roman", Georgia, Serif;
       }
       span{
-        line-height:70px;
-        font-size: 38px;
-        width:70px;
-        height:70px;
-        float:left;
+        display: block;
         color: $white;
-        @include media(max-width $mobile){
+        float:right;
+        font-size: 38px;
+        height:80px;
+        line-height:80px;
+        width:80px;
+        @include media(max-width 1024px){
           display:none;
         }
       }
       p,h4{
-        margin-left: 70px;
-        height:70px;
+        display: block;
+        padding: 25px 20px 20px 20px;
+        margin-right: 80px;
+        height:80px;
         color: $white;
-        @include media(max-width $mobile){
-          margin-left: 0;
-        }
-      }
-      p {
-        padding-top: 15px;
-        padding-right: 15px;
-        @include media(max-width $mobile){
-          padding-right: 0;
+        @include media(max-width 1024px){
+          margin-right: 0;
         }
       }
       h4{
-        padding-top: 20px;
+        @include font-size(24px);
       }
     }
     &:nth-of-type(1){
@@ -83,8 +76,6 @@
        }
       p{
         background-color: $blue;
-        text-align: right;
-
         @include media(max-width $mobile){
           text-align:center;
         }
@@ -92,17 +83,14 @@
 
     }
     &:nth-of-type(3){
-      span, p{
+      p{
+        @include font-size(42px);
         background-color: $sidebar-bg;
         color: $sidebar-icon-color;
+        text-align: right;
+        padding: 15px 35px;
+        width: 100%;
       }
-       p{
-         text-align:right;
-         color: $white;
-         @include media(max-width $mobile){
-           text-align:center;
-         }
-       }
        margin-bottom: 15px;
     }
   }

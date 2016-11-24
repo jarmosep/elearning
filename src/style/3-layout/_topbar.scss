@@ -13,9 +13,6 @@
     float:left;
     height: 100%;
     width: 100px;
-    @include media(max-width $mobile){
-      width: 70px;
-    }
   }
   span, p {
     float: right;

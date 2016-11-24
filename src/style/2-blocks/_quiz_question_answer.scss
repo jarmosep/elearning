@@ -1,11 +1,77 @@
-.mission{
-  border-top: 1px solid $white;
-  background-color: $blue;
-  @include outer-container;
-  p{
-    padding: 3% 0 8%;
-    @include media(max-width 540px){
-      padding: 8% 0 12%;
+.word_in_question{
+  padding-top: 85px;
+  h2{
+    @include font-size(60px);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+  }
+
+  @include media(max-width 540px){
+    padding-top: 80px;
+    h2{
+      @include font-size(26px);
     }
   }
+}
+.answer_container{
+  @include clearfix;
+  margin-bottom: 40px;
+  .mission{
+    @include boxShadow;
+    @include span-columns(12);
+    text-align: center;
+    background-color: $sidebar-bg;
+    width:100%;
+    min-height:75px;
+    @include font-size(24px);
+    padding-left: 12px;
+  }
+  .hints, .option{
+    @include boxShadow;
+    background-color: $white;
+    margin-top: 40px;
+    text-align: center;
+  }
+  .hints{
+    @include span-columns(3);
+    color: $sidebar-bg;
+    @include media(max-width 768px){
+      @include span-columns(12, block-collapse);
+    };
+    .hint{
+      cursor: pointer;
+      float:left;
+      margin-right: 0;
+      padding: 17px;
+      width:50%;
+      &:hover{
+        background-color: darken($light-grey, 5%);
+      }
+      span{
+        @include font-size(30px);
+      }
+    }
+    .listen{
+      margin-right:0;
+      border-right: 1px solid #E2E5EB;
+    }
+  }
+  .options{
+    @include clearfix;
+    @include span-columns(9, block-collapse);
+    @include media(max-width 768px){
+      @include span-columns(12);
+    }
+    .option{
+      @include span-columns(4, block-collapse);
+      cursor: pointer;
+      padding: 20px;
+      &:hover{
+        background-color: darken($light-grey, 5%);
+      }
+      @include media(max-width 768px){
+        @include span-columns(4, block-collapse);
+      }
+    }
+  }
+
 }

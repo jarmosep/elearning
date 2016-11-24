@@ -1,6 +1,5 @@
 .word-meanings{
   @include paragraph;
-  @include boxShadow;
   min-height: 250px;
   background-color: $blue;
   position: relative;
@@ -33,9 +32,9 @@
     }
   }
   .english{
-    border-top: 1px solid $white;
-    background-color: $blue;
     @include outer-container;
+    background-color: $blue;
+    border-top: 1px solid $white;
     p{
       padding: 3% 0 8%;
       @include media(max-width 540px){

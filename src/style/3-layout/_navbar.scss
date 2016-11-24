@@ -6,7 +6,7 @@
   width: 100px;
   z-index: 1;
   @include media(max-width $mobile){
-    width: 70px;
+    display:none;
   }
   .navigation-side__nav{
     ul{
@@ -32,20 +32,13 @@
           }
           .ion{
             padding-top:20%;
-            @include media(max-width $mobile){
-              padding-top:30%;
-              padding-bottom:30%;
-            }
           }
-          @include paragraph;
+          @include small;
           p {
             color: $sidebar-icon-color;
             padding-bottom:20%;
             padding-top:5%;
             text-align: center;
-            @include media(max-width $mobile){
-              display:none;
-            }
           }
         }
         &:hover{

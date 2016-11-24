@@ -8,6 +8,22 @@
   h4, p{
     color: $sidebar-bg;
   }
+  .mission{
+    p{
+      @include font-size(28px);
+      line-height: 75px;
+      color: $white;
+      @include media(max-width 540px){
+        @include font-size(18px);
+        line-height: 75px;
+      }
+    }
+  }
+  .option{
+    p{
+      @include font-size(20px);
+    }
+  }
 }
 .subview{
   position:absolute;

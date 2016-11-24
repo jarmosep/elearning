@@ -3,7 +3,7 @@ form{
   margin-top: 40px;
   .fields{
     background-color: $white;
-    border: 1px solid $border-color-grey;
+    border: 1px solid white;
     .field{
       @include clearfix;
       border-bottom: 1px dotted rgba(0,0,0,0.3);

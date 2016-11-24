@@ -9,7 +9,6 @@
     @include boxShadow;
     @include span-columns(9);
     background-color: $white;
-    border: 1px solid $border-color-grey;
     padding: 15px 15px 15px 15px;
     @include media(max-width $mobile){
       width: 100%;

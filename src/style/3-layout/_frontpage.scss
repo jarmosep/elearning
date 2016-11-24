@@ -7,13 +7,7 @@
   @include paragraph;
 
   .actions{
-    @include align-items(stretch);
-    @include display(flex);
-    @include flex-direction(row);
-    @include justify-content(flex-start);
+    @include span-columns(12);
     padding-top:40px;
-    @include media(max-width $mobile) {
-      @include flex-direction(column);
-    }
   }
 }

@@ -6,6 +6,6 @@
   right: 25px;
   top: 73px;
   @include media(max-width $mobile){
-    left: 70px !important;
+    left: 0 !important;
   }
 }

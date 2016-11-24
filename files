@@ -118,6 +118,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             }
         })
 
+        .state('dashboard.addword', {
+            templateUrl: 'templates/mainviews/addword.html'
+        })
+
         .state('dashboard.quiz', {
             templateUrl: 'templates/mainviews/quiz.html',
             controller: 'QuizCtrl'
