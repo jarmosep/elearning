@@ -15,12 +15,12 @@
       }
     }
     h3{
-      padding: 20px 15px 0;
+      padding: 20px;
       color: $sidebar-bg;
     }
     p{
-      @include font-size(16px);
-      padding: 15px 15px 15px;
+      @include font-size(17px);
+      padding: 20px;
     }
   }
 }

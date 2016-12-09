@@ -7,21 +7,27 @@ Angular module - initializing dependencies, which the application will use.
 
 var app = angular.module('eLearning', ['ui.router', 'firebase', 'ngSanitize', 'ngAnimate']);
 
-app.factory('authFactory', ['$state', function authFactory($state){
+app.factory('authFactory', ['$state', '$filter', function authFactory($state, $filter){
   var userRef = firebase.database().ref('users'); // create 'users' node in Firebase, if it doesn't exist
   var auth = firebase.auth(); // creating authentication namespace
 
   // Registration method
   authFactory.signup = function(email, passwd, username){
     var promise = auth.createUserWithEmailAndPassword(email, passwd); // creating username with pw in firebase
+    var date = Math.floor(Date.now());
+    var timestamp = $filter('date')(date, "MMM d ''yy 'at' h:mm");
+    //var date = time.getDate() + '.' + (time.getMonth()+1);
+    //var hours = time.getHours() + ":" + time.getMinutes();
     promise.then(function(user){
       userRef.child(user.uid).set({
         displayName: username,
-        recentActivities: '',
-        wordbank: '',
-        tags: '',
-        assignments: '',
-        quickMessage: '',
+        recentActivities: [
+          {
+            action: 'You created a new account!',
+            time: timestamp
+          }
+        ]
+
       });
       $state.go('dashboard.front');
       console.log(user);
@@ -378,7 +384,7 @@ app.controller("AssignmentsCtrl", ["$scope", function($scope){
   ];
 }]);
 
-app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($scope, $state, authFactory){
+app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($scope, $state, $apply, authFactory){
     $scope.state = $state;
     $scope.obj = {};
     console.log(firebase);
@@ -390,12 +396,13 @@ app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($sc
             $scope.obj = {
               "displayName": snapshot.val().displayName
             }
-          })
+          });
         });
       }else{
         console.log("Not logged in.");
       }
     });
+
 
     $scope.logout = function(){
       var promise = firebase.auth().signOut(); // signing the user out
@@ -415,22 +422,24 @@ app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $sco
   }
 }]);
 
-app.controller('RecentActivityCtrl', ['$scope', function($scope){
-  $scope.blocks = [
-          {
-            activity: "くそ食らえ was added to the wordbank",
-            occurance: "30 min ago"
-          },
-          {
-            activity: "帰国憂鬱 was added to the wordbank",
-            occurance: "32 min ago"
-          },
-          {
-            activity: "Teacher returned your assignment",
-            occurance: "3 days ago"
-          }
-        ];
-  }]);
+app.controller('RecentActivityCtrl', ['$scope', '$timeout', 'authFactory', function($scope, $timeout, authFactory){
+  $scope.recents = [];
+    firebase.auth().onAuthStateChanged(function(user){
+      if(user){
+        var currentUser = firebase.database().ref('users').child(user.uid);
+        currentUser.on('value', function(snapshot){
+          $timeout(function(){
+            update(snapshot)
+          });
+        });
+        function update(snapshot){
+          $scope.recents = snapshot.val().recentActivities;
+        }
+      }else{
+        console.log("Not logged in.");
+      }
+    });
+}]);
 
 app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', 'kanjiSearch', function($scope, $state, $stateParams, kanjiSearch){
   $scope.word = $stateParams.obj;
@@ -494,7 +503,7 @@ app.directive('activity', function(){
   return{
     restrict: 'E',
     scope: {
-      data: '='
+      recent: '='
     },
     templateUrl: "templates/mainviews/partials/frontpage-activity.html"
   }

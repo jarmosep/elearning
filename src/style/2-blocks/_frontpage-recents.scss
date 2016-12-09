@@ -3,55 +3,77 @@
   @include boxShadow;
   background-color: $white;
   border: 1px solid white;
+  margin-bottom: 40px;
   .activity{
     margin: 2px 5px 2px 5px;
     background-color: $light-grey;
     @include clearfix;
     &:first-of-type{  margin-top: 5px;  }
     &:last-of-type{  margin-bottom: 5px;  }
-    @include media(max-width $mobile){  margin-top: 5px;  }
-    .mobile-text{  display:none;  }
+    @include media(max-width $mobile){
+      @include align-items(stretch);
+      @include display(flex);
+      @include flex-direction(row);
+      @include justify-content(flex-start);
+      margin-top: 5px;
+    }
     span {
       font-size:22px;
       line-height: 14px;
+      @include media(max-width $mobile){
+        font-size:42px;
+        line-height:34px;
+      }
     }
     p{
-      padding: 16px 14px;
+      padding: 26px 16px;
       display:inline-block;
     }
+
     .what-and-when{
-      width: 70%;
-      float:left;
+      @include span-columns(10, block-collapse);
       color: $sidebar-bg;
-      @include media(max-width $mobile){  width: 100% }
+      @include media(max-width $mobile){
+        @include span-columns(9, block-collapse);
+      }
       .event{
-        width: 55%;
+        @include media(max-width $mobile){
+          padding: 32px 16px 16px;
+          display:block;
+        }
       }
       .occurance{
         float:right;
         color: $sidebar-icon-color;
+        @include media(max-width $mobile){
+          float:none;
+          display:block;
+          padding: 10px 16px 28px;
+        }
       }
     }
     .operations{
+      @include span-columns(2, block-collapse);
       color: $sidebar-bg;
-      float:right;
-      .view,.delete{
-        cursor: pointer;
+      .delete{
         @include hoverColor;
+        @include span-columns(12, block-collapse);
+        text-align: center;
+        cursor: pointer;
+        @include media(max-width $mobile){
+          height: 100%;
+          span{
+            position: relative;
+            top: 30%;
+          }
+        }
        }
       @include media(max-width $mobile){
-        float:left;
-        width:100%;
-        .view, .delete{
-          border-top: 1px dotted rgba(0,0,0,0.1);
-          display:block;
+        @include span-columns(3, block-collapse);
+        @include flex(1);
+        p{
+          padding: 16px;
         }
-        .mobile-text{
-          display:inline-block;
-          float:right;
-          font-size: 14px;
-          padding-top:4px;
-         }
       }
     }
   }

@@ -1,10 +1,12 @@
 <div class="navigation-top">
-  <div class="logo">&nbsp;</div>
   <p>{{ obj.displayName }}</p>
   <span ng-click="logout()" class="ion-power"></span>
 </div>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger"><span class="ion-navicon-round"></span></label>
 
-<div class="navigation-side">
+<div class="navigation-side" >
+  <div class="logo">&nbsp;</div>
   <div class="navigation-side__nav">
     <ul>
       <li>

@@ -1,8 +1,54 @@
+.filter-trigger {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+
+.toggle{
+  display:none;
+  @include media(max-width $mobile){
+    display:block;
+    position: fixed;
+    background-color: $sidebar-bg;
+    color: $sidebar-icon-color;
+    cursor:pointer;
+    font-size: 48px;
+    min-height: 100px;
+    right: 0;
+    top:45%;
+    z-index: 2;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    span{
+      line-height: 100px;
+      padding: 15px;
+      text-align: center;
+    }
+  }
+}
+.filter-trigger + .toggle, .filter-box {
+  transition: right 0.2s;
+}
+
+.filter-trigger:checked + .toggle {
+  right: 50%;
+}
+
+.filter-trigger:checked ~ .filter-box {
+  right: 0;
+}
 .filter-box{
   @include boxShadow;
   @include span-columns(3);
   background-color:$white;
-  float:right;
+  @include media(max-width $mobile){
+    height: 100%;
+    position: fixed;
+    right: -100%;
+    bottom: 0;
+    z-index: 5;
+    width: 50%;
+
+  }
   h2{
     padding-top: 10%;
     padding-bottom: 20px;
@@ -27,16 +73,23 @@
       padding: 4px 4px;
       margin:0 0 4px 4px;
       cursor:pointer;
+      @include media(max-width $mobile){
+        display:block;
+        margin:10px 10px 10px 10px;
+      }
       p{
         color: $sidebar-bg;
+        @include media(max-width $mobile){
+          @include font-size(24px);
+        }
       }
     }
     .active{
       background-color: $green;
       border: 1px solid $green-dark;
-    p{
-      color: $white;
+      p{
+        color: $white;
+      }
     }
-  }
   }
 }

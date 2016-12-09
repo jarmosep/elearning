@@ -2,7 +2,7 @@ app.directive('activity', function(){
   return{
     restrict: 'E',
     scope: {
-      data: '='
+      recent: '='
     },
     templateUrl: "templates/mainviews/partials/frontpage-activity.html"
   }

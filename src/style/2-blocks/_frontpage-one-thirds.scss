@@ -75,6 +75,7 @@
         background-color: $blue-light;
        }
       p{
+        padding-top:30px;
         background-color: $blue;
         @include media(max-width $mobile){
           text-align:center;
@@ -83,13 +84,15 @@
 
     }
     &:nth-of-type(3){
-      p{
+      span{
         @include font-size(42px);
         background-color: $sidebar-bg;
         color: $sidebar-icon-color;
-        text-align: right;
-        padding: 15px 35px;
-        width: 100%;
+      }
+      p{
+        padding-top:30px;
+        background-color: $sidebar-bg;
+        color: $white;
       }
        margin-bottom: 15px;
     }

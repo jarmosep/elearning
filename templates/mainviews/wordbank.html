@@ -13,6 +13,8 @@
         </div>
       </div>
     </div>
+    <input type="checkbox" id="filter-trigger" class="filter-trigger" />
+    <label for="filter-trigger" class="toggle"><span class="ion-android-more-vertical"></span></label>
     <div class="word-container">
       <div class="all-words" id="autoscroll">
         <word ng-repeat="word in words | filter: searchWord | limitTo: limit" word="word" ng-click="go(word)"></word>
@@ -20,7 +22,6 @@
       <div class="more-words" ng-hide="limit >= words.length">
         <p ng-click="showMore()">Show more</p>
       </div>
-
     </div>
     <div class="filter-box">
       <h2> Filters </h2>

@@ -14,6 +14,7 @@
       @include span-columns(3);
       @include omega(4n);
       @include boxShadow;
+      border-top: 5px solid $sidebar-bg;
       background-color: $white;
       margin-bottom: 20px;
       position: relative;

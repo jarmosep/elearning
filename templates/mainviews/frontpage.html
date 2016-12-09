@@ -21,7 +21,8 @@
         </div>
         <div class="block__action">
           <a ui-sref="dashboard">
-            <p class="info">i</p>
+            <span class="info">i</span>
+            <p>More details</p>
           </a>
         </div>
       </div>
@@ -42,7 +43,8 @@
         </div>
         <div class="block__action">
           <a ui-sref="dashboard">
-            <p class="info">i</p>
+            <span class="info">i</span>
+            <p>More details</p>
           </a>
         </div>
       </div>
@@ -64,7 +66,8 @@
         </div>
         <div class="block__action">
           <a ui-sref="dashboard">
-            <p class="info">i</p>
+            <span class="info">i</span>
+            <p>More details</p>
           </a>
         </div>
       </div>
@@ -75,7 +78,7 @@
     </div>
 
     <div class="recent" ng-controller="RecentActivityCtrl">
-      <activity ng-repeat="block in blocks" data="block"> </activity>
+      <activity ng-repeat="recent in recents" recent="recent"> </activity>
     </div>
   </div>
 

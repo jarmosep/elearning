@@ -29,6 +29,9 @@
 @import "3-layout/addword";
 @import "3-layout/assignment";
 
+body{
+  overflow-x: hidden;
+}
 ::-webkit-input-placeholder {
    color: $border-color-grey;
 }

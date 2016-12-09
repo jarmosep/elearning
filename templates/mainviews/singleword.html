@@ -33,8 +33,8 @@
         <div class="kanji" ng-repeat="data in results">
           <div class="special" ng-repeat="misc in data.misc">
             <p class="misc">{{misc.stroke_count[0]}} strokes.
-                  JLPT N{{misc.jlpt[0]}}.
-                  Taught in grade {{misc.grade[0]}}
+                  Grade {{misc.grade[0]}}.
+                  {{misc.freq[0]}} of 2500 most used kanji
             </p>
           </div>
           <div class="character" ng-repeat="kanji in data.literal">

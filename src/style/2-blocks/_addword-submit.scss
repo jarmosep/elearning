@@ -1,12 +1,14 @@
 .submit-actions{
   @include clearfix;
-  margin: 15px 15px 15px 15px;
+  @include span-columns(6);
+  float:right;
+  padding: 15px;
   .erase, .submit{
     @include hoverColor;
-    @include span-columns(6 of 12);
+    @include span-columns(6);
     cursor: pointer;
     text-align: center;
-    @include media(max-width 530px){
+    @include media(max-width 540px){
       @include span-columns(12 of 12);
     }
     p{
@@ -19,16 +21,16 @@
   .erase{
       background-color: $sidebar-bg;
       border: none;
-      @include media(max-width 530px){
+      @include media(max-width 540px){
         margin-bottom: 15px;
       }
   }
   .submit{
       background-color: $green;
-      border: 1px solid $green-dark;
+      border-style:none;
   }
   .submit:disabled{
       background-color: lightgray;
-      border: 1px solid gray;
+      border-style:none;
   }
 }

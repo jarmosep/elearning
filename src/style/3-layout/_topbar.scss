@@ -5,15 +5,11 @@
   height: 65px;
   width: 100%;
   z-index: 2;
+  @include media(max-width $mobile){
+    left:0;
+  }
   @include paragraph;
   @include clearfix;
-
-  .logo {
-    background-color: $blue;
-    float:left;
-    height: 100%;
-    width: 100px;
-  }
   span, p {
     float: right;
     font-size: 16px;
@@ -25,4 +21,5 @@
     cursor: pointer;
     font-size:20px;
   }
+
 }

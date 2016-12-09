@@ -2,17 +2,12 @@
 <!-- Controller loops this structure in to  the view whenever a new activity is occurs. -->
   <div class="activity">
     <div class="what-and-when">
-      <p class="event">{{data.activity}}</p>
-      <p class="occurance">{{data.occurance}}</p>
+      <p class="event">{{ recent.action }}</p>
+      <p class="occurance">{{ recent.time }}</p>
     </div>
     <div class="operations">
-      <p class="view">
-        <span class="action ion-chevron-right"></span>
-        <span class="mobile-text"> View notification</span>
-      </p>
       <p class="delete">
         <span class="action ion-trash-a"></span>
-        <span class="mobile-text"> Delete notification</span>
       </p>
     </div>
   </div>

@@ -1,4 +1,4 @@
-app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($scope, $state, authFactory){
+app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($scope, $state, $apply, authFactory){
     $scope.state = $state;
     $scope.obj = {};
     console.log(firebase);
@@ -10,12 +10,13 @@ app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($sc
             $scope.obj = {
               "displayName": snapshot.val().displayName
             }
-          })
+          });
         });
       }else{
         console.log("Not logged in.");
       }
     });
+
 
     $scope.logout = function(){
       var promise = firebase.auth().signOut(); // signing the user out

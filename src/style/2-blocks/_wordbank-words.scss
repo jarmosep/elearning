@@ -1,32 +1,35 @@
  .wordblock{
   @include clearfix;
-  @include hoverColor;
   background-color: $blue;
   cursor: pointer;
   margin-top: 1px;
-  .mobile-text{  display:none;  }
-
+  @include media(max-width $mobile){
+    margin-top: 5px;
+  }
   a {
     @include clearfix;
     display: block;
   }
   span {
-    font-size:22px;
+    @include font-size(24px);
     line-height: 14px;
   }
   p{
+    @include font-size(17px);
     color: $white;
-    font-size:16px;
-    padding: 18px 16px;
+    padding: 26px 16px;
   }
   .word-data{
+    @include hoverColor;
     float:left;
     width: 75%;
-    @include media(max-width $mobile){ width: 100% }
+    @include media(max-width $mobile){
+      width: 100%
+    }
     .japanese{
       display:inline-block;
       @include media(max-width $mobile){
-        @include font-size(22px);
+        @include font-size(24px);
         display:block;
         padding-bottom:5px;
         text-align: center;
@@ -50,18 +53,20 @@
       display:inline-block;
      }
     @include media(max-width $mobile){
-      float:left;
-      width:100%;
+      @include span-columns(12);
+      border-top: 1px dotted darken($blue, 10%);
+      width: 100%;
       .view, .delete{
-        border-top: 1px dotted rgba(0,0,0,0.1);
-        display:block;
-      }
-      .mobile-text{
+        @include span-columns(6);
         display:inline-block;
-        float:right;
-        font-size: 14px;
-        padding-top:4px;
-       }
+        text-align: center;
+      }
+      .view{
+        border-right: 1px dotted darken($blue, 10%);
+      }
+      p{
+        padding: 16px 16px;
+      }
     }
   }
 }
@@ -74,7 +79,7 @@
   p{
     color: $white;
     font-size:18px;
-    padding: 18px 16px;
+    padding: 26px 16px;
     text-align: center;
   }
 }
