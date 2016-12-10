@@ -14,7 +14,7 @@
     font-size: 48px;
     min-height: 100px;
     right: 0;
-    top:45%;
+    top:65px;
     z-index: 2;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -38,43 +38,40 @@
 }
 .filter-box{
   @include boxShadow;
-  @include span-columns(3);
+  @include span-columns(12);
   background-color:$white;
   @include media(max-width $mobile){
+    margin-right: 0;
     height: 100%;
     position: fixed;
     right: -100%;
     bottom: 0;
     z-index: 5;
     width: 50%;
-
-  }
-  h2{
-    padding-top: 10%;
-    padding-bottom: 20px;
-    color: $sidebar-bg;
-    @include font-size(24px);
-    text-align: center;
-    @include media(max-width $mobile) {
-      padding-top: 5%;
-    }
+    direction:ltr;
   }
   .filter-container{
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-bottom: 15px;
-    text-align: center;
+    padding:20px;
+    @include media(max-width $mobile){
+      border-top: 1px solid #E2E5EB;
+      unicode-bidi:bidi-override;
+      direction: rtl;
+      overflow-y: scroll;
+      height:100%;
+    }
     .filter{
       background-color: $light-grey;
       border: 1px solid $border-color-grey;
       border-radius:3px;
       display:inline-block;
       text-align: center;
-      padding: 4px 4px;
-      margin:0 0 4px 4px;
+      padding: 2px 12px 2px 12px;
+      margin:0 4px 4px 0;
       cursor:pointer;
       @include media(max-width $mobile){
         display:block;
+        border-radius: 0;
+        padding: 12px;
         margin:10px 10px 10px 10px;
       }
       p{

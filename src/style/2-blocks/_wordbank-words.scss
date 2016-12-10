@@ -1,85 +1,54 @@
  .wordblock{
   @include clearfix;
-  background-color: $blue;
   cursor: pointer;
-  margin-top: 1px;
+  margin: 5px;
+  padding:20px;
+  background-color: $blue;
   @include media(max-width $mobile){
     margin-top: 5px;
   }
-  a {
-    @include clearfix;
-    display: block;
-  }
-  span {
-    @include font-size(24px);
-    line-height: 14px;
-  }
   p{
-    @include font-size(17px);
     color: $white;
-    padding: 26px 16px;
   }
   .word-data{
-    @include hoverColor;
-    float:left;
-    width: 75%;
+    @include span-columns(12);
     @include media(max-width $mobile){
-      width: 100%
+
     }
     .japanese{
       display:inline-block;
+      @include font-size(17px);
       @include media(max-width $mobile){
         @include font-size(24px);
         display:block;
         padding-bottom:5px;
-        text-align: center;
       }
     }
     .english{
       float:right;
+      @include font-size(17px);
       @include media(max-width $mobile){
         display:block;
         float:none;
         padding-top:5px;
-        text-align: center;
       }
     }
 
   }
   .operations{
-    float:right;
-    .view,.delete{
-      @include hoverColor;
-      display:inline-block;
-     }
-    @include media(max-width $mobile){
-      @include span-columns(12);
-      border-top: 1px dotted darken($blue, 10%);
-      width: 100%;
-      .view, .delete{
-        @include span-columns(6);
-        display:inline-block;
-        text-align: center;
-      }
-      .view{
-        border-right: 1px dotted darken($blue, 10%);
-      }
-      p{
-        padding: 16px 16px;
-      }
-    }
+    display:none;
   }
 }
 
 .more-words{
   @include hoverColor;
-  margin-top: 1px;
+  margin: 5px;
   background-color: $sidebar-bg;
   cursor: pointer;
   p{
     color: $white;
     font-size:18px;
-    padding: 26px 16px;
+    padding: 26px;
     text-align: center;
   }
 }

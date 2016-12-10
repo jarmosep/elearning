@@ -6,23 +6,37 @@
   @include miniHeading;
   @include paragraph;
   position: relative;
+  h4{
+    @include font-size(15px);
+    width:75px;
+    background-color: $light-grey;
+    border-radius:3px;
+    border: 1px solid $border-color-grey;
+    color: $sidebar-bg;
+    cursor:pointer;
+    display:inline-block;
+    margin: 20px;
+    margin-bottom:15px;
+    padding: 4px 4px;
+    text-align: center;
+    span{
+      padding-left:4px;
+    }
+  }
+  h4.enabled{
+    background-color: darken($light-grey, 10%);
+  }
   .word-container{
     @include boxShadow;
-    @include span-columns(9);
+    @include span-columns(12);
     background-color: $white;
-    padding: 15px 15px 15px 15px;
+    border-top: 1px solid #E2E5EB;
     @include media(max-width $mobile){
       @include span-columns(12);
     }
     @include media(max-width $mobile){
       width: 100%;
       @include span-columns(12);
-    }
-    .all-words{
-      /*
-      overflow-y: scroll;
-      max-height: 497px;
-      */
     }
   }
 }
