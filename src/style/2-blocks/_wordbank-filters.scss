@@ -6,22 +6,20 @@
 .toggle{
   display:none;
   @include media(max-width $mobile){
-    display:block;
-    position: fixed;
-    background-color: $sidebar-bg;
-    color: $sidebar-icon-color;
+    text-align: center;
+    background-color: $green;
+    color: $white;
     cursor:pointer;
-    font-size: 48px;
-    min-height: 100px;
+    display:block;
+    font-size: 38px;
+    min-height: 65px;
+    min-width: 65px;
+    position: fixed;
     right: 0;
-    top:65px;
+    top:0;
     z-index: 2;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
     span{
-      line-height: 100px;
-      padding: 15px;
-      text-align: center;
+      line-height: 65px;
     }
   }
 }
@@ -73,6 +71,9 @@
         border-radius: 0;
         padding: 12px;
         margin:10px 10px 10px 10px;
+        &:last-of-type{
+          margin-bottom: 100px;
+        }
       }
       p{
         color: $sidebar-bg;

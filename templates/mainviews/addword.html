@@ -34,7 +34,7 @@
             <h4>Tags:</h4>
           </div>
           <div class="content">
-            <input type="text" name="tags" ng-model="form.tags" class="textinput" placeholder="Give the word or expression suitable tags" required></input>
+            <input type="text" name="tags" ng-model="form.tags" class="textinput" placeholder="Give the word or expression suitable tags" ng-list required></input>
           </div>
         </div>
         <div class="field">
@@ -59,7 +59,7 @@
             <button class="erase" ng-click="clearFields()">
               <p>Erase fields</p>
             </button>
-            <button class="submit" ng-submit="onSubmit()" ng-disabled="submitWord.$invalid">
+            <button class="submit" ng-click="onSubmit(form.expression, form.reading, form.meaning, form.tags, form.sentences)" ng-disabled="submitWord.$invalid">
               <p>Submit</p>
             </button>
           </div>

@@ -1,7 +1,8 @@
-app.controller("WordSubmitCtrl", ["$scope", function($scope){
+app.controller('WordSubmitCtrl', ['$scope', 'addWord', function($scope, addWord){
   $scope.form = {};
-  $scope.onSubmit = function(){
-    console.log($scope.form);
+
+  $scope.onSubmit = function(expression, reading, meaning, tags, sentences){
+    addWord.submitWord(expression, reading, meaning, tags, sentences);
     $scope.form = null;
   }
   $scope.clearFields = function(){

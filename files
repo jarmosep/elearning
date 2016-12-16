@@ -7,27 +7,59 @@ Angular module - initializing dependencies, which the application will use.
 
 var app = angular.module('eLearning', ['ui.router', 'firebase', 'ngSanitize', 'ngAnimate']);
 
-app.factory('authFactory', ['$state', '$filter', function authFactory($state, $filter){
-  var userRef = firebase.database().ref('users'); // create 'users' node in Firebase, if it doesn't exist
+app.factory('addWord', function addWord(){
+  // Registration method
+  addWord.submitWord = function(expression, reading, meaning, tags, sentences){
+    if(!sentences){
+      sentences = 'No example sentences given.';
+    }
+    if(!reading){
+      reading = null;
+    }
+    var user = firebase.auth().currentUser;
+    if(user){
+      var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
+      var date = Math.floor(Date.now());
+      wordbank.push({
+        expression: expression,
+        reading: reading,
+        meaning: meaning,
+        sentences: sentences,
+        tags: tags,
+        dateAdded: date
+      });
+      var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
+      recentActivities.push({
+        activity: expression+' added to the wordbank',
+        timestamp: date
+      });
+    }else{
+      console.log("Erorrs");
+    }
+  }
+  return addWord;
+
+});
+
+app.factory('authFactory', ['$state', function authFactory($state){
+  var userRef = firebase.database().ref('users'); // initializing 'users'
+
   var auth = firebase.auth(); // creating authentication namespace
 
   // Registration method
   authFactory.signup = function(email, passwd, username){
     var promise = auth.createUserWithEmailAndPassword(email, passwd); // creating username with pw in firebase
     var date = Math.floor(Date.now());
-    var timestamp = $filter('date')(date, "MMM d ''yy 'at' h:mm");
-    //var date = time.getDate() + '.' + (time.getMonth()+1);
-    //var hours = time.getHours() + ":" + time.getMinutes();
     promise.then(function(user){
       userRef.child(user.uid).set({
         displayName: username,
-        recentActivities: [
-          {
-            action: 'You created a new account!',
-            time: timestamp
-          }
-        ]
-
+        email: email,
+        status: 'student'
+      });
+      var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
+      recentActivities.push({
+        activity: 'You created a new account!',
+        timestamp: date,
       });
       $state.go('dashboard.front');
       console.log(user);
@@ -59,7 +91,7 @@ app.factory('authFactory', ['$state', '$filter', function authFactory($state, $f
 
 app.factory('kanjiSearch', ['$http', function($http){
   return {
-    getAll: function(){
+    getAllKanjis: function(){
       var response = $http(
         {
           url: '../api/kanjidict.json',
@@ -86,6 +118,13 @@ var config = {
 };
 firebase.initializeApp(config);
 
+// Initializing default tags
+var defaultTags = firebase.database().ref('defaultTags');
+var tags = ['adjective-i', 'adjective-na', 'adverb', 'auxiliary', 'conjunction', 'common', 'expression',
+            'noun', 'particle', 'ichidan-verb', 'godan-verb', 'transitive', 'intransitive', 'suru-verb',
+            'kuru-verb', 'colloquialism', 'honorific', 'onomatopoeic', 'slang', 'vulgar', 'sensitive'];
+defaultTags.set(tags);
+
 /****************************************************************************************
 Routing unit - used to alternate between different views through nested states.
 ****************************************************************************************/
@@ -107,7 +146,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         .state('dashboard.front', {
             url: '',
             page: 'DashboardFront',
-            templateUrl: 'templates/mainviews/frontpage.html'
+            templateUrl: 'templates/mainviews/frontpage.html',
+            controller: 'RecentActivityCtrl'
         })
 
         .state('dashboard.wordbank', {
@@ -125,7 +165,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.addword', {
-            templateUrl: 'templates/mainviews/addword.html'
+            templateUrl: 'templates/mainviews/addword.html',
+            controller: 'WordSubmitCtrl'
         })
 
         .state('dashboard.quiz', {
@@ -160,157 +201,55 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
     $state.go('dashboard.word', {obj:word});
   }
 
-  $scope.words = [
-    {
-      japanese: "深い",
-      english: "Deep",
-      reading: "ふかい",
-      image: "",
-      maturity: 0,
-      tags: [
-        "I-adjective",
-        "Common"
-      ]
-    },
-    {
-      japanese: "ダサい",
-      english: "Lame",
-      reading: "",
-      image: "",
-      maturity: 0,
-      tags: [
-        "I-adjective",
-        "Common",
-        "Slang"
-      ]
-    },
-    {
-      japanese: "行う",
-      english: "To conduct, to carry out",
-      reading: "おこなう",
-      image: "",
-      maturity: 0,
-      tags: [
-        "Verb",
-        "Common"
-      ]
-    },
-    {
-      japanese: "歩行者天国",
-      english: "pedestrian mall, car-free mall",
-      reading: "ほこうしゃてんごく",
-      image: "",
-      maturity: 0,
-      tags: [
-        "Noun",
-        "Common"
-      ]
-    },
-    {
-      japanese: "モバイル最適化",
-      english: "Mobile optimization",
-      reading: "もばいるさいてきか",
-      sentence: "日本のWebサイトと中で、モバイル最適化は新興の技術だと思う。 - I think mobile optimization is a rising technology in Japanese websites.",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Noun",
-        "Suru-verb"
-      ]
-    },
-    {
-      japanese: "憂鬱",
-      english: "Depression, melancholy, gloom",
-      reading: "ゆううつ",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Na-adjective",
-        "Noun"
-      ]
-    },
-    {
-      japanese: "行く",
-      english: "To go",
-      reading: "いく",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Verb",
-        "Common",
-        "Godan-verb"
-      ]
-    },
-    {
-      japanese: "全く",
-      english: "Wholly, completely, really",
-      reading: "まったく",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Adverb",
-        "No-adjective",
-        "Common"
-      ]
-    },
-    {
-      japanese: "自殺",
-      english: "Suicide",
-      reading: "じさつ",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Noun",
-        "Suru-verb",
-        "Common"
-      ]
-    },
-    {
-      japanese: "オタク",
-      english: "Geek, nerd, 'enthusiast'",
-      reading: "",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Noun",
-        "Common",
-        "Colloquialism"
-      ]
-    },
-    {
-      japanese: "土方",
-      english: "Construction worker, laborer",
-      reading: "どかた",
-      maturity: 0,
-      tags:[
-        "Noun",
-        "Sensitive"
-      ]
-    },
-    {
-      japanese: "めんどくさい",
-      english: "Can't be bothered, troublesome",
-      reading: "",
-      image: "",
-      maturity: 0,
-      tags: [
-        "I-adjective",
-        "Common"
-      ]
+  $scope.words = [];
+  $scope.filters = [];
+
+  firebase.auth().onAuthStateChanged(function(user){
+    if(user){
+      var defaultTags = firebase.database().ref('defaultTags');
+      var word = firebase.database().ref('users').child(user.uid + '/wordbank');
+      word.once('value', function(snapshot){
+        var snap = snapshot.val();
+        angular.forEach(snap, function(value, key) {
+          var recentObj = {
+            "data": value,
+            "key": key
+          };
+          $timeout(function(){
+
+            update(recentObj);
+          });
+        });
+      });
+      function update(recentObj){
+        $scope.words.push(recentObj);
+        console.log($scope.words);
+      };
+      defaultTags.once('value', function(snapshot){
+        console.log(snapshot.val());
+        $scope.filters.push(snapshot.val());
+      });
+    }else{
+      console.log("Not logged in.");
     }
-  ];
-  $scope.filters = [
-          "Noun",
-          "Godan-verb",
-          "Slang",
-          "No-adjective",
-          "I-adjective",
-          "Sensitive",
-          "Verb",
-          "Colloquialism",
-          "Suru-verb",
-          "Adverb"
-      ];
+
+    $scope.removeWord = function(key, index){
+        console.log($scope.words.indexOf(index));
+        $rootScope.popkey = null;
+        $scope.words.splice($scope.words.indexOf(index),1);
+        var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
+        console.log(wordbank.child(key));
+
+        var promise = wordbank.child(key).remove();
+        promise.then(function(){
+          console.log('kaik män');
+
+        }).catch(function(e){
+          console.log(e);
+        });
+    };
+  });
+
 
   $rootScope.activeFilters = [];
 
@@ -384,7 +323,7 @@ app.controller("AssignmentsCtrl", ["$scope", function($scope){
   ];
 }]);
 
-app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($scope, $state, $apply, authFactory){
+app.controller('DashboardCtrl', ['$scope', '$state', '$timeout', 'authFactory', function($scope, $state, $timeout, authFactory){
     $scope.state = $state;
     $scope.obj = {};
     console.log(firebase);
@@ -392,11 +331,11 @@ app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($sc
       if(user){
         var currentUser = firebase.database().ref('users').child(user.uid);
         currentUser.on('value', function(snapshot){
-          $scope.$apply(function(){
+          $timeout(function(){
             $scope.obj = {
               "displayName": snapshot.val().displayName
             }
-          });
+          }, 0);
         });
       }else{
         console.log("Not logged in.");
@@ -422,28 +361,72 @@ app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $sco
   }
 }]);
 
-app.controller('RecentActivityCtrl', ['$scope', '$timeout', 'authFactory', function($scope, $timeout, authFactory){
+app.controller('RecentActivityCtrl', ['$rootScope', '$scope', '$timeout', function($rootScope, $scope, $timeout){
   $scope.recents = [];
     firebase.auth().onAuthStateChanged(function(user){
       if(user){
-        var currentUser = firebase.database().ref('users').child(user.uid);
-        currentUser.on('value', function(snapshot){
-          $timeout(function(){
-            update(snapshot)
+        var activity = firebase.database().ref('users').child(user.uid + '/recentActivity');
+        activity.once('value', function(snapshot){
+          var snap = snapshot.val();
+          angular.forEach(snap, function(value, key) {
+            var recentObj = {
+              "data": value,
+              "key": key
+            };
+            $timeout(function(){
+
+              update(recentObj);
+            });
           });
         });
-        function update(snapshot){
-          $scope.recents = snapshot.val().recentActivities;
-        }
+        function update(recentObj){
+          $scope.recents.push(recentObj);
+          console.log($scope.recents);
+        };
       }else{
         console.log("Not logged in.");
       }
+
+      $scope.removeActivity = function(key, index){
+          $rootScope.popkey = null;
+          console.log(index);
+          $scope.recents.splice($scope.recents.indexOf(index),1);
+          var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
+          console.log(recentActivities.child(key));
+          var promise = recentActivities.child(key).remove();
+          promise.then(function(){
+            console.log('kaik män');
+
+          }).catch(function(e){
+            console.log(e);
+          });
+      }
     });
+
+
 }]);
+
+app.filter('unique', function() {
+   return function(collection, keyname) {
+      var output = [],
+          keys = [];
+
+      angular.forEach(collection, function(item) {
+          var key = item[keyname];
+          if(keys.indexOf(key) === -1) {
+              keys.push(key);
+              output.push(item);
+          }
+      });
+
+      return output;
+   };
+});
 
 app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', 'kanjiSearch', function($scope, $state, $stateParams, kanjiSearch){
   $scope.word = $stateParams.obj;
-  var letters = $scope.word.japanese.split("");
+  console.log($scope.word.data.expression);
+  var letters = $scope.word.data.expression.split("");
   $scope.kanjis = [];
   $scope.results = [];
 
@@ -454,8 +437,8 @@ app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', 'kanjiSea
   }
 
   $scope.searchCharacter = function(kanjis){
-    var getAll = kanjiSearch.getAll();
-    getAll.then(function(data){ // get all the data from the dictionary
+    var getAllKanjis = kanjiSearch.getAllKanjis();
+    getAllKanjis.then(function(data){ // get all the data from the dictionary
         if($scope.kanjis.length >= 1){ //if the word contains kanjis, execute the following
           for(var i=0; i<$scope.kanjis.length; i++){
             var matchingKanji = data.data.filter(function(wordobj){
@@ -488,10 +471,11 @@ app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', 'kanjiSea
   }
 }]);
 
-app.controller("WordSubmitCtrl", ["$scope", function($scope){
+app.controller('WordSubmitCtrl', ['$scope', 'addWord', function($scope, addWord){
   $scope.form = {};
-  $scope.onSubmit = function(){
-    console.log($scope.form);
+
+  $scope.onSubmit = function(expression, reading, meaning, tags, sentences){
+    addWord.submitWord(expression, reading, meaning, tags, sentences);
     $scope.form = null;
   }
   $scope.clearFields = function(){
@@ -505,7 +489,7 @@ app.directive('activity', function(){
     scope: {
       recent: '='
     },
-    templateUrl: "templates/mainviews/partials/frontpage-activity.html"
+    templateUrl: 'templates/mainviews/partials/frontpage-activity.html',
   }
 });
 
@@ -519,6 +503,22 @@ app.directive('assignment', function(){
     templateUrl: 'templates/mainviews/partials/assignment-test.html'
   }
 });
+
+app.directive("outsideClick", ['$document', '$parse', function($document, $parse) {
+	return {
+    restrict: 'A',
+    link: function(scope, elem, attr, ctrl) {
+      elem.bind('click', function(e) {
+        // this part keeps it from firing the click on the document.
+        e.stopPropagation();
+      });
+      $document.bind('click', function() {
+        // magic here.
+        scope.$apply(attr.outsideClick);
+      })
+    }
+  }
+}]);
 
 app.directive('word', function(){
   return{

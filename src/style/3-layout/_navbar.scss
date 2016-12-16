@@ -51,15 +51,7 @@ label[for="nav-trigger"] {
       li{
         @include clearfix;
         background-color: $sidebar-bg;
-        border-bottom: solid 1px $sidebar-dark-blue;
-        border-top: solid 1px $sidebar-medium-blue;
         transition: all 0.1s ease;
-        &:first-of-type{
-          border-top: none;
-        }
-        &:last-of-type{
-          border-bottom: none;
-        }
         a{
           span{
             color: $sidebar-icon-color;

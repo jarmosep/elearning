@@ -73,12 +73,29 @@
       </div>
     </div>
 
-    <div class="subheading">
-      <h3>Recent activity</h3>
-    </div>
-
-    <div class="recent" ng-controller="RecentActivityCtrl">
-      <activity ng-repeat="recent in recents" recent="recent"> </activity>
+    <div class="recent">
+      <div class="subheading">
+        <h4>Recent activity</h4>
+      </div>
+        <div class="activity" ng-repeat="recent in recents | orderBy:'timestamp':true track by $index" recent="recent">
+          <div class="what-and-when">
+              <p class="event">{{ recent.data.activity }}</p>
+              <p class="occurance">{{ recent.data.timestamp | date: "MMM d ''yy 'at' HH:mm"}}</p>
+          </div>
+          <div class="operations" outside-click="$root.popkey = null">
+              <span class="action ion-android-more-vertical" ng-click="$root.popkey = recent.key"></span>
+              <div class="options" ng-show="$root.popkey == recent.key">
+                <li>
+                  <span class="ion-chevron-right"></span>
+                  <p class="delete">View</p>
+                </li>
+                <li ng-click="removeActivity(recent.key, recent);">
+                  <span class="ion-trash-a"></span>
+                  <p class="delete">Delete</p>
+                </li>
+              </div>
+          </div>
+        </div>
     </div>
   </div>
 

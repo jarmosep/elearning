@@ -13,157 +13,55 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
     $state.go('dashboard.word', {obj:word});
   }
 
-  $scope.words = [
-    {
-      japanese: "深い",
-      english: "Deep",
-      reading: "ふかい",
-      image: "",
-      maturity: 0,
-      tags: [
-        "I-adjective",
-        "Common"
-      ]
-    },
-    {
-      japanese: "ダサい",
-      english: "Lame",
-      reading: "",
-      image: "",
-      maturity: 0,
-      tags: [
-        "I-adjective",
-        "Common",
-        "Slang"
-      ]
-    },
-    {
-      japanese: "行う",
-      english: "To conduct, to carry out",
-      reading: "おこなう",
-      image: "",
-      maturity: 0,
-      tags: [
-        "Verb",
-        "Common"
-      ]
-    },
-    {
-      japanese: "歩行者天国",
-      english: "pedestrian mall, car-free mall",
-      reading: "ほこうしゃてんごく",
-      image: "",
-      maturity: 0,
-      tags: [
-        "Noun",
-        "Common"
-      ]
-    },
-    {
-      japanese: "モバイル最適化",
-      english: "Mobile optimization",
-      reading: "もばいるさいてきか",
-      sentence: "日本のWebサイトと中で、モバイル最適化は新興の技術だと思う。 - I think mobile optimization is a rising technology in Japanese websites.",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Noun",
-        "Suru-verb"
-      ]
-    },
-    {
-      japanese: "憂鬱",
-      english: "Depression, melancholy, gloom",
-      reading: "ゆううつ",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Na-adjective",
-        "Noun"
-      ]
-    },
-    {
-      japanese: "行く",
-      english: "To go",
-      reading: "いく",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Verb",
-        "Common",
-        "Godan-verb"
-      ]
-    },
-    {
-      japanese: "全く",
-      english: "Wholly, completely, really",
-      reading: "まったく",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Adverb",
-        "No-adjective",
-        "Common"
-      ]
-    },
-    {
-      japanese: "自殺",
-      english: "Suicide",
-      reading: "じさつ",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Noun",
-        "Suru-verb",
-        "Common"
-      ]
-    },
-    {
-      japanese: "オタク",
-      english: "Geek, nerd, 'enthusiast'",
-      reading: "",
-      image: "",
-      maturity: 0,
-      tags:[
-        "Noun",
-        "Common",
-        "Colloquialism"
-      ]
-    },
-    {
-      japanese: "土方",
-      english: "Construction worker, laborer",
-      reading: "どかた",
-      maturity: 0,
-      tags:[
-        "Noun",
-        "Sensitive"
-      ]
-    },
-    {
-      japanese: "めんどくさい",
-      english: "Can't be bothered, troublesome",
-      reading: "",
-      image: "",
-      maturity: 0,
-      tags: [
-        "I-adjective",
-        "Common"
-      ]
+  $scope.words = [];
+  $scope.filters = [];
+
+  firebase.auth().onAuthStateChanged(function(user){
+    if(user){
+      var defaultTags = firebase.database().ref('defaultTags');
+      var word = firebase.database().ref('users').child(user.uid + '/wordbank');
+      word.once('value', function(snapshot){
+        var snap = snapshot.val();
+        angular.forEach(snap, function(value, key) {
+          var recentObj = {
+            "data": value,
+            "key": key
+          };
+          $timeout(function(){
+
+            update(recentObj);
+          });
+        });
+      });
+      function update(recentObj){
+        $scope.words.push(recentObj);
+        console.log($scope.words);
+      };
+      defaultTags.once('value', function(snapshot){
+        console.log(snapshot.val());
+        $scope.filters.push(snapshot.val());
+      });
+    }else{
+      console.log("Not logged in.");
     }
-  ];
-  $scope.filters = [
-          "Noun",
-          "Godan-verb",
-          "Slang",
-          "No-adjective",
-          "I-adjective",
-          "Sensitive",
-          "Verb",
-          "Colloquialism",
-          "Suru-verb",
-          "Adverb"
-      ];
+
+    $scope.removeWord = function(key, index){
+        console.log($scope.words.indexOf(index));
+        $rootScope.popkey = null;
+        $scope.words.splice($scope.words.indexOf(index),1);
+        var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
+        console.log(wordbank.child(key));
+
+        var promise = wordbank.child(key).remove();
+        promise.then(function(){
+          console.log('kaik män');
+
+        }).catch(function(e){
+          console.log(e);
+        });
+    };
+  });
+
 
   $rootScope.activeFilters = [];
 

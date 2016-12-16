@@ -1,6 +1,6 @@
 app.factory('kanjiSearch', ['$http', function($http){
   return {
-    getAll: function(){
+    getAllKanjis: function(){
       var response = $http(
         {
           url: '../api/kanjidict.json',

@@ -54,7 +54,7 @@ module.exports = function(grunt) {
                 options: {
                     port: 4000,
                     hostname: 'localhost',
-                    base: 'C:/Users/Jarmo/development/elearning', // Project folder root, put your own
+                    base: 'C:/Users/Puliukkeli/development/elearning', // Project folder root, put your own
                     livereload: true
                 }
             }

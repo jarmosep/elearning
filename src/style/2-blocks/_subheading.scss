@@ -1,8 +1,0 @@
-.subheading{
-  @include span-columns(12);
-  margin-top: 40px;
-  margin-bottom: 20px;
-  @include media(max-width $mobile){
-    text-align: center;
-  }
-}

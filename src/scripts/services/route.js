@@ -8,6 +8,13 @@ var config = {
 };
 firebase.initializeApp(config);
 
+// Initializing default tags
+var defaultTags = firebase.database().ref('defaultTags');
+var tags = ['adjective-i', 'adjective-na', 'adverb', 'auxiliary', 'conjunction', 'common', 'expression',
+            'noun', 'particle', 'ichidan-verb', 'godan-verb', 'transitive', 'intransitive', 'suru-verb',
+            'kuru-verb', 'colloquialism', 'honorific', 'onomatopoeic', 'slang', 'vulgar', 'sensitive'];
+defaultTags.set(tags);
+
 /****************************************************************************************
 Routing unit - used to alternate between different views through nested states.
 ****************************************************************************************/
@@ -29,7 +36,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         .state('dashboard.front', {
             url: '',
             page: 'DashboardFront',
-            templateUrl: 'templates/mainviews/frontpage.html'
+            templateUrl: 'templates/mainviews/frontpage.html',
+            controller: 'RecentActivityCtrl'
         })
 
         .state('dashboard.wordbank', {
@@ -47,7 +55,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.addword', {
-            templateUrl: 'templates/mainviews/addword.html'
+            templateUrl: 'templates/mainviews/addword.html',
+            controller: 'WordSubmitCtrl'
         })
 
         .state('dashboard.quiz', {

@@ -13,13 +13,17 @@
   span, p {
     float: right;
     font-size: 16px;
-    padding-right: 30px;
-    padding-top: 20px;
+    padding: 21px;
   }
   span{
     color: $sidebar-bg;
     cursor: pointer;
     font-size:20px;
+  }
+  p{
+    @include media(max-width $mobile){
+      margin-right: 65px;
+    }
   }
 
 }

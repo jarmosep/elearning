@@ -1,4 +1,4 @@
-app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($scope, $state, $apply, authFactory){
+app.controller('DashboardCtrl', ['$scope', '$state', '$timeout', 'authFactory', function($scope, $state, $timeout, authFactory){
     $scope.state = $state;
     $scope.obj = {};
     console.log(firebase);
@@ -6,11 +6,11 @@ app.controller('DashboardCtrl', ['$scope', '$state', 'authFactory', function($sc
       if(user){
         var currentUser = firebase.database().ref('users').child(user.uid);
         currentUser.on('value', function(snapshot){
-          $scope.$apply(function(){
+          $timeout(function(){
             $scope.obj = {
               "displayName": snapshot.val().displayName
             }
-          });
+          }, 0);
         });
       }else{
         console.log("Not logged in.");

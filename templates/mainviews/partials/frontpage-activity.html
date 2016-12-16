@@ -1,13 +1,21 @@
 <!-- Recent activities / quickselection -->
 <!-- Controller loops this structure in to  the view whenever a new activity is occurs. -->
-  <div class="activity">
-    <div class="what-and-when">
-      <p class="event">{{ recent.action }}</p>
-      <p class="occurance">{{ recent.time }}</p>
+<!--
+<div class="what-and-when">
+    <p class="event">{{ recent.data.activity }}</p>
+    <p class="occurance">{{ recent.data.timestamp | date: "MMM d ''yy 'at' HH:mm"}}</p>
+</div>
+<div class="operations" outside-click="$root.popkey = null">
+    <span class="action ion-android-more-vertical" ng-click="$root.popkey = recent.key"></span>
+    <div class="options" ng-show="$root.popkey == recent.key">
+      <li>
+        <span class="ion-chevron-right"></span>
+        <p class="delete">View</p>
+      </li>
+      <li ng-click="removeActivity(recent.key, $index);">
+        <span class="ion-trash-a"></span>
+        <p class="delete">Delete</p>
+      </li>
     </div>
-    <div class="operations">
-      <p class="delete">
-        <span class="action ion-trash-a"></span>
-      </p>
-    </div>
-  </div>
+</div>
+--> 
