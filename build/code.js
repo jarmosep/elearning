@@ -19,6 +19,8 @@ app.factory('addWord', function addWord(){
     var user = firebase.auth().currentUser;
     if(user){
       var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
+      var tagbank = firebase.database().ref('users').child(user.uid + '/tagbank');
+      var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
       var date = Math.floor(Date.now());
       wordbank.push({
         expression: expression,
@@ -28,7 +30,7 @@ app.factory('addWord', function addWord(){
         tags: tags,
         dateAdded: date
       });
-      var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
+      tagbank.push(tags);
       recentActivities.push({
         activity: expression+' added to the wordbank',
         timestamp: date
@@ -82,8 +84,7 @@ app.factory('authFactory', ['$state', function authFactory($state){
   }
 
   authFactory.auth = function(){
-    console.log(currentUser);
-    return auth.currentUser;
+      return auth;
   }
 
   return authFactory;
@@ -141,7 +142,14 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             url: '/dashboard',
             abstract: true, // abstract: {boolean} provides inherited properties to its common children states.
             templateUrl: 'templates/dashboard.html',
-            controller: 'DashboardCtrl'
+            controller: 'DashboardCtrl',
+            resolve: {
+                "currentAuth": ['$firebaseAuth', function($firebaseAuth) {
+                    var au = firebase.auth();
+                    var authObj = $firebaseAuth(au);
+                    return authObj.$requireSignIn();
+                }]
+            }
         })
         .state('dashboard.front', {
             url: '',
@@ -186,7 +194,18 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         $urlRouterProvider.otherwise('/');
 }]);
 
-app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', function($scope, $rootScope, $timeout, $state){
+app.run(['$rootScope', '$state', function($rootScope, $state) {
+    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+        // if not signed in, redirect to login page
+        if (error === "AUTH_REQUIRED") {
+            $state.go('/'); // tms login state
+        }
+    });
+}]);
+
+app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout', '$state', function(authFactory, $scope, $rootScope, $timeout, $state){
+  $scope.words = [];
+  $scope.filters = [];
   $scope.limit = 5;
   $scope.showMore = function(){
     $scope.limit += 5;
@@ -196,60 +215,76 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
         }, 0, false);
   }
 
+  var getAuth = authFactory.auth();
+  var user = getAuth.currentUser;
+
+  if(user){
+    var defaultTags = firebase.database().ref('defaultTags');
+    var word = firebase.database().ref('users').child(user.uid + '/wordbank');
+    var userTags = firebase.database().ref('users').child(user.uid + '/tagbank');
+    word.once('value', function(snapshots){
+      var snap = snapshots.val();
+      angular.forEach(snap, function(value, key) {
+        var recentObj = {
+          "data": value,
+          "key": key,
+          "visible": true
+        };
+        $timeout(function(){
+          update(recentObj);
+        });
+      });
+    });
+    function update(recentObj){
+      $scope.words.push(recentObj);
+    };
+
+    var getUserTags = [];
+    var mergedUserTags = [];
+    userTags.once('value', function (snapshots){
+      var snap = snapshots.val();
+      angular.forEach(snap, function(value){ // get all tags from user's individual words
+        getUserTags.push(value); // push them into an array
+        mergedUserTags = [].concat.apply([], getUserTags); // merge the tag arrays together
+      });
+    });
+
+
+    defaultTags.once('value', function(snapshot){
+      var defTags = snapshot.val(); // get all default tags
+      var alltags = defTags.concat(mergedUserTags); // merge them with user's own tags
+      alltags = alltags.filter( function( item, index, inputArray ) { // check for duplicates in array...
+        return inputArray.indexOf(item) == index; // ...and remove them
+      });
+      console.log(alltags);
+      $scope.filters.push(alltags);
+    });
+
+
+  }else{
+    console.log("Not logged in.");
+  }
+
   $scope.go = function(word) {
     console.log(word);
     $state.go('dashboard.word', {obj:word});
   }
 
-  $scope.words = [];
-  $scope.filters = [];
+  $scope.removeWord = function(key, index){
+      console.log($scope.words.indexOf(index));
+      $rootScope.popkey = null;
+      $scope.words.splice($scope.words.indexOf(index),1);
+      var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
+      console.log(wordbank.child(key));
 
-  firebase.auth().onAuthStateChanged(function(user){
-    if(user){
-      var defaultTags = firebase.database().ref('defaultTags');
-      var word = firebase.database().ref('users').child(user.uid + '/wordbank');
-      word.once('value', function(snapshot){
-        var snap = snapshot.val();
-        angular.forEach(snap, function(value, key) {
-          var recentObj = {
-            "data": value,
-            "key": key
-          };
-          $timeout(function(){
+      var promise = wordbank.child(key).remove();
+      promise.then(function(){
+        console.log('kaik män');
 
-            update(recentObj);
-          });
-        });
+      }).catch(function(e){
+        console.log(e);
       });
-      function update(recentObj){
-        $scope.words.push(recentObj);
-        console.log($scope.words);
-      };
-      defaultTags.once('value', function(snapshot){
-        console.log(snapshot.val());
-        $scope.filters.push(snapshot.val());
-      });
-    }else{
-      console.log("Not logged in.");
-    }
-
-    $scope.removeWord = function(key, index){
-        console.log($scope.words.indexOf(index));
-        $rootScope.popkey = null;
-        $scope.words.splice($scope.words.indexOf(index),1);
-        var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
-        console.log(wordbank.child(key));
-
-        var promise = wordbank.child(key).remove();
-        promise.then(function(){
-          console.log('kaik män');
-
-        }).catch(function(e){
-          console.log(e);
-        });
-    };
-  });
-
+  };
 
   $rootScope.activeFilters = [];
 
@@ -269,18 +304,17 @@ app.controller('AllWordsCtrl', ['$scope', '$rootScope', '$timeout', '$state', fu
 
   $scope.updateWords = function() {
       var words = $scope.words,
-      filters = $scope.activeFilters.sort(),
+      filters = $rootScope.activeFilters.sort(),
       tags;
-
       for (var i=0, x=words.length; i < x; i++) {
-          tags = words[i].tags.sort();
+          tags = words[i].data.tags.sort();
           var subset = filters.every(function(val) {
               return tags.indexOf(val) >= 0;
           });
-
           words[i].visible = subset;
       }
   };
+
 }]);
 
 app.controller("AssignmentsCtrl", ["$scope", function($scope){
@@ -361,9 +395,11 @@ app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $sco
   }
 }]);
 
-app.controller('RecentActivityCtrl', ['$rootScope', '$scope', '$timeout', function($rootScope, $scope, $timeout){
+app.controller('RecentActivityCtrl', ['authFactory', '$rootScope', '$scope', '$timeout', function(authFactory, $rootScope, $scope, $timeout){
   $scope.recents = [];
-    firebase.auth().onAuthStateChanged(function(user){
+    var getAuth = authFactory.auth();
+    var user = getAuth.currentUser;
+    console.log(user);
       if(user){
         var activity = firebase.database().ref('users').child(user.uid + '/recentActivity');
         activity.once('value', function(snapshot){
@@ -381,7 +417,6 @@ app.controller('RecentActivityCtrl', ['$rootScope', '$scope', '$timeout', functi
         });
         function update(recentObj){
           $scope.recents.push(recentObj);
-          console.log($scope.recents);
         };
       }else{
         console.log("Not logged in.");
@@ -401,11 +436,10 @@ app.controller('RecentActivityCtrl', ['$rootScope', '$scope', '$timeout', functi
             console.log(e);
           });
       }
-    });
 
 
 }]);
-
+/*
 app.filter('unique', function() {
    return function(collection, keyname) {
       var output = [],
@@ -422,6 +456,7 @@ app.filter('unique', function() {
       return output;
    };
 });
+*/
 
 app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', 'kanjiSearch', function($scope, $state, $stateParams, kanjiSearch){
   $scope.word = $stateParams.obj;

@@ -1,6 +1,8 @@
-app.controller('RecentActivityCtrl', ['$rootScope', '$scope', '$timeout', function($rootScope, $scope, $timeout){
+app.controller('RecentActivityCtrl', ['authFactory', '$rootScope', '$scope', '$timeout', function(authFactory, $rootScope, $scope, $timeout){
   $scope.recents = [];
-    firebase.auth().onAuthStateChanged(function(user){
+    var getAuth = authFactory.auth();
+    var user = getAuth.currentUser;
+    console.log(user);
       if(user){
         var activity = firebase.database().ref('users').child(user.uid + '/recentActivity');
         activity.once('value', function(snapshot){
@@ -18,7 +20,6 @@ app.controller('RecentActivityCtrl', ['$rootScope', '$scope', '$timeout', functi
         });
         function update(recentObj){
           $scope.recents.push(recentObj);
-          console.log($scope.recents);
         };
       }else{
         console.log("Not logged in.");
@@ -38,11 +39,10 @@ app.controller('RecentActivityCtrl', ['$rootScope', '$scope', '$timeout', functi
             console.log(e);
           });
       }
-    });
 
 
 }]);
-
+/*
 app.filter('unique', function() {
    return function(collection, keyname) {
       var output = [],
@@ -59,3 +59,4 @@ app.filter('unique', function() {
       return output;
    };
 });
+*/

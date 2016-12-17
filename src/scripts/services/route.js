@@ -31,7 +31,14 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             url: '/dashboard',
             abstract: true, // abstract: {boolean} provides inherited properties to its common children states.
             templateUrl: 'templates/dashboard.html',
-            controller: 'DashboardCtrl'
+            controller: 'DashboardCtrl',
+            resolve: {
+                "currentAuth": ['$firebaseAuth', function($firebaseAuth) {
+                    var au = firebase.auth();
+                    var authObj = $firebaseAuth(au);
+                    return authObj.$requireSignIn();
+                }]
+            }
         })
         .state('dashboard.front', {
             url: '',
@@ -74,4 +81,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         });
         // urlRouterProvider redirects back to landing page, if url doesn't match /dashboard
         $urlRouterProvider.otherwise('/');
+}]);
+
+app.run(['$rootScope', '$state', function($rootScope, $state) {
+    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+        // if not signed in, redirect to login page
+        if (error === "AUTH_REQUIRED") {
+            $state.go('/'); // tms login state
+        }
+    });
 }]);

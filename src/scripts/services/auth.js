@@ -39,8 +39,7 @@ app.factory('authFactory', ['$state', function authFactory($state){
   }
 
   authFactory.auth = function(){
-    console.log(currentUser);
-    return auth.currentUser;
+      return auth;
   }
 
   return authFactory;

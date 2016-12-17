@@ -5,7 +5,7 @@
     </div>
     <div class="search-container">
       <div class="search">
-        <input type="text" class="textfield" placeholder="Seach a word in English or in Japanese" ng-model="searchWord"></input>
+        <input type="text" class="textfield" placeholder="Search a word in English or in Japanese" ng-model="searchWord"></input>
       </div>
       <div class="icon">
         <div>
@@ -28,7 +28,8 @@
     </div>
     <div class="word-container">
       <div class="all-words" id="autoscroll">
-        <div ng-repeat="word in words | orderBy:'dateAdded':true | limitTo: limit | filter: searchWord track by $index" word="word" ng-click="go(word)">
+        <div ng-init="word.visible = true" ng-repeat="word in words | orderBy:'dateAdded':true | limitTo: limit | filter: searchWord track by $index" 
+        word="word" ng-click="go(word)" ng-show="word.visible">
           <div class="wordblock" >
             <div class="word-data">
               <p class="japanese"><b>{{word.data.expression}}</b></p>

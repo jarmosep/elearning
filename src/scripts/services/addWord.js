@@ -10,6 +10,8 @@ app.factory('addWord', function addWord(){
     var user = firebase.auth().currentUser;
     if(user){
       var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
+      var tagbank = firebase.database().ref('users').child(user.uid + '/tagbank');
+      var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
       var date = Math.floor(Date.now());
       wordbank.push({
         expression: expression,
@@ -19,7 +21,7 @@ app.factory('addWord', function addWord(){
         tags: tags,
         dateAdded: date
       });
-      var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
+      tagbank.push(tags);
       recentActivities.push({
         activity: expression+' added to the wordbank',
         timestamp: date
