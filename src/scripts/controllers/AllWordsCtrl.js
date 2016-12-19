@@ -14,7 +14,6 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
   var user = getAuth.currentUser;
 
   if(user){
-    var defaultTags = firebase.database().ref('defaultTags');
     var word = firebase.database().ref('users').child(user.uid + '/wordbank');
     var userTags = firebase.database().ref('users').child(user.uid + '/tagbank');
     word.once('value', function(snapshots){
@@ -34,25 +33,10 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
       $scope.words.push(recentObj);
     };
 
-    var getUserTags = [];
-    var mergedUserTags = [];
-    userTags.once('value', function (snapshots){
-      var snap = snapshots.val();
-      angular.forEach(snap, function(value){ // get all tags from user's individual words
-        getUserTags.push(value); // push them into an array
-        mergedUserTags = [].concat.apply([], getUserTags); // merge the tag arrays together
-      });
-    });
-
-
-    defaultTags.once('value', function(snapshot){
-      var defTags = snapshot.val(); // get all default tags
-      var alltags = defTags.concat(mergedUserTags); // merge them with user's own tags
-      alltags = alltags.filter( function( item, index, inputArray ) { // check for duplicates in array...
-        return inputArray.indexOf(item) == index; // ...and remove them
-      });
-      console.log(alltags);
-      $scope.filters.push(alltags);
+    userTags.once('value', function(snapshot){
+      var tags = snapshot.val(); 
+      console.log(tags);
+      $scope.filters.push(tags);
     });
 
 

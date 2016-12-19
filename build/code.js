@@ -5,40 +5,40 @@ Angular module - initializing dependencies, which the application will use.
 - ngAnimate module provides support for CSS- and (partially) JS-based animations.
 ****************************************************************************************/
 
-var app = angular.module('eLearning', ['ui.router', 'firebase', 'ngSanitize', 'ngAnimate']);
+var app = angular.module('eLearning', ['ui.router', 'ui.select', 'firebase', 'ngSanitize', 'ngAnimate']);
 
 app.factory('addWord', function addWord(){
   // Registration method
-  addWord.submitWord = function(expression, reading, meaning, tags, sentences){
-    if(!sentences){
-      sentences = 'No example sentences given.';
-    }
-    if(!reading){
-      reading = null;
-    }
+  addWord.submitWord = function(newWord,newAction,newTags){
+
     var user = firebase.auth().currentUser;
     if(user){
       var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
       var tagbank = firebase.database().ref('users').child(user.uid + '/tagbank');
       var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
-      var date = Math.floor(Date.now());
-      wordbank.push({
-        expression: expression,
-        reading: reading,
-        meaning: meaning,
-        sentences: sentences,
-        tags: tags,
-        dateAdded: date
+      wordbank.push(newWord);
+      recentActivities.push(newAction);
+
+      var savePreviousTags = [];
+      tagbank.once('value', function (snapshot){
+        var snap = snapshot.val();
+        angular.forEach(snap, function(value){ // get all tags from user's individual words
+          savePreviousTags.push(value); // push them into an array
+        });
       });
-      tagbank.push(tags);
-      recentActivities.push({
-        activity: expression+' added to the wordbank',
-        timestamp: date
+      var setNewTags = savePreviousTags.concat(newTags);
+
+      setNewTags = setNewTags.filter( function( item, index, inputArray ) { // check for duplicates in array...
+        return inputArray.indexOf(item) == index; // ...and remove them
       });
+
+      tagbank.set(setNewTags);
+
     }else{
       console.log("Erorrs");
     }
   }
+
   return addWord;
 
 });
@@ -63,6 +63,11 @@ app.factory('authFactory', ['$state', function authFactory($state){
         activity: 'You created a new account!',
         timestamp: date,
       });
+      var defaultTags = firebase.database().ref('users').child(user.uid + '/tagbank');
+      var tags = ['adjective-i', 'adjective-na', 'adverb', 'auxiliary', 'conjunction', 'common', 'expression',
+                  'noun', 'particle', 'ichidan-verb', 'godan-verb', 'transitive', 'intransitive', 'suru-verb',
+                  'kuru-verb', 'colloquialism', 'honorific', 'onomatopoeic', 'slang', 'vulgar', 'sensitive'];
+      defaultTags.set(tags);
       $state.go('dashboard.front');
       console.log(user);
     }).catch(function(err){
@@ -119,13 +124,6 @@ var config = {
 };
 firebase.initializeApp(config);
 
-// Initializing default tags
-var defaultTags = firebase.database().ref('defaultTags');
-var tags = ['adjective-i', 'adjective-na', 'adverb', 'auxiliary', 'conjunction', 'common', 'expression',
-            'noun', 'particle', 'ichidan-verb', 'godan-verb', 'transitive', 'intransitive', 'suru-verb',
-            'kuru-verb', 'colloquialism', 'honorific', 'onomatopoeic', 'slang', 'vulgar', 'sensitive'];
-defaultTags.set(tags);
-
 /****************************************************************************************
 Routing unit - used to alternate between different views through nested states.
 ****************************************************************************************/
@@ -174,7 +172,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
         .state('dashboard.addword', {
             templateUrl: 'templates/mainviews/addword.html',
-            controller: 'WordSubmitCtrl'
+            controller: 'WordSubmitCtrl',
         })
 
         .state('dashboard.quiz', {
@@ -219,7 +217,6 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
   var user = getAuth.currentUser;
 
   if(user){
-    var defaultTags = firebase.database().ref('defaultTags');
     var word = firebase.database().ref('users').child(user.uid + '/wordbank');
     var userTags = firebase.database().ref('users').child(user.uid + '/tagbank');
     word.once('value', function(snapshots){
@@ -239,25 +236,10 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
       $scope.words.push(recentObj);
     };
 
-    var getUserTags = [];
-    var mergedUserTags = [];
-    userTags.once('value', function (snapshots){
-      var snap = snapshots.val();
-      angular.forEach(snap, function(value){ // get all tags from user's individual words
-        getUserTags.push(value); // push them into an array
-        mergedUserTags = [].concat.apply([], getUserTags); // merge the tag arrays together
-      });
-    });
-
-
-    defaultTags.once('value', function(snapshot){
-      var defTags = snapshot.val(); // get all default tags
-      var alltags = defTags.concat(mergedUserTags); // merge them with user's own tags
-      alltags = alltags.filter( function( item, index, inputArray ) { // check for duplicates in array...
-        return inputArray.indexOf(item) == index; // ...and remove them
-      });
-      console.log(alltags);
-      $scope.filters.push(alltags);
+    userTags.once('value', function(snapshot){
+      var tags = snapshot.val(); 
+      console.log(tags);
+      $scope.filters.push(tags);
     });
 
 
@@ -508,13 +490,45 @@ app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', 'kanjiSea
 
 app.controller('WordSubmitCtrl', ['$scope', 'addWord', function($scope, addWord){
   $scope.form = {};
-
-  $scope.onSubmit = function(expression, reading, meaning, tags, sentences){
-    addWord.submitWord(expression, reading, meaning, tags, sentences);
+  $scope.tags = [];
+  $scope.onSubmit = function(){
+    if(!$scope.form.sentences){
+      $scope.form.sentences = 'No example sentences given.';
+    }
+    if(!$scope.form.reading){
+      $scope.form.reading = '';
+    }
+    var newWord = {
+      expression: $scope.form.expression,
+      reading: $scope.form.reading,
+      meaning: $scope.form.meaning,
+      tags: $scope.form.selectedItem,
+      sentences: $scope.form.sentences
+    };
+    var date = Math.floor(Date.now());
+    var newAction = {
+      activity: $scope.form.expression+' added to the wordbank',
+      timestamp: date
+    }
+    var tags = $scope.form.selectedItem;
+    console.log(tags);
+    addWord.submitWord(newWord, newAction, tags);
     $scope.form = null;
   }
   $scope.clearFields = function(){
     $scope.form = null;
+  }
+
+  var user = firebase.auth().currentUser;
+  if(user){
+    var tagbank = firebase.database().ref('users').child(user.uid + '/tagbank');
+    tagbank.on('value', function(snapshot){
+      $scope.tags = snapshot.val();
+      console.log($scope.tags);
+    });
+    $scope.selectedItem = $scope.tags[0];
+  }else{
+    console.log("not logged in");
   }
 }]);
 

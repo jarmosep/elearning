@@ -28,7 +28,7 @@
     </div>
     <div class="word-container">
       <div class="all-words" id="autoscroll">
-        <div ng-init="word.visible = true" ng-repeat="word in words | orderBy:'dateAdded':true | limitTo: limit | filter: searchWord track by $index" 
+        <div ng-init="word.visible = true" ng-repeat="word in words | orderBy:'dateAdded':true | limitTo: limit | filter: searchWord track by $index"
         word="word" ng-click="go(word)" ng-show="word.visible">
           <div class="wordblock" >
             <div class="word-data">
@@ -39,12 +39,20 @@
             <div class="operations" outside-click="$root.popkey = null">
                 <span class="action ion-android-more-vertical" ng-click="$root.popkey = word.key"></span>
                 <div class="options" ng-show="$root.popkey == word.key">
-                  <li>
-                    <p class="delete" ng-click="go(word)">View</p>
+                  <li ng-click="go(word)">
+                    <p>View</p>
                     <span class="ion-chevron-right"></span>
                   </li>
+                  <li>
+                    <p>Edit</p>
+                    <span class="ion-edit"></span>
+                  </li>
+                  <li>
+                    <p>Add to deck</p>
+                    <span class="ion-plus"></span>
+                  </li>
                   <li ng-click="removeWord(word.key, word);">
-                    <p class="delete">Delete</p>
+                    <p>Delete</p>
                     <span class="ion-trash-a"></span>
                   </li>
                 </div>

@@ -18,6 +18,11 @@ app.factory('authFactory', ['$state', function authFactory($state){
         activity: 'You created a new account!',
         timestamp: date,
       });
+      var defaultTags = firebase.database().ref('users').child(user.uid + '/tagbank');
+      var tags = ['adjective-i', 'adjective-na', 'adverb', 'auxiliary', 'conjunction', 'common', 'expression',
+                  'noun', 'particle', 'ichidan-verb', 'godan-verb', 'transitive', 'intransitive', 'suru-verb',
+                  'kuru-verb', 'colloquialism', 'honorific', 'onomatopoeic', 'slang', 'vulgar', 'sensitive'];
+      defaultTags.set(tags);
       $state.go('dashboard.front');
       console.log(user);
     }).catch(function(err){

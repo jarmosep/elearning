@@ -1,35 +1,35 @@
 app.factory('addWord', function addWord(){
   // Registration method
-  addWord.submitWord = function(expression, reading, meaning, tags, sentences){
-    if(!sentences){
-      sentences = 'No example sentences given.';
-    }
-    if(!reading){
-      reading = null;
-    }
+  addWord.submitWord = function(newWord,newAction,newTags){
+
     var user = firebase.auth().currentUser;
     if(user){
       var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
       var tagbank = firebase.database().ref('users').child(user.uid + '/tagbank');
       var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
-      var date = Math.floor(Date.now());
-      wordbank.push({
-        expression: expression,
-        reading: reading,
-        meaning: meaning,
-        sentences: sentences,
-        tags: tags,
-        dateAdded: date
+      wordbank.push(newWord);
+      recentActivities.push(newAction);
+
+      var savePreviousTags = [];
+      tagbank.once('value', function (snapshot){
+        var snap = snapshot.val();
+        angular.forEach(snap, function(value){ // get all tags from user's individual words
+          savePreviousTags.push(value); // push them into an array
+        });
       });
-      tagbank.push(tags);
-      recentActivities.push({
-        activity: expression+' added to the wordbank',
-        timestamp: date
+      var setNewTags = savePreviousTags.concat(newTags);
+
+      setNewTags = setNewTags.filter( function( item, index, inputArray ) { // check for duplicates in array...
+        return inputArray.indexOf(item) == index; // ...and remove them
       });
+
+      tagbank.set(setNewTags);
+
     }else{
       console.log("Erorrs");
     }
   }
+
   return addWord;
 
 });

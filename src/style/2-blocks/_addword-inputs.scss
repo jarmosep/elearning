@@ -11,11 +11,6 @@ form{
         border: none;
       }
       .title{
-        float:left;
-        min-width: 130px;
-        @include media(max-width $mobile){
-          float:none;
-        }
         h4{
           @include media(max-width $mobile){
             padding-bottom: 0;
@@ -23,17 +18,74 @@ form{
         }
       }
       .content{
-        overflow: hidden;
-        padding: 13px 13px;
+        padding: 5px 15px 15px;
         .textinput, .upload{
           @include font-size(16px);
-          background-color: $light-grey;
-          border-radius: 2px;
-          border: 1px solid $border-color-grey;
-          height:42px;
+          border:none;
+          border-bottom: 1px solid $border-color-grey;
+          height:40px;
           outline:none;
-          padding-left: 12px;
           width: 100%;
+        }
+        .tag-container{
+          position: relative;
+          min-height:45px;
+          border-bottom: 1px solid $border-color-grey;
+          ::-webkit-input-placeholder {  @include font-size(17px); }
+          :-moz-placeholder { @include font-size(17px); }
+          ::-moz-placeholder { @include font-size(17px); }
+          :-ms-input-placeholder { @include font-size(17px);  }
+          input[type="search"]{
+            display: inline-block;
+            margin-top: 10px;
+            border:none;
+            height:40px;
+            &:focus{
+              outline:none;
+            }
+          }
+          .tag-list{
+            position: relative;
+            z-index: 15;
+            .btn{
+              color: $white;
+              background-color: $green;
+              border: 1px solid $green-dark;
+              border-radius:3px;
+              padding: 5px;
+              margin-right: 5px;
+              line-height: 34px;
+              .close{
+                cursor: pointer;
+                color: $green-dark;
+              }
+              @include media(max-width $mobile){
+                margin-top: 5px;
+                display:block;
+              }
+            }
+          }
+          .tag-choices{
+            position: absolute;
+            z-index: 17;
+            height: 150px;
+            width:350px;
+            overflow-y: scroll;
+            background-color: $white;
+            box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.2);
+            @include media(max-width $mobile){
+              width: 100%;
+            }
+            * {
+              div{
+                padding: 10px 5px;
+                cursor:pointer;
+                &:hover{
+                  background-color: $light-grey;
+                }
+              }
+            }
+          }
         }
         textarea{
           padding-top:12px;
@@ -42,24 +94,9 @@ form{
           resize: vertical;
         }
       }
-      #toHide{
-        display:none;
-      }
-      .upload{
-        background-color: $light-grey;
-        transition: all 0.1s ease;
-        cursor:pointer;
-        text-align:left;
-        color: $border-color-grey;
-        &:hover{
-          background-color: $border-color-grey;
-          border-color: darken($border-color-grey, 15%);
-          color: darken($border-color-grey, 15%);
-        }
-      }
     }
     h4{
-      padding: 20px 15px;
+      padding: 20px 15px 5px;
     }
   }
 }

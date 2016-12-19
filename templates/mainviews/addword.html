@@ -34,16 +34,12 @@
             <h4>Tags:</h4>
           </div>
           <div class="content">
-            <input type="text" name="tags" ng-model="form.tags" class="textinput" placeholder="Give the word or expression suitable tags" ng-list required></input>
-          </div>
-        </div>
-        <div class="field">
-          <div class="title">
-            <h4>Image:</h4>
-          </div>
-          <div class="content">
-            <input type="file" id="toHide"></input>
-            <input type="button" name="image" ng-model="form.image" value="Click to upload a picture to aid word memorization" align="left" class="upload" onClick="document.getElementById('toHide').click();"></input>
+            <ui-select class="tag-container" multiple tagging tagging-label="(adding new tag)" ng-model="form.selectedItem" ng-disabled="tags.disabled" title="Choose a tag" required>
+              <ui-select-match class="tag-list" placeholder="Select tags for the word or create your own">{{$item}}</ui-select-match>
+              <ui-select-choices class="tag-choices" repeat="tag in (tags | filter:$select.search) track by $index">
+                {{tag}}
+              </ui-select-choices>
+            </ui-select>
           </div>
         </div>
         <div class="field">
@@ -59,7 +55,7 @@
             <button class="erase" ng-click="clearFields()">
               <p>Erase fields</p>
             </button>
-            <button class="submit" ng-click="onSubmit(form.expression, form.reading, form.meaning, form.tags, form.sentences)" ng-disabled="submitWord.$invalid">
+            <button class="submit" ng-click="onSubmit()" ng-disabled="submitWord.$invalid">
               <p>Submit</p>
             </button>
           </div>
