@@ -4,13 +4,6 @@
   @include media(max-width $mobile){
     @include span-columns(12);
   }
-  .image{
-    min-height: 200px;
-    margin-bottom: 25px;
-    img{
-      width: 100%;
-    }
-  }
   .kanjis{
     @include clearfix;
     @include boxShadow;
@@ -47,6 +40,7 @@
         text-align:center;
         p{
           @include font-size(54px);
+          @include japanese;
         }
       }
       .rmgroup{

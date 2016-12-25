@@ -26,10 +26,7 @@
     background-color: darken($light-grey, 10%);
   }
   .word-container{
-    @include boxShadow;
     @include span-columns(12);
-    background-color: $white;
-    border-top: 1px solid #E2E5EB;
     @include media(max-width $mobile){
       @include span-columns(12);
     }

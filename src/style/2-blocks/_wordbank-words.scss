@@ -1,10 +1,22 @@
  .wordblock{
   @include clearfix;
+  @include boxShadow;
   position: relative;
   cursor: pointer;
-  margin: 5px;
   padding:26px;
   background-color: $blue;
+  border-bottom: 1px solid darken($blue,7%);
+  border-left: 1px solid darken($blue,7%);
+  border-right: 1px solid darken($blue,7%);
+  transition: all 0.2s ease-in-out;
+  -webkit-transform: translate3d(0, 0, 0);
+  &:hover{
+    background-color: #33CFEB;
+    margin: 5px 0 5px;
+    border-bottom: 1px solid $blue;
+    border-left: 1px solid $blue;
+    border-right: 1px solid $blue;
+  }
   @include media(max-width $mobile){
     margin-top: 5px;
   }
@@ -19,6 +31,7 @@
     .japanese{
       display:inline-block;
       @include font-size(17px);
+      @include japanese;
       @include media(max-width $mobile){
         @include font-size(24px);
         display:block;
@@ -38,10 +51,10 @@
   }
   .operations{
     @include span-columns(1, block-collapse);
-    cursor:pointer;
     color: $white;
-    text-align: center;
+    cursor:pointer;
     position: absolute;
+    text-align: center;
     right: 0;
     top: 0;
     bottom: 0;
@@ -70,7 +83,7 @@
       color: $sidebar-bg;
       position: absolute;
       right:0;
-      z-index: 3;
+      bottom:0;
       width: 200px;
       height: auto;
       li{
@@ -99,7 +112,6 @@
 
 .more-words{
   @include hoverColor;
-  margin: 5px;
   background-color: $sidebar-bg;
   cursor: pointer;
   p{
