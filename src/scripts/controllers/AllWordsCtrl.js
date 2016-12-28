@@ -2,6 +2,7 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
   $scope.words = [];
   $scope.filters = [];
   $scope.limit = 5;
+  $scope.loading = true;
   $scope.showMore = function(){
     $scope.limit += 5;
     $timeout(function() {
@@ -26,6 +27,7 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
         };
         $timeout(function(){
           update(recentObj);
+          $scope.loading = false;
         });
       });
     });
@@ -34,7 +36,7 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
     };
 
     userTags.once('value', function(snapshot){
-      var tags = snapshot.val(); 
+      var tags = snapshot.val();
       console.log(tags);
       $scope.filters.push(tags);
     });
@@ -46,7 +48,7 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
 
   $scope.go = function(word) {
     console.log(word);
-    $state.go('dashboard.word', {obj:word});
+    $state.go('dashboard.word', {obj:word.data.expression});
   }
 
   $scope.removeWord = function(key, index){

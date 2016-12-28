@@ -1,10 +1,15 @@
+<div class="loader" ng-class="{'show-loader': loading }">
+  <span class="ion-load-d"></span>
+</div>
+
+<div ng-show="!loading">
 <div class="word-meanings">
   <div class="japanese">
-    <p>{{word.data.reading}}</p>
-    <h2>{{word.data.expression}}</h2>
+    <p>{{word.reading}}</p>
+    <h2>{{word.expression}}</h2>
   </div>
   <div class="english">
-    <p>{{word.data.meaning}}</p>
+    <p>{{word.meaning}}</p>
   </div>
 </div>
 <div class="wrapper">
@@ -14,19 +19,16 @@
       <div class="fields">
         <div class="field">
             <h3>Example sentences</h3>
-            <p>{{word.data.sentences}}</p>
+            <p>{{word.sentences}}</p>
         </div>
         <div class="field">
             <h3>Tags</h3>
-            <p class="tag">{{word.data.tags.join(", ")}}</p>
+            <p class="tag">{{word.tags.join(", ")}}</p>
         </div>
       </div>
 
     </div>
     <div class="word-additional">
-      <div class="image" ng-if="!word.image.length == 0">
-        <img src="http://placehold.it/750x555" alt="placeholder">
-      </div>
       <div class="kanjis" ng-if="kanjis.length > 0">
         <h3 ng-if="kanjis.length == 1">Kanji</h3>
         <h3 ng-if="kanjis.length > 1">Kanjis</h3>
@@ -49,4 +51,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

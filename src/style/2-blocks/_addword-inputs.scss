@@ -6,26 +6,32 @@ form{
     border: 1px solid white;
     .field{
       @include clearfix;
-      border-bottom: 1px dotted rgba(0,0,0,0.3);
+      padding: 25px 15px 25px 15px;
+      border-bottom: 1px solid #E2E5EB;
+      position: relative;
       &:last-of-type{
         border: none;
       }
-      .title{
-        h4{
-          @include media(max-width $mobile){
-            padding-bottom: 0;
-          }
-        }
-      }
-      .content{
-        padding: 5px 15px 15px;
-        .textinput, .upload{
+        .textinput{
           @include font-size(16px);
+          position: relative;
           border:none;
           border-bottom: 1px solid $border-color-grey;
           height:40px;
           outline:none;
           width: 100%;
+          transition: border 0.1s ease-in-out;
+        }
+        h4{
+          padding-top: 30px;
+          position: absolute;
+          pointer-events: none;
+          left: 15px;
+          top: 0;
+          transition: 0.2s ease all;
+          @include media(max-width $mobile){
+            padding-bottom: 0;
+          }
         }
         .tag-container{
           position: relative;
@@ -90,13 +96,21 @@ form{
         textarea{
           padding-top:12px;
           font-family: arial;
-          min-height: 100px;
+          min-height: 40px;
           resize: vertical;
+        }
+        .textinput:focus, .tag-container.open,
+        .textinput.ng-not-empty, .tag-container.ng-not-empty{
+          border-bottom: 3px solid $blue;
+        }
+        .textinput:focus ~ h4, .tag-container.open ~ h4,
+        .textinput.ng-not-empty ~ h4, .tag-container.ng-not-empty ~ h4{
+          left: 15px;
+          top: -15px;
+          font-size: 11px;
+          opacity: 1;
+          color: $blue;
         }
       }
     }
-    h4{
-      padding: 20px 15px 5px;
-    }
-  }
 }

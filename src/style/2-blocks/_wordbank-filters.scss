@@ -7,8 +7,8 @@
   display:none;
   @include media(max-width $mobile){
     text-align: center;
-    background-color: $green;
-    color: $white;
+    background-color: $sidebar-bg;
+    color: $sidebar-icon-color;
     cursor:pointer;
     display:block;
     font-size: 38px;

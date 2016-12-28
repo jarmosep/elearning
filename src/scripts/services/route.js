@@ -41,12 +41,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.wordbank', {
+            url: '/wordbank',
             templateUrl: 'templates/mainviews/wordbank.html',
-            controller: 'AllWordsCtrl'
+            controller: 'AllWordsCtrl',
         })
 
         .state('dashboard.word', {
-            url: '/word',
+            url: '/wordbank/word/:word',
             templateUrl: 'templates/mainviews/singleword.html',
             controller: 'WordDetailsCtrl',
             params: {
@@ -55,25 +56,30 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.addword', {
+            url: '/addword',
             templateUrl: 'templates/mainviews/addword.html',
             controller: 'WordSubmitCtrl',
         })
 
         .state('dashboard.quiz', {
+            url: '/quiz',
             templateUrl: 'templates/mainviews/quiz.html',
             controller: 'QuizCtrl'
         })
 
         .state('dashboard.assignments', {
+            url: '/assignment',
             templateUrl: 'templates/mainviews/assignment.html',
             controller: 'AssignmentsCtrl'
         })
 
         .state('dashboard.askteacher', {
+            url: '/ask',
             templateUrl: 'templates/mainviews/ask.html'
         });
         // urlRouterProvider redirects back to landing page, if url doesn't match /dashboard
         $urlRouterProvider.otherwise('/');
+
 }]);
 
 app.run(['$rootScope', '$state', function($rootScope, $state) {

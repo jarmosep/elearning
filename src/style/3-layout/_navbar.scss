@@ -6,7 +6,7 @@ label[for="nav-trigger"] {
   position: fixed;
   top: 15px;
   left: 15px;
-  z-index: 2;
+  z-index: 9998;
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -32,7 +32,7 @@ label[for="nav-trigger"] {
   background-color: $sidebar-bg;
   height: 100%;
   width: 100px;
-  z-index: 2;
+  z-index: 9999;
   top: 0;
   right: 0;
   bottom: 0;

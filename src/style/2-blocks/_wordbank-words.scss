@@ -86,6 +86,9 @@
       bottom:0;
       width: 200px;
       height: auto;
+      a{
+        color: $sidebar-bg;
+      }
       li{
         @include clearfix;
         list-style: none;
@@ -104,7 +107,6 @@
           @include font-size(22px);
           float: right;
         }
-
       }
     }
   }

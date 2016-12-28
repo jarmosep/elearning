@@ -1,10 +1,11 @@
 .navigation-top{
+  @include boxShadow;
   position:fixed;
   background-color: $white;
   display: inline;
   height: 65px;
   width: 100%;
-  z-index: 2;
+  z-index: 9997;
   @include media(max-width $mobile){
     left:0;
   }

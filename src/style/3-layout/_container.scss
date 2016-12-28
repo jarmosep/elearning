@@ -5,6 +5,8 @@
   left: 130px;
   right: 25px;
   top: 73px;
+  &.ng-enter { animation: slideIn 500ms both ease-in-out; z-index: 888; animation-delay: 300ms;  }
+  &.ng-leave { animation: slideOut 300ms both ease-in-out; z-index: 998;}
   @include media(max-width $mobile){
     left: 0 !important;
   }
