@@ -17,7 +17,10 @@
     position: fixed;
     right: 0;
     top:0;
-    z-index: 2;
+    z-index: 99999;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+    animation-delay: 1s;
     span{
       line-height: 65px;
     }
@@ -44,7 +47,7 @@
     position: fixed;
     right: -100%;
     bottom: 0;
-    z-index: 5;
+    z-index: 99998;
     width: 50%;
     direction:ltr;
   }
