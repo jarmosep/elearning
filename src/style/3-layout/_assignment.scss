@@ -14,7 +14,6 @@
       @include span-columns(3);
       @include omega(4n);
       @include boxShadow;
-      border-top: 5px solid $sidebar-bg;
       background-color: $white;
       margin-bottom: 20px;
       position: relative;
@@ -32,51 +31,57 @@
         @include omega-reset(2n);
         @include span-columns(12);
       }
-      .success{
-        border-radius: 100%;
-        border: 5px solid $red;
-        bottom: 0;
-        float:right;
-        height: 56px;
-        line-height: 50px;
-        margin: 15px;
+      .delete{
         position: absolute;
-        right:0;
-        text-align: center;
-        width: 56px;
-        p{
-          @include font-size(36px);
-          color: $red;
+        right:-8px;
+        top:-8px;
+        span{
+          @include font-size(26px);
+          cursor: pointer;
+          color: $sidebar-bg;
         }
       }
       .title{
         margin: 0 15px 0;
         h3{
-          border-bottom: 1px dotted $border-color-grey;
+          border-bottom: 1px solid #E2E5EB;
           padding: 15px 0 10px;
 
         }
       }
       .description{
         padding:15px;
+        min-height: 125px;
         h4{
           @include font-size(16px);
           padding: 0 0 10px;
         }
       }
+      .date{
+        padding:0 15px 5px;
+        p{
+          @include font-size(14px);
+        }
+      }
       .bottom{
         @include clearfix;
-        border-top: 1px dotted $border-color-grey;
+        border-top: 1px solid #E2E5EB;
         margin: 0 15px 0;
         padding: 15px 0;
-        p{
+        p:first-of-type{
           float:left;
-          padding-left: 5px;
-          line-height: 20px;
+          line-height: 27px;
          }
-        span{line-height: 20px;}
-        span:first-of-type{ float:left }
-        span:last-of-type{ float:right }
+        p:last-of-type{
+          cursor:pointer;
+          line-height: 25px;
+          padding:0 15px;
+          border-radius: 3px;
+          float:right;
+          background-color: $green;
+          border: 1px solid $green-dark;
+          color: $white;
+        }
       }
     }
   }

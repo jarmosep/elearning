@@ -12,7 +12,7 @@
   -webkit-transform: translate3d(0, 0, 0);
   &:hover{
     background-color: #33CFEB;
-    margin: 5px 0 5px;
+    margin: 8px 0 8px;
     border-bottom: 1px solid $blue;
     border-left: 1px solid $blue;
     border-right: 1px solid $blue;
@@ -50,15 +50,19 @@
 
   }
   .operations{
-    @include span-columns(1, block-collapse);
+    @include span-columns(1);
     color: $white;
     cursor:pointer;
     position: absolute;
     text-align: center;
+    pointer-events: none;
     right: 0;
     top: 0;
     bottom: 0;
     margin: auto;
+    @include media(max-width $mobile){
+      @include span-columns(2);
+    };
     span {
       @include font-size(26px);
       line-height: 14px;
@@ -109,6 +113,22 @@
         }
       }
     }
+  }
+}
+
+.selectedWord{
+  background-color: $blue-dark;
+  border-bottom: 1px solid darken($blue-dark,5%);
+  border-left: 1px solid darken($blue-dark,5%);
+  border-right: 1px solid darken($blue-dark,5%);
+  transition: all 0.1s ease-in-out;
+  -webkit-transform: translate3d(0, 0, 0);
+  &:hover{
+    background-color: lighten($blue-dark,2%);
+    margin: 8px 0 8px;
+    border-bottom: 1px solid $blue-dark;
+    border-left: 1px solid $blue-dark;
+    border-right: 1px solid $blue-dark;
   }
 }
 

@@ -9,6 +9,8 @@
     color: $sidebar-bg;
   }
   .mission{
+    margin-top: 20px;
+    cursor: pointer;
     p{
       @include font-size(28px);
       line-height: 75px;

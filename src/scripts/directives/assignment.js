@@ -5,6 +5,7 @@ app.directive('assignment', function(){
     scope: {
       data: '='
     },
+    controller: 'AssignmentsCtrl',
     templateUrl: 'templates/mainviews/partials/assignment-test.html'
   }
 });

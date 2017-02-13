@@ -26,7 +26,7 @@
   }
   .submit{
       background-color: $green;
-      border-style:none;
+      border: 1px solid $green-dark;
   }
   .submit:disabled{
       background-color: lightgray;

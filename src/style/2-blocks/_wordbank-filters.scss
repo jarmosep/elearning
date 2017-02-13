@@ -26,7 +26,7 @@
     }
   }
 }
-.filter-trigger + .toggle, .filter-box {
+.filter-trigger + .toggle, .action-box {
   transition: right 0.2s;
 }
 
@@ -34,10 +34,10 @@
   right: 50%;
 }
 
-.filter-trigger:checked ~ .filter-box {
+.filter-trigger:checked ~ .action-box {
   right: 0;
 }
-.filter-box{
+.action-box{
   @include boxShadow;
   @include span-columns(12);
   background-color:$white;
@@ -53,8 +53,8 @@
   }
   .filter-container{
     padding:20px;
+    border-top: 1px solid #E2E5EB;
     @include media(max-width $mobile){
-      border-top: 1px solid #E2E5EB;
       unicode-bidi:bidi-override;
       direction: rtl;
       overflow-y: scroll;
@@ -90,6 +90,71 @@
       border: 1px solid $green-dark;
       p{
         color: $white;
+      }
+    }
+  }
+  .deck-container{
+    @include span-columns(12);
+    border-top: 1px solid #E2E5EB;
+    padding: 20px;
+    .deck-info{
+      @include span-columns(4);
+      @include media(max-width $mobile){
+        @include span-columns(12);
+        display:block;
+        padding: 12px;
+      }
+      .input{
+        margin-left: 11px;
+        padding: 2px;
+        border:none;
+        border-bottom: 1px solid #E2E5EB;
+        transition: border 0.1s ease-in-out;
+        &:focus{
+          outline:none;
+        }
+        @include media(max-width $mobile){
+          @include span-columns(12);
+          margin-left: 0;
+        };
+      }
+      .input:focus, .input.ng-not-empty, {
+        border-bottom: 3px solid $blue;
+      }
+    }
+    form{ margin:0; }
+    .submit{
+      @include span-columns(4);
+      @include media(max-width $mobile){
+        @include span-columns(12);
+        padding: 12px;
+      }
+      button{
+        @include font-size(15px);
+        line-height: 25px;
+        padding: 0 15px;
+        margin-right: 0;
+        border-radius: 3px;
+        border: 1px solid $green-dark;
+        background-color: $green;
+        color:$white;
+        text-align: center;
+        float: right;
+        cursor: pointer;
+        @include media(max-width $mobile){
+          @include span-columns(12);
+          padding: 12px;
+          margin-top:12px;
+        };
+      }
+    }
+    p{
+      display: inline;
+      color: $sidebar-bg;
+      line-height: 25px;
+      @include media(max-width $mobile){
+        @include span-columns(12);
+        @include font-size(24px);
       }
     }
   }

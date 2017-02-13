@@ -13,12 +13,12 @@
   }
   .activity{
     background-color: $light-grey;
-    margin: 0px 5px 5px 5px;
+    margin: 0px 15px 5px 15px;
     position: relative;
+    &:last-of-type{ margin-bottom: 15px;}
     @include clearfix;
     @include media(max-width $mobile){
       margin: 5px 15px;
-      &:last-of-type{ margin-bottom: 15px;}
     }
     .what-and-when{
       @include span-columns(11, block-collapse);

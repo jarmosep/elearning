@@ -19,29 +19,51 @@
       </div>
       <input type="checkbox" id="filter-trigger" class="filter-trigger" />
       <label for="filter-trigger" class="toggle"><span class="ion-arrow-left-b"></span></label>
-      <div class="filter-box">
+      <div class="action-box">
         <h4 ng-click="filtersEnable = !filtersEnable"
             ng-class="filtersEnable ? 'enabled' : 'disabled'">
             Filters <span ng-class="{'ion-arrow-up-b': filtersEnable, 'ion-arrow-down-b': !filtersEnable}"></span>
+        </h4>
+        <h4 ng-click="deckEnable = !deckEnable"
+            ng-class="deckEnable ? 'enabled' : 'disabled'">
+            Create deck <span ng-class="{'ion-arrow-up-b': deckEnable, 'ion-arrow-down-b': !deckEnable}"></span>
         </h4>
         <div class="filter-container" ng-show="filtersEnable">
           <div class="filter" ng-repeat="filter in filters[0] track by $index" ng-click="toggleFilter($event, filter)">
             <p>{{filter}}</p>
           </div>
         </div>
+        <div class="deck-container" ng-show="deckEnable">
+          <form name="setDeckInfo" novalidate>
+            <div class="deck-info">
+              <p>Deck name:</p>
+              <input type="text" class="input" ng-model="deckName" required></input>
+            </div>
+            <div class="deck-info">
+              <p>Description:</p>
+              <input type="text" class="input" ng-model="description" required></input>
+            </div>
+            <div class="submit">
+              <p>Card count: {{ collection.length }}</p>
+              <button ng-click="newDeck()" ng-disabled="setDeckInfo.$invalid">Save deck</button>
+            </div>
+          </form>
+        </div>
       </div>
       <div class="word-container">
         <div class="all-words" id="autoscroll">
           <div class="the-word" ng-init="word.visible = true" ng-repeat="word in words | orderBy:'dateAdded':true | limitTo: limit | filter: searchWord track by $index"
-          word="word" ng-click="go(word)" ng-show="word.visible">
-            <div class="wordblock" ui-sref="dashboard.word({word: word.data.meaning})">
+          word="word" ng-show="word.visible">
+
+            <div class="wordblock" ui-sref="dashboard.word({word: word.data.meaning})" ng-class="{ selectedWord }"
+                  add-to-deck="{{ selectEnable }}">
               <div class="word-data">
                 <p class="japanese"><b>{{word.data.expression}}</b></p>
                 <p class="english">{{word.data.meaning}}</p>
               </div>
-
               <div class="operations" outside-click="$root.popkey = null">
-                  <span class="action ion-android-more-vertical" ng-click="$root.popkey = word.key"></span>
+                  <span class="action" ng-if="deckEnable" ng-class="{'ion-ios-checkmark': selectedWord, 'ion-ios-checkmark-outline': !selectedWord }"></span>
+                  <span class="action ion-android-more-vertical" ng-if="!deckEnable" ng-click="$root.popkey = word.key"></span>
                   <div class="options" ng-show="$root.popkey == word.key">
                     <a ui-sref="dashboard.word({word: word.data.meaning})">
                       <li>
@@ -52,10 +74,6 @@
                     <li>
                       <p>Edit</p>
                       <span class="ion-edit"></span>
-                    </li>
-                    <li>
-                      <p>Add to deck</p>
-                      <span class="ion-plus"></span>
                     </li>
                     <li ng-click="removeWord(word.key, word);">
                       <p>Delete</p>

@@ -1,33 +1,28 @@
 <div class="word-meanings">
-  <div class="word_in_question">
-    <h2>{{word.japanese}}</h2>
+  <div class="japanese">
+    <p>{{assignment.words[0].reading}}</p>
+    <h2>{{assignment.words[0].expression}}</h2>
+  </div>
+  <div class="english answer">
+    <p ng-style="answer">{{assignment.words[0].meaning}}</p>
   </div>
 </div>
 <div class="wrapper">
   <div class="container quiz">
     <div class="answer_container">
       <div class="mission">
-        <p>Vocubulary type: <strong>reading</strong></p>
+        <p ng-click="showAnswer()")>{{showText}}</p>
       </div>
-      <div class="options">
+      <div class="options" ng-if="answerChoices">
         <div class="option forgot">
           <p>No</p>
         </div>
         <div class="option remember">
           <p>Yes</p>
         </div>
-        <div class="option easy">
-          <p>Easy</p>
+        <div class="option hints">
+          <span class="ion-gear-b"></span>
         </div>
       </div>
-      <div class="hints">
-        <div class="hint listen">
-          <span class="ion-android-volume-up"></span>
-        </div>
-        <div class="hint sentences">
-          <span class="ion-help-buoy"></span>
-        </div>
-      </div>
-    </div>
   </div>
 </div>

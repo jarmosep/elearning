@@ -10,6 +10,14 @@ app.factory('getUserInfo', function getUserInfo(){
       return false;
     }
   };
+  getUserInfo.getUidForAssignments = function(){
+    if(user){
+      var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
+      return assignments;
+    }else{
+      return false;
+    }
+  };
   return getUserInfo;
 
 });

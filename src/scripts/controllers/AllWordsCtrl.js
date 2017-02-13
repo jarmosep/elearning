@@ -1,8 +1,9 @@
-app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout', '$state', function(authFactory, $scope, $rootScope, $timeout, $state){
+app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootScope', '$timeout', '$state', function(authFactory, createDeck, $scope, $rootScope, $timeout, $state){
   $scope.words = [];
   $scope.filters = [];
   $scope.limit = 5;
   $scope.loading = true;
+  $scope.collection = [];
   $scope.showMore = function(){
     $scope.limit += 5;
     $timeout(function() {
@@ -46,14 +47,8 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
     console.log("Not logged in.");
   }
 
-  $scope.go = function(word) {
-    console.log(word);
-    $state.go('dashboard.word', {obj:word.data.expression});
-  }
-
   $scope.removeWord = function(key, index){
       console.log($scope.words.indexOf(index));
-      $rootScope.popkey = null;
       $scope.words.splice($scope.words.indexOf(index),1);
       var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
       console.log(wordbank.child(key));
@@ -66,6 +61,22 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
         console.log(e);
       });
   };
+
+  $scope.newDeck = function(){
+    var usersRoot = firebase.database().ref('users').child(user.uid);
+    var date = Math.floor(Date.now());
+    var deck = {
+      deckName: $scope.deckName,
+      description: $scope.description,
+      words: $scope.collection,
+      cardLength: $scope.collection.length,
+      date: date
+    };
+    createDeck.submitDeck(deck);
+    $scope.deckName = null;
+    $scope.description = null;
+    $scope.collection.length = 0;
+  }
 
   $rootScope.activeFilters = [];
 

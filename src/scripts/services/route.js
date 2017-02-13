@@ -62,7 +62,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.quiz', {
-            url: '/quiz',
+            url: '/quiz/:assignment',
             templateUrl: 'templates/mainviews/quiz.html',
             controller: 'QuizCtrl'
         })
@@ -70,7 +70,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         .state('dashboard.assignments', {
             url: '/assignment',
             templateUrl: 'templates/mainviews/assignment.html',
-            controller: 'AssignmentsCtrl'
+            controller: 'AssignmentsCtrl',
+            params: {
+                obj: null
+            }
         })
 
         .state('dashboard.askteacher', {

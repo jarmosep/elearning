@@ -95,6 +95,21 @@ app.factory('authFactory', ['$state', function authFactory($state){
   return authFactory;
 }]);
 
+app.factory('createDeck', function createDeck(){
+
+  createDeck.submitDeck = function(newDeck){
+    var user = firebase.auth().currentUser;
+    if(user){
+      var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
+      assignments.push(newDeck);
+    }else{
+      console.log("Erorrs");
+    }
+  }
+  return createDeck;
+
+});
+
 app.factory('getUserInfo', function getUserInfo(){
 
   var user = firebase.auth().currentUser;
@@ -103,6 +118,14 @@ app.factory('getUserInfo', function getUserInfo(){
     if(user){
       var userwords = firebase.database().ref('users').child(user.uid + '/wordbank');
       return userwords;
+    }else{
+      return false;
+    }
+  };
+  getUserInfo.getUidForAssignments = function(){
+    if(user){
+      var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
+      return assignments;
     }else{
       return false;
     }
@@ -194,7 +217,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         })
 
         .state('dashboard.quiz', {
-            url: '/quiz',
+            url: '/quiz/:assignment',
             templateUrl: 'templates/mainviews/quiz.html',
             controller: 'QuizCtrl'
         })
@@ -202,7 +225,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         .state('dashboard.assignments', {
             url: '/assignment',
             templateUrl: 'templates/mainviews/assignment.html',
-            controller: 'AssignmentsCtrl'
+            controller: 'AssignmentsCtrl',
+            params: {
+                obj: null
+            }
         })
 
         .state('dashboard.askteacher', {
@@ -223,11 +249,12 @@ app.run(['$rootScope', '$state', function($rootScope, $state) {
     });
 }]);
 
-app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout', '$state', function(authFactory, $scope, $rootScope, $timeout, $state){
+app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootScope', '$timeout', '$state', function(authFactory, createDeck, $scope, $rootScope, $timeout, $state){
   $scope.words = [];
   $scope.filters = [];
   $scope.limit = 5;
   $scope.loading = true;
+  $scope.collection = [];
   $scope.showMore = function(){
     $scope.limit += 5;
     $timeout(function() {
@@ -271,14 +298,8 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
     console.log("Not logged in.");
   }
 
-  $scope.go = function(word) {
-    console.log(word);
-    $state.go('dashboard.word', {obj:word.data.expression});
-  }
-
   $scope.removeWord = function(key, index){
       console.log($scope.words.indexOf(index));
-      $rootScope.popkey = null;
       $scope.words.splice($scope.words.indexOf(index),1);
       var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
       console.log(wordbank.child(key));
@@ -291,6 +312,22 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
         console.log(e);
       });
   };
+
+  $scope.newDeck = function(){
+    var usersRoot = firebase.database().ref('users').child(user.uid);
+    var date = Math.floor(Date.now());
+    var deck = {
+      deckName: $scope.deckName,
+      description: $scope.description,
+      words: $scope.collection,
+      cardLength: $scope.collection.length,
+      date: date
+    };
+    createDeck.submitDeck(deck);
+    $scope.deckName = null;
+    $scope.description = null;
+    $scope.collection.length = 0;
+  }
 
   $rootScope.activeFilters = [];
 
@@ -323,44 +360,54 @@ app.controller('AllWordsCtrl', ['authFactory', '$scope', '$rootScope', '$timeout
 
 }]);
 
-app.controller("AssignmentsCtrl", ["$scope", function($scope){
-  $scope.assignments = [
-    {
-      title: "Basic Japanese - Quiz 4/8",
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ad soluta perspiciatis totam incidunt officiis doloribus!",
-      due: "29.11.2016 18:30",
-      completed: false,
-      grade: ""
-    },
-    {
-      title: "Basic Japanese - Quiz 3/8",
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ad soluta perspiciatis totam incidunt officiis doloribus!",
-      due: "22.11.2016 18:30",
-      completed: true,
-      grade: "A"
-    },
-    {
-      title: "Basic Japanese - Quiz 2/8",
-      description: "Necessitatibus ad soluta perspiciatis totam incidunt officiis doloribus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. ",
-      due: "15.11.2016 18:30",
-      completed: true,
-      grade: "S"
-    },
-    {
-      title: "Basic Japanese - Quiz 1/8",
-      description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      due: "15.11.2016 18:30",
-      completed: true,
-      grade: "S"
-    },
-    {
-      title: "Listening comprehension 1/2",
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ad soluta perspiciatis totam incidunt officiis doloribus!",
-      due: "7.11.2016 18:30",
-      completed: true,
-      grade: "C"
-    }
-  ];
+app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state', function($scope,$timeout, authFactory, $state){
+  $scope.assignments = [];
+  var getAuth = authFactory.auth();
+  var user = getAuth.currentUser;
+  $scope.loading = true;
+
+  if(user){
+    var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
+    assignments.once('value', function(snapshots){
+      var snap = snapshots.val();
+      angular.forEach(snap, function(value, key) {
+        var recentObj = {
+          "cardData": value,
+          "key": key,
+          "visible": true
+        };
+        $timeout(function(){
+          update(recentObj);
+          $scope.loading = false;
+        });
+      });
+    });
+    function update(recentObj){
+      $scope.assignments.push(recentObj);
+      console.log($scope.assignments);
+    };
+  }else{
+    console.log("Not logged in.");
+  }
+
+  $scope.go = function(assignment) {
+    console.log(assignment);
+    $state.go('dashboard.quiz', {obj:assignments.cardData.words});
+  }
+
+  $scope.removeAssignment = function(key, index){
+    console.log($scope.assignments.indexOf(index));
+    $scope.assignments.splice($scope.assignments.indexOf(index),1);
+    var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
+    var promise = assignments.child(key).remove();
+    console.log(assignments.child(key));
+    promise.then(function(){
+      console.log('kaik män');
+    }).catch(function(e){
+      console.log(e);
+    });
+  };
+
 }]);
 
 app.controller('DashboardCtrl', ['$scope', '$state', '$timeout', '$window', 'authFactory', function($scope, $state, $timeout, $window, authFactory){
@@ -400,6 +447,37 @@ app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $sco
   $scope.login = function(email, passwd){
     authFactory.login(email, passwd);
   }
+}]);
+
+app.controller("QuizCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'getUserInfo', function($scope, $state, $stateParams, $timeout, getUserInfo){
+  var urlParam = $stateParams.assignment;
+  if(!urlParam){
+    $state.go('dashboard.assignment');
+  }
+  $scope.hide = false;
+  var decoded = decodeURIComponent(urlParam);
+  var userinfo = getUserInfo.getUidForAssignments();
+
+  var assignment = userinfo.orderByChild("deckName").equalTo(decoded).once("value", function(dataSnapshot) {
+    var assignmentData = dataSnapshot.val();
+    $scope.assignment = assignmentData[Object.keys(assignmentData)];
+    console.log($scope.assignment);
+
+    /*
+    $timeout(function(){
+      $scope.loading = false;
+    }, 0);
+    */
+  });
+  $scope.answerChoices = false;
+  $scope.answer = {'opacity': 0};
+  $scope.showText = "Show answer";
+  $scope.showAnswer = function(){
+    $scope.answer = {'opacity': 1};
+    $scope.showText = "Do you remember this word?";
+    $scope.answerChoices = true;
+  };
+
 }]);
 
 app.controller('RecentActivityCtrl', ['authFactory', '$rootScope', '$scope', '$timeout', function(authFactory, $rootScope, $scope, $timeout){
@@ -584,6 +662,44 @@ app.directive('activity', function(){
   }
 });
 
+app.directive('addToDeck', function(){
+  return {
+     link: function($scope, $element) {
+           $scope.$watch('deckEnable', function() {
+               $element.on('click', function(e) {
+                  if ($scope.deckEnable) {
+                     e.preventDefault();
+                     e.stopImmediatePropagation();
+                     e.stopPropagation();
+
+                     function toggleArrayItem(a, v) {
+                        var i = a.indexOf(v);
+                        if (i === -1){
+                            a.push(v);
+                            console.log(a);
+                        }else{
+                            a.splice(i,1);
+                            console.log(a);
+                          }
+                    }
+                    toggleArrayItem($scope.collection,$scope.word.data);
+                     // tähä sit vaa kortin valinta scripts
+                    $scope.$apply(function(){
+                      $scope.selectedWord = !$scope.selectedWord;
+                    });
+                 }
+               });
+               if(!$scope.deckEnable){
+                 $scope.selectedWord = false;
+                 $scope.collection.length = 0;
+               }
+           });
+
+
+     }
+   };
+});
+
 app.directive('assignment', function(){
   return{
     restrict: 'E',
@@ -591,6 +707,7 @@ app.directive('assignment', function(){
     scope: {
       data: '='
     },
+    controller: 'AssignmentsCtrl',
     templateUrl: 'templates/mainviews/partials/assignment-test.html'
   }
 });
