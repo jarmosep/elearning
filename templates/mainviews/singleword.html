@@ -7,6 +7,9 @@
   <div class="japanese">
     <p>{{word.reading}}</p>
     <h2>{{word.expression}}</h2>
+    <div class="play" ng-click="playAudio()">
+      <h3 class="ion-volume-medium"></h3>
+    </div>
   </div>
   <div class="english">
     <p>{{word.meaning}}</p>
@@ -15,7 +18,6 @@
 <div class="wrapper">
   <div class="container singleword">
     <div class="word-details">
-
       <div class="fields">
         <div class="field">
             <h3>Example sentences</h3>

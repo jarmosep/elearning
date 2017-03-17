@@ -61,7 +61,7 @@
                 <p class="japanese"><b>{{word.data.expression}}</b></p>
                 <p class="english">{{word.data.meaning}}</p>
               </div>
-              <div class="operations" outside-click="$root.popkey = null">
+              <div class="operations" outside-click="$root.popkey = null" ng-style="{ 'pointer-events' : deckEnable == true ? 'none' : 'initial' }">
                   <span class="action" ng-if="deckEnable" ng-class="{'ion-ios-checkmark': selectedWord, 'ion-ios-checkmark-outline': !selectedWord }"></span>
                   <span class="action ion-android-more-vertical" ng-if="!deckEnable" ng-click="$root.popkey = word.key"></span>
                   <div class="options" ng-show="$root.popkey == word.key">

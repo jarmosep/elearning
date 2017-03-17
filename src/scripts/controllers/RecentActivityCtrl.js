@@ -1,11 +1,11 @@
 app.controller('RecentActivityCtrl', ['authFactory', '$rootScope', '$scope', '$timeout', function(authFactory, $rootScope, $scope, $timeout){
   $scope.recents = [];
     var getAuth = authFactory.auth();
-    var user = getAuth.currentUser;
+    var user = firebase.auth().currentUser;
     console.log(user);
       if(user){
-        var activity = firebase.database().ref('users').child(user.uid + '/recentActivity');
-        activity.once('value', function(snapshot){
+        var activities = firebase.database().ref('recentActivities');
+        activities.once('value', function(snapshot){
           var snap = snapshot.val();
           angular.forEach(snap, function(value, key) {
             var recentObj = {
@@ -13,7 +13,6 @@ app.controller('RecentActivityCtrl', ['authFactory', '$rootScope', '$scope', '$t
               "key": key
             };
             $timeout(function(){
-
               update(recentObj);
             });
           });
@@ -29,11 +28,11 @@ app.controller('RecentActivityCtrl', ['authFactory', '$rootScope', '$scope', '$t
           $rootScope.popkey = null;
           console.log(index);
           $scope.recents.splice($scope.recents.indexOf(index),1);
-          var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
-          console.log(recentActivities.child(key));
-          var promise = recentActivities.child(key).remove();
+          var activity = firebase.database().ref('recentActivities').child(key);
+          console.log(activity.child(key));
+          var promise = activity.remove();
           promise.then(function(){
-            console.log('kaik män');
+            console.log('be gone');
 
           }).catch(function(e){
             console.log(e);

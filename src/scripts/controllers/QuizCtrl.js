@@ -1,13 +1,14 @@
-app.controller("QuizCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'getUserInfo', function($scope, $state, $stateParams, $timeout, getUserInfo){
+app.controller("QuizCtrl", ["$scope", "$state", '$stateParams', '$timeout', function($scope, $state, $stateParams, $timeout){
   var urlParam = $stateParams.assignment;
   if(!urlParam){
     $state.go('dashboard.assignment');
   }
+  var user = firebase.auth().currentUser;
   $scope.hide = false;
   var decoded = decodeURIComponent(urlParam);
-  var userinfo = getUserInfo.getUidForAssignments();
+  var deck = firebase.database().ref('assignmentsStudent')
 
-  var assignment = userinfo.orderByChild("deckName").equalTo(decoded).once("value", function(dataSnapshot) {
+  var assignment = deck.orderByChild("deckName").equalTo(decoded).once("value", function(dataSnapshot) {
     var assignmentData = dataSnapshot.val();
     $scope.assignment = assignmentData[Object.keys(assignmentData)];
     console.log($scope.assignment);

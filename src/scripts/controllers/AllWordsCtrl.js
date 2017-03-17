@@ -4,6 +4,7 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
   $scope.limit = 5;
   $scope.loading = true;
   $scope.collection = [];
+  $scope.currentUser;
   $scope.showMore = function(){
     $scope.limit += 5;
     $timeout(function() {
@@ -16,8 +17,8 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
   var user = getAuth.currentUser;
 
   if(user){
-    var word = firebase.database().ref('users').child(user.uid + '/wordbank');
-    var userTags = firebase.database().ref('users').child(user.uid + '/tagbank');
+    var word = firebase.database().ref('wordbank');
+    var userTags = firebase.database().ref('tagbank');
     word.once('value', function(snapshots){
       var snap = snapshots.val();
       angular.forEach(snap, function(value, key) {
@@ -42,6 +43,11 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
       $scope.filters.push(tags);
     });
 
+    var currentUser = firebase.database().ref('users').child(user.uid);
+    currentUser.once('value', function(snapshot){
+      var snapshot = snapshot.val();
+        $scope.currentUser = snapshot.displayName;
+    });
 
   }else{
     console.log("Not logged in.");
@@ -50,12 +56,12 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
   $scope.removeWord = function(key, index){
       console.log($scope.words.indexOf(index));
       $scope.words.splice($scope.words.indexOf(index),1);
-      var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
+      var wordbank = firebase.database().ref('wordbank').child(key);
       console.log(wordbank.child(key));
 
-      var promise = wordbank.child(key).remove();
+      var promise = wordbank.remove();
       promise.then(function(){
-        console.log('kaik män');
+        console.log('they gone');
 
       }).catch(function(e){
         console.log(e);
@@ -63,13 +69,14 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
   };
 
   $scope.newDeck = function(){
-    var usersRoot = firebase.database().ref('users').child(user.uid);
+    var usersRoot = firebase.database().ref('assignmentsStudent');
     var date = Math.floor(Date.now());
     var deck = {
       deckName: $scope.deckName,
       description: $scope.description,
       words: $scope.collection,
       cardLength: $scope.collection.length,
+      createdBy: $scope.currentUser,
       date: date
     };
     createDeck.submitDeck(deck);

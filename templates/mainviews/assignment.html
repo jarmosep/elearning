@@ -8,7 +8,7 @@
         <h1> Assignments </h1>
       </div>
       <div class="assignments">
-        <div class="block" ng-repeat="assignment in assignments track by $index">
+        <div class="block" ng-repeat="assignment in assignments track by $index" ng-if="assignment.cardData.createdBy == currentUser">
             <div class="delete">
               <span class="ion-close-circled" ng-click="removeAssignment(assignment.key, assignment)"></span>
             </div>

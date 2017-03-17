@@ -1,17 +1,26 @@
-app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'kanjiSearch', 'getUserInfo', function($scope, $state, $stateParams, $timeout, kanjiSearch, getUserInfo){
+app.controller("WordDetailsCtrl", ["$scope", "$http","$state", '$stateParams', '$timeout', 'kanjiSearch', 'authFactory', 'ForvoPronunciation', function($scope, $http, $state, $stateParams, $timeout, kanjiSearch, authFactory, ForvoPronunciation){
   var urlParam = $stateParams.word;
   if(!urlParam){
     $state.go('dashboard.wordbank');
   }
+  var user = firebase.auth().currentUser;
   var decoded = decodeURIComponent(urlParam);
-  var userinfo = getUserInfo.getUidForWords();
-
+  var word = firebase.database().ref('wordbank');
   $scope.loading = true;
 
-  var wordbank = userinfo.orderByChild("meaning").equalTo(decoded).once("value", function(dataSnapshot) {
+  if(user){
+    var currentUser = firebase.database().ref('users').child(user.uid);
+    currentUser.once('value', function(snapshot){
+      var snapshot = snapshot.val();
+          $scope.apikey = snapshot.forvokey;
+        });
+  }else{
+    console.log("Not logged in.");
+  }
+
+    var wordbank = word.orderByChild("meaning").equalTo(decoded).once("value", function(dataSnapshot) {
     var worddata = dataSnapshot.val();
     $scope.word = worddata[Object.keys(worddata)];
-    console.log($scope.word);
 
     var letters = $scope.word.expression.split("");
     $scope.kanjis = [];
@@ -22,6 +31,16 @@ app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', '$timeout
         $scope.kanjis.push(letters[i]);
       }
     }
+    var url, audiofile, audio;
+    var getAudio = ForvoPronunciation.getSoundfile($scope.apikey, $scope.word.expression);
+
+    getAudio.then(function(response){
+      audio = new Audio(response.data.items[0].pathmp3);
+    });
+
+    $scope.playAudio = function(){
+        audio.play();
+    };
 
     $scope.searchCharacter = function(kanjis){
       var getAllKanjis = kanjiSearch.getAllKanjis();

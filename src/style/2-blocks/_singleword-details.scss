@@ -1,7 +1,7 @@
 .word-details{
   @include span-columns(6);
   @include boxShadow;
-  margin-top: 40px;
+  margin-top: 20px;
   @include media(max-width $mobile){
     @include span-columns(12);
   }

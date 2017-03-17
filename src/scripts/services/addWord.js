@@ -1,12 +1,12 @@
 app.factory('addWord', function addWord(){
   // Registration method
   addWord.submitWord = function(newWord,newAction,newTags){
-
+    
     var user = firebase.auth().currentUser;
     if(user){
-      var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
-      var tagbank = firebase.database().ref('users').child(user.uid + '/tagbank');
-      var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
+      var wordbank = firebase.database().ref('wordbank');
+      var tagbank = firebase.database().ref('tagbank');
+      var recentActivities = firebase.database().ref('recentActivities');
       wordbank.push(newWord);
       recentActivities.push(newAction);
 

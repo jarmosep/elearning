@@ -1,3 +1,16 @@
+.play{
+  position: absolute;
+  top: 20px;
+  right:30px;
+  @include media(max-width $mobile){
+    position: relative;
+    top: 0;
+    right:0;
+  };
+  @include media(max-width 540px){
+    margin-top: 3%;
+  };
+}
 .word-meanings{
   @include paragraph;
   min-height: 250px;
@@ -10,7 +23,7 @@
 
   position: relative;
   border-bottom: 1px solid darken($blue, 5%);
-  h2, p{
+  h3,h2, p{
     text-align: center;
     color: $white;
   }
@@ -24,6 +37,11 @@
   }
   .japanese{
     padding: 4% 0 2%;
+    h3{
+      cursor: pointer;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+      @include font-size(45px);
+    }
     h2{
       @include font-size(60px);
       @include japanese;

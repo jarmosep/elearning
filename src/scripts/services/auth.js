@@ -1,6 +1,7 @@
 app.factory('authFactory', ['$state', function authFactory($state){
   var userRef = firebase.database().ref('users'); // initializing 'users'
-
+  var recentActivities = firebase.database().ref('recentActivities') // initializing 'recentActivities'
+  var defaultTags = firebase.database().ref('tagbank'); // initializing 'tagbank'
   var auth = firebase.auth(); // creating authentication namespace
 
   // Registration method
@@ -11,14 +12,16 @@ app.factory('authFactory', ['$state', function authFactory($state){
       userRef.child(user.uid).set({
         displayName: username,
         email: email,
+        forvokey: 'Set your Forvo API key',
         status: 'student'
       });
-      var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
+      recentActivities.child(user.uid);
       recentActivities.push({
-        activity: 'You created a new account!',
+        activity: username + ' just registered',
         timestamp: date,
+        addedBy: username
       });
-      var defaultTags = firebase.database().ref('users').child(user.uid + '/tagbank');
+
       var tags = ['adjective-i', 'adjective-na', 'adverb', 'auxiliary', 'conjunction', 'common', 'expression',
                   'noun', 'particle', 'ichidan-verb', 'godan-verb', 'transitive', 'intransitive', 'suru-verb',
                   'kuru-verb', 'colloquialism', 'honorific', 'onomatopoeic', 'slang', 'vulgar', 'sensitive'];

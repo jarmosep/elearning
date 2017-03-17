@@ -49,13 +49,18 @@
     }
 
   }
+  .active{
+    pointer-events: none;
+  }
+  .none{
+    pointer-events: initial;
+  }
   .operations{
     @include span-columns(1);
     color: $white;
     cursor:pointer;
     position: absolute;
     text-align: center;
-    pointer-events: none;
     right: 0;
     top: 0;
     bottom: 0;

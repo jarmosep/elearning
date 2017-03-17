@@ -10,12 +10,12 @@ var app = angular.module('eLearning', ['ui.router', 'ui.select', 'firebase', 'ng
 app.factory('addWord', function addWord(){
   // Registration method
   addWord.submitWord = function(newWord,newAction,newTags){
-
+    
     var user = firebase.auth().currentUser;
     if(user){
-      var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
-      var tagbank = firebase.database().ref('users').child(user.uid + '/tagbank');
-      var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
+      var wordbank = firebase.database().ref('wordbank');
+      var tagbank = firebase.database().ref('tagbank');
+      var recentActivities = firebase.database().ref('recentActivities');
       wordbank.push(newWord);
       recentActivities.push(newAction);
 
@@ -45,7 +45,8 @@ app.factory('addWord', function addWord(){
 
 app.factory('authFactory', ['$state', function authFactory($state){
   var userRef = firebase.database().ref('users'); // initializing 'users'
-
+  var recentActivities = firebase.database().ref('recentActivities') // initializing 'recentActivities'
+  var defaultTags = firebase.database().ref('tagbank'); // initializing 'tagbank'
   var auth = firebase.auth(); // creating authentication namespace
 
   // Registration method
@@ -56,14 +57,16 @@ app.factory('authFactory', ['$state', function authFactory($state){
       userRef.child(user.uid).set({
         displayName: username,
         email: email,
+        forvokey: 'Set your Forvo API key',
         status: 'student'
       });
-      var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
+      recentActivities.child(user.uid);
       recentActivities.push({
-        activity: 'You created a new account!',
+        activity: username + ' just registered',
         timestamp: date,
+        addedBy: username
       });
-      var defaultTags = firebase.database().ref('users').child(user.uid + '/tagbank');
+
       var tags = ['adjective-i', 'adjective-na', 'adverb', 'auxiliary', 'conjunction', 'common', 'expression',
                   'noun', 'particle', 'ichidan-verb', 'godan-verb', 'transitive', 'intransitive', 'suru-verb',
                   'kuru-verb', 'colloquialism', 'honorific', 'onomatopoeic', 'slang', 'vulgar', 'sensitive'];
@@ -100,7 +103,7 @@ app.factory('createDeck', function createDeck(){
   createDeck.submitDeck = function(newDeck){
     var user = firebase.auth().currentUser;
     if(user){
-      var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
+      var assignments = firebase.database().ref('assignmentsStudent');
       assignments.push(newDeck);
     }else{
       console.log("Erorrs");
@@ -110,29 +113,27 @@ app.factory('createDeck', function createDeck(){
 
 });
 
-app.factory('getUserInfo', function getUserInfo(){
+app.factory('ForvoPronunciation', ['$http', function($http){
+  return{
+    getSoundfile: function(apikey, word){
+      var response = $http(
+        {
+          url: 'http://apifree.forvo.com/key/' + apikey + '/format/json/action/standard-pronunciation/word/' + word,
+          method: 'GET',
+          cache: 'true',
+          type: 'json',
+          contentType: 'json'
+        }
+      );
+      response.then(function(data){
+        console.log('servises', data.data);
+        return response.data;
+      });
 
-  var user = firebase.auth().currentUser;
-
-  getUserInfo.getUidForWords = function(){
-    if(user){
-      var userwords = firebase.database().ref('users').child(user.uid + '/wordbank');
-      return userwords;
-    }else{
-      return false;
+      return response;
     }
   };
-  getUserInfo.getUidForAssignments = function(){
-    if(user){
-      var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
-      return assignments;
-    }else{
-      return false;
-    }
-  };
-  return getUserInfo;
-
-});
+}]);
 
 app.factory('kanjiSearch', ['$http', function($http){
   return {
@@ -255,6 +256,7 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
   $scope.limit = 5;
   $scope.loading = true;
   $scope.collection = [];
+  $scope.currentUser;
   $scope.showMore = function(){
     $scope.limit += 5;
     $timeout(function() {
@@ -267,8 +269,8 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
   var user = getAuth.currentUser;
 
   if(user){
-    var word = firebase.database().ref('users').child(user.uid + '/wordbank');
-    var userTags = firebase.database().ref('users').child(user.uid + '/tagbank');
+    var word = firebase.database().ref('wordbank');
+    var userTags = firebase.database().ref('tagbank');
     word.once('value', function(snapshots){
       var snap = snapshots.val();
       angular.forEach(snap, function(value, key) {
@@ -293,6 +295,11 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
       $scope.filters.push(tags);
     });
 
+    var currentUser = firebase.database().ref('users').child(user.uid);
+    currentUser.once('value', function(snapshot){
+      var snapshot = snapshot.val();
+        $scope.currentUser = snapshot.displayName;
+    });
 
   }else{
     console.log("Not logged in.");
@@ -301,12 +308,12 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
   $scope.removeWord = function(key, index){
       console.log($scope.words.indexOf(index));
       $scope.words.splice($scope.words.indexOf(index),1);
-      var wordbank = firebase.database().ref('users').child(user.uid + '/wordbank');
+      var wordbank = firebase.database().ref('wordbank').child(key);
       console.log(wordbank.child(key));
 
-      var promise = wordbank.child(key).remove();
+      var promise = wordbank.remove();
       promise.then(function(){
-        console.log('kaik män');
+        console.log('they gone');
 
       }).catch(function(e){
         console.log(e);
@@ -314,13 +321,14 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
   };
 
   $scope.newDeck = function(){
-    var usersRoot = firebase.database().ref('users').child(user.uid);
+    var usersRoot = firebase.database().ref('assignmentsStudent');
     var date = Math.floor(Date.now());
     var deck = {
       deckName: $scope.deckName,
       description: $scope.description,
       words: $scope.collection,
       cardLength: $scope.collection.length,
+      createdBy: $scope.currentUser,
       date: date
     };
     createDeck.submitDeck(deck);
@@ -360,14 +368,24 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
 
 }]);
 
-app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state', function($scope,$timeout, authFactory, $state){
+app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state', function($scope, $rootScope, $timeout, authFactory, $state){
   $scope.assignments = [];
-  var getAuth = authFactory.auth();
-  var user = getAuth.currentUser;
+  var user = firebase.auth().currentUser;
   $scope.loading = true;
+  $scope.currentUser;
+  $scope.currentUser = function(){
+    return $rootScope.ActiveUser;
+    console.log($rootScope.ActiveUser);
+  }
 
   if(user){
-    var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
+    var currentUser = firebase.database().ref('users').child(user.uid);
+    currentUser.once('value', function(snapshot){
+      var snapshot = snapshot.val();
+          $scope.currentUser = snapshot.displayName;
+          console.log($scope.currentUser);
+    });
+    var assignments = firebase.database().ref('assignmentsStudent');
     assignments.once('value', function(snapshots){
       var snap = snapshots.val();
       angular.forEach(snap, function(value, key) {
@@ -376,16 +394,13 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
           "key": key,
           "visible": true
         };
-        $timeout(function(){
-          update(recentObj);
-          $scope.loading = false;
-        });
+        $scope.assignments.push(recentObj);
+        console.log($scope.assignments);
+        $scope.loading = false;
       });
     });
-    function update(recentObj){
-      $scope.assignments.push(recentObj);
-      console.log($scope.assignments);
-    };
+
+
   }else{
     console.log("Not logged in.");
   }
@@ -398,11 +413,11 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
   $scope.removeAssignment = function(key, index){
     console.log($scope.assignments.indexOf(index));
     $scope.assignments.splice($scope.assignments.indexOf(index),1);
-    var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
-    var promise = assignments.child(key).remove();
-    console.log(assignments.child(key));
+    var assignment = firebase.database().ref('assignmentsStudent').child(key);
+    var promise = assignment.remove();
+    console.log(assignment.child(key));
     promise.then(function(){
-      console.log('kaik män');
+      console.log('bye');
     }).catch(function(e){
       console.log(e);
     });
@@ -449,16 +464,17 @@ app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $sco
   }
 }]);
 
-app.controller("QuizCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'getUserInfo', function($scope, $state, $stateParams, $timeout, getUserInfo){
+app.controller("QuizCtrl", ["$scope", "$state", '$stateParams', '$timeout', function($scope, $state, $stateParams, $timeout){
   var urlParam = $stateParams.assignment;
   if(!urlParam){
     $state.go('dashboard.assignment');
   }
+  var user = firebase.auth().currentUser;
   $scope.hide = false;
   var decoded = decodeURIComponent(urlParam);
-  var userinfo = getUserInfo.getUidForAssignments();
+  var deck = firebase.database().ref('assignmentsStudent')
 
-  var assignment = userinfo.orderByChild("deckName").equalTo(decoded).once("value", function(dataSnapshot) {
+  var assignment = deck.orderByChild("deckName").equalTo(decoded).once("value", function(dataSnapshot) {
     var assignmentData = dataSnapshot.val();
     $scope.assignment = assignmentData[Object.keys(assignmentData)];
     console.log($scope.assignment);
@@ -483,11 +499,11 @@ app.controller("QuizCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'get
 app.controller('RecentActivityCtrl', ['authFactory', '$rootScope', '$scope', '$timeout', function(authFactory, $rootScope, $scope, $timeout){
   $scope.recents = [];
     var getAuth = authFactory.auth();
-    var user = getAuth.currentUser;
+    var user = firebase.auth().currentUser;
     console.log(user);
       if(user){
-        var activity = firebase.database().ref('users').child(user.uid + '/recentActivity');
-        activity.once('value', function(snapshot){
+        var activities = firebase.database().ref('recentActivities');
+        activities.once('value', function(snapshot){
           var snap = snapshot.val();
           angular.forEach(snap, function(value, key) {
             var recentObj = {
@@ -495,7 +511,6 @@ app.controller('RecentActivityCtrl', ['authFactory', '$rootScope', '$scope', '$t
               "key": key
             };
             $timeout(function(){
-
               update(recentObj);
             });
           });
@@ -511,11 +526,11 @@ app.controller('RecentActivityCtrl', ['authFactory', '$rootScope', '$scope', '$t
           $rootScope.popkey = null;
           console.log(index);
           $scope.recents.splice($scope.recents.indexOf(index),1);
-          var recentActivities = firebase.database().ref('users').child(user.uid + '/recentActivity');
-          console.log(recentActivities.child(key));
-          var promise = recentActivities.child(key).remove();
+          var activity = firebase.database().ref('recentActivities').child(key);
+          console.log(activity.child(key));
+          var promise = activity.remove();
           promise.then(function(){
-            console.log('kaik män');
+            console.log('be gone');
 
           }).catch(function(e){
             console.log(e);
@@ -543,20 +558,29 @@ app.filter('unique', function() {
 });
 */
 
-app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'kanjiSearch', 'getUserInfo', function($scope, $state, $stateParams, $timeout, kanjiSearch, getUserInfo){
+app.controller("WordDetailsCtrl", ["$scope", "$http","$state", '$stateParams', '$timeout', 'kanjiSearch', 'authFactory', 'ForvoPronunciation', function($scope, $http, $state, $stateParams, $timeout, kanjiSearch, authFactory, ForvoPronunciation){
   var urlParam = $stateParams.word;
   if(!urlParam){
     $state.go('dashboard.wordbank');
   }
+  var user = firebase.auth().currentUser;
   var decoded = decodeURIComponent(urlParam);
-  var userinfo = getUserInfo.getUidForWords();
-
+  var word = firebase.database().ref('wordbank');
   $scope.loading = true;
 
-  var wordbank = userinfo.orderByChild("meaning").equalTo(decoded).once("value", function(dataSnapshot) {
+  if(user){
+    var currentUser = firebase.database().ref('users').child(user.uid);
+    currentUser.once('value', function(snapshot){
+      var snapshot = snapshot.val();
+          $scope.apikey = snapshot.forvokey;
+        });
+  }else{
+    console.log("Not logged in.");
+  }
+
+    var wordbank = word.orderByChild("meaning").equalTo(decoded).once("value", function(dataSnapshot) {
     var worddata = dataSnapshot.val();
     $scope.word = worddata[Object.keys(worddata)];
-    console.log($scope.word);
 
     var letters = $scope.word.expression.split("");
     $scope.kanjis = [];
@@ -567,6 +591,16 @@ app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', '$timeout
         $scope.kanjis.push(letters[i]);
       }
     }
+    var url, audiofile, audio;
+    var getAudio = ForvoPronunciation.getSoundfile($scope.apikey, $scope.word.expression);
+
+    getAudio.then(function(response){
+      audio = new Audio(response.data.items[0].pathmp3);
+    });
+
+    $scope.playAudio = function(){
+        audio.play();
+    };
 
     $scope.searchCharacter = function(kanjis){
       var getAllKanjis = kanjiSearch.getAllKanjis();
@@ -608,9 +642,25 @@ app.controller("WordDetailsCtrl", ["$scope", "$state", '$stateParams', '$timeout
   });
 }]);
 
-app.controller('WordSubmitCtrl', ['$scope', 'addWord', function($scope, addWord){
+app.controller('WordSubmitCtrl', ['$scope', 'addWord', '$timeout', function($scope, addWord, $timeout){
   $scope.form = {};
   $scope.tags = [];
+  $scope.currentUser;
+  var user = firebase.auth().currentUser;
+
+  firebase.auth().onAuthStateChanged(function(user){
+    if(user){
+      var currentUser = firebase.database().ref('users').child(user.uid);
+      currentUser.once('value', function(snapshot){
+        var snapshot = snapshot.val();
+            console.log(snapshot);
+            $scope.currentUser = snapshot.displayName;
+          });
+    }else{
+      console.log("Not logged in.");
+    }
+  });
+
   $scope.onSubmit = function(){
     if(!$scope.form.sentences){
       $scope.form.sentences = 'No example sentences given.';
@@ -623,12 +673,14 @@ app.controller('WordSubmitCtrl', ['$scope', 'addWord', function($scope, addWord)
       reading: $scope.form.reading,
       meaning: $scope.form.meaning,
       tags: $scope.form.selectedItem,
-      sentences: $scope.form.sentences
+      sentences: $scope.form.sentences,
+      createdBy: $scope.currentUser
     };
     var date = Math.floor(Date.now());
     var newAction = {
-      activity: $scope.form.expression+' added to the wordbank',
-      timestamp: date
+      activity: $scope.currentUser + ' added ' + $scope.form.expression+' to the wordbank',
+      timestamp: date,
+      addedBy: $scope.currentUser
     }
     var tags = $scope.form.selectedItem;
     console.log(tags);
@@ -639,9 +691,8 @@ app.controller('WordSubmitCtrl', ['$scope', 'addWord', function($scope, addWord)
     $scope.form = null;
   }
 
-  var user = firebase.auth().currentUser;
   if(user){
-    var tagbank = firebase.database().ref('users').child(user.uid + '/tagbank');
+    var tagbank = firebase.database().ref('tagbank');
     tagbank.on('value', function(snapshot){
       $scope.tags = snapshot.val();
       console.log($scope.tags);

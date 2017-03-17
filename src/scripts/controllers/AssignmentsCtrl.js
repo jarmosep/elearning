@@ -1,11 +1,21 @@
-app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state', function($scope,$timeout, authFactory, $state){
+app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state', function($scope, $rootScope, $timeout, authFactory, $state){
   $scope.assignments = [];
-  var getAuth = authFactory.auth();
-  var user = getAuth.currentUser;
+  var user = firebase.auth().currentUser;
   $scope.loading = true;
+  $scope.currentUser;
+  $scope.currentUser = function(){
+    return $rootScope.ActiveUser;
+    console.log($rootScope.ActiveUser);
+  }
 
   if(user){
-    var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
+    var currentUser = firebase.database().ref('users').child(user.uid);
+    currentUser.once('value', function(snapshot){
+      var snapshot = snapshot.val();
+          $scope.currentUser = snapshot.displayName;
+          console.log($scope.currentUser);
+    });
+    var assignments = firebase.database().ref('assignmentsStudent');
     assignments.once('value', function(snapshots){
       var snap = snapshots.val();
       angular.forEach(snap, function(value, key) {
@@ -14,16 +24,13 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
           "key": key,
           "visible": true
         };
-        $timeout(function(){
-          update(recentObj);
-          $scope.loading = false;
-        });
+        $scope.assignments.push(recentObj);
+        console.log($scope.assignments);
+        $scope.loading = false;
       });
     });
-    function update(recentObj){
-      $scope.assignments.push(recentObj);
-      console.log($scope.assignments);
-    };
+
+
   }else{
     console.log("Not logged in.");
   }
@@ -36,11 +43,11 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
   $scope.removeAssignment = function(key, index){
     console.log($scope.assignments.indexOf(index));
     $scope.assignments.splice($scope.assignments.indexOf(index),1);
-    var assignments = firebase.database().ref('users').child(user.uid + '/assignments');
-    var promise = assignments.child(key).remove();
-    console.log(assignments.child(key));
+    var assignment = firebase.database().ref('assignmentsStudent').child(key);
+    var promise = assignment.remove();
+    console.log(assignment.child(key));
     promise.then(function(){
-      console.log('kaik män');
+      console.log('bye');
     }).catch(function(e){
       console.log(e);
     });

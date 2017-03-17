@@ -1,6 +1,6 @@
 .word-additional{
   @include span-columns(6);
-  margin-top: 40px;
+  margin-top: 20px;
   @include media(max-width $mobile){
     @include span-columns(12);
   }
