@@ -3,7 +3,7 @@ app.factory('ForvoPronunciation', ['$http', function($http){
     getSoundfile: function(apikey, word){
       var response = $http(
         {
-          url: 'http://apifree.forvo.com/key/' + apikey + '/format/json/action/standard-pronunciation/word/' + word,
+          url: 'http://apifree.forvo.com/key/' + apikey + '/format/json/action/standard-pronunciation/word/' + word + '/language/ja',
           method: 'GET',
           cache: 'true',
           type: 'json',
@@ -11,8 +11,8 @@ app.factory('ForvoPronunciation', ['$http', function($http){
         }
       );
       response.then(function(data){
-        console.log('servises', data.data);
-        return response.data;
+          console.log('servises', data.data);
+          return response.data;
       });
 
       return response;
