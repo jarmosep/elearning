@@ -5,14 +5,17 @@ app.factory('authFactory', ['$state', function authFactory($state){
   var auth = firebase.auth(); // creating authentication namespace
 
   // Registration method
-  authFactory.signup = function(email, passwd, username){
+  authFactory.signup = function(email, passwd, username, forvo_register){
     var promise = auth.createUserWithEmailAndPassword(email, passwd); // creating username with pw in firebase
     var date = Math.floor(Date.now());
     promise.then(function(user){
+      if(!forvo_register){
+        forvo_register = 'Type in your Forvo API key.';
+      }
       userRef.child(user.uid).set({
         displayName: username,
         email: email,
-        forvokey: 'Set your Forvo API key',
+        forvokey: forvo_register,
         status: 'student'
       });
       recentActivities.child(user.uid);

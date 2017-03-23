@@ -20,7 +20,6 @@
   background: -webkit-linear-gradient(top,  rgba(62,210,224,1) 0%,rgba(0,195,230,1) 50%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to bottom,  rgba(62,210,224,1) 0%,rgba(0,195,230,1) 50%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3ed2e0', endColorstr='#00c3e6',GradientType=0 ); /* IE6-9 */
-
   position: relative;
   border-bottom: 1px solid darken($blue, 5%);
   h3,h2, p{

@@ -1,0 +1,59 @@
+.answered, .unanswered{
+  @include span-columns(12);
+  .question-block{
+    @include boxShadow;
+    background: $white;
+    margin-bottom: 15px;
+    .field-submit{
+      border-top: 1px solid #E2E5EB;
+    }
+    .field{
+      @include clearfix;
+      padding: 15px;
+      .student-question{
+        padding: 25px 10px 25px 10px;
+        margin-bottom: 5px;
+        border-radius: 3px;
+        background-color: #F1F4FA;
+        @include clearfix;
+        .user{
+          @include span-columns(2);
+        }
+        .question{
+          @include span-columns(7);
+        }
+        .posted{
+          @include span-columns(3);
+          text-align: center;
+          color: $sidebar-icon-color;
+        }
+      }
+      .answer-text{
+        @include font-size(17px);
+        font-family: inherit;
+        padding: 5px;
+        border: 1px solid $border-color-grey;
+        border-radius: 3px;
+        width:100%;
+        max-width: 100%;
+        min-height: 100px;
+      }
+      .submit{
+          float: right;
+          cursor:pointer;
+          padding: 10px;
+          width: 120px;
+          color: $white;
+          background-color: $green;
+          border: 1px solid $green-dark;
+          border-radius: 3px;
+          font-weight: bold;
+          transition: all 0.1s ease-in-out;
+      }
+      .submit:disabled{
+          background-color: lightgray;
+          border: 1px solid lightgray;
+      }
+    }
+  }
+}

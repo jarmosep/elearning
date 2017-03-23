@@ -1,0 +1,80 @@
+.student-assignments{
+  @include span-columns(12);
+  border-top: 1px solid #E2E5EB;
+  padding: 15px 15px 0 15px;
+  .block{
+    @include span-columns(3);
+    @include omega(4n);
+    box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.4);
+    margin-bottom: 18px;
+    background: rgb(62,210,224); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(62,210,224,1) 0%, rgba(0,195,230,1) 50%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(62,210,224,1) 0%,rgba(0,195,230,1) 50%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(62,210,224,1) 0%,rgba(0,195,230,1) 50%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3ed2e0', endColorstr='#00c3e6',GradientType=0 ); /* IE6-9 */
+    position: relative;
+    @include media(max-width 1090px){
+      @include omega-reset(4n);
+      @include omega(3n);
+      @include span-columns(4);
+    }
+    @include media(max-width 768px){
+      @include omega-reset(3n);
+      @include span-columns(6);
+      @include omega(2n);
+    }
+    @include media(max-width 540px){
+      @include omega-reset(2n);
+      @include span-columns(12);
+    }
+    .card-info{
+      text-align: center;
+      min-height: 180px;
+      color: $white;
+      h3{
+        padding: 40px 0 10px;
+        margin: 0 15px 0 15px;
+        border-bottom: 1px solid $white;
+        line-height: 24px;
+      }
+      p{
+        @include font-size(16px);
+        padding: 10px 15px 15px 15px;
+      }
+    }
+    .card-additional{
+      @include clearfix;
+      padding:0 15px 5px;
+      p{
+        @include font-size(14px);
+        color: $white;
+        &:first-of-type{
+          float:left;
+        }
+        &:last-of-type{
+          float:right;
+        }
+      }
+    }
+    .bottom{
+      @include clearfix;
+      background-color: $white;
+      padding: 15px;
+      i{
+        @include font-size(25px);
+        float:left;
+        color: $sidebar-bg;
+        cursor: pointer;
+      }
+      p{
+        cursor:pointer;
+        border-radius: 3px;
+        padding: 2px 15px 2px 15px;
+        float:right;
+        background-color: $green;
+        border: 1px solid $green-dark;
+        color: $white;
+      }
+    }
+  }
+}

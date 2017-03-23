@@ -17,6 +17,14 @@
 @import "2-blocks/addword-inputs";
 @import "2-blocks/addword-submit";
 @import "2-blocks/quiz_question_answer";
+@import "2-blocks/assignment-decks";
+@import "2-blocks/askteacher-ask";
+@import "2-blocks/askteacher-questions";
+@import "2-blocks/quizmaker-quiztypes";
+@import "2-blocks/quizmaker-multiplechoice";
+@import "2-blocks/quizmaker-sentence";
+@import "2-blocks/quizmaker-title";
+@import "3-layout/landingpage";
 @import "3-layout/wrapper";
 @import "3-layout/container";
 @import "3-layout/navbar";
@@ -27,6 +35,8 @@
 @import "3-layout/quiz";
 @import "3-layout/addword";
 @import "3-layout/assignment";
+@import "3-layout/askteacher";
+@import "3-layout/quizmaker";
 
 body{
   overflow-x: hidden;
@@ -76,7 +86,9 @@ body{
     }
   }
 }
-
+textarea{
+  &:focus{ outline: 0 }
+}
 @keyframes blink {
     from {
         text-shadow: 1px 1px 2px rgba(0,0,0,0.4);

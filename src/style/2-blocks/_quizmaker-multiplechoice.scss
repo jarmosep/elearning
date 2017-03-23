@@ -1,0 +1,69 @@
+.multiple-choices{
+  padding: 15px 15px 20px 15px;
+  background-color: $light-grey;
+  .multiple-question{
+    @include span-columns(12);
+    input{
+      @include font-size(17px);
+      display:block;
+      color: $sidebar-bg;
+      width:100%;
+      border: 1px solid $border-color-grey;
+      border-radius: 3px;
+      padding: 15px;
+      &:focus{
+        outline:none;
+      }
+    }
+  }
+  .choice{
+    @include span-columns(12);
+    background-color: $light-grey;
+    border: 1px solid $border-color-grey;
+    color:$sidebar-bg;
+    border-radius:3px;
+    cursor:pointer;
+    padding: 10px;
+    margin-top: 5px;
+    p{
+      float:left;
+    }
+    i{
+      float:right;
+      margin-top:4px;
+    }
+
+  }
+
+  .add-questions{
+    @include span-columns(12);
+    margin-top: 5px;
+    input{
+      @include span-columns(11, block-collapse);
+      @include font-size(17px);
+      border: 1px solid $border-color-grey;
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+      border-right: none;
+      padding: 15px;
+      &:focus{
+        outline:none;
+      }
+    }
+    .add{
+      @include span-columns(1, block-collapse);
+      background-color: $green;
+      border: 1px solid $green-dark;
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+      text-align: center;
+      height:52px;
+      i{
+        @include font-size(30px);
+        display:block;
+        margin-top: 9px;
+        color: $green-light;
+      }
+    }
+  }
+}

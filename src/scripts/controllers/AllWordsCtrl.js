@@ -53,6 +53,16 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
     console.log("Not logged in.");
   }
 
+  $scope.tab = 0;
+
+  $scope.setTab = function(newTab){
+    $scope.tab = newTab;
+  };
+
+  $scope.isSet = function(tabNum){
+    return $scope.tab === tabNum;
+  };
+
   $scope.removeWord = function(key, index){
       console.log($scope.words.indexOf(index));
       $scope.words.splice($scope.words.indexOf(index),1);

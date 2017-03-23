@@ -1,0 +1,120 @@
+.landingpage{
+  @include outer-container;
+  @include bigHeading;
+  @include mediumHeading;
+  @include smallHeading;
+  @include miniHeading;
+  @include paragraph;
+  h2,h3,h4,p{
+    color: $sidebar-bg;
+  }
+  .form_container{
+    margin-top: 25%;
+    margin-bottom: 25%;
+    @include span-columns(8);
+    @include shift(2);
+    @include boxShadow;
+    background-color: $white;
+    .form_greeting{
+      @include span-columns(12);
+      padding: 20px 0 20px 0;
+      h2{
+        text-align: center;
+        font-size: 2em;
+      }
+    }
+    .form_options{
+      @include span-columns(12);
+      border-top: 1px solid #E2E5EB;
+      display:inline;
+      h3{
+        @include font-size(20px);
+        z-index: 44;
+        padding: 20px 0 20px 0;
+        margin-bottom: -1px;
+        margin-left:15px;
+        cursor: pointer;
+        display:inline-block;
+        position: relative;
+      }
+      h3.active{
+        border-bottom: 3px solid $blue;
+      }
+    }
+    .form_login, .form_register{
+      @include span-columns(12);
+      @include clearfix;
+      border-bottom: 1px solid #E2E5EB;
+      position: relative;
+      border-top: 1px solid #E2E5EB;
+      padding:15px;
+      input{
+        @include span-columns(12);
+        display:block
+      }
+      .field{
+        @include clearfix;
+        padding: 25px 0 10px 0;
+        position: relative;
+        .textinput{
+          @include font-size(16px);
+          position: relative;
+          border:none;
+          border-bottom: 1px solid #E2E5EB;
+          height:40px;
+          outline:none;
+          width: 100%;
+          transition: border 0.1s ease-in-out;
+        }
+        h4{
+          @include font-size(17px);
+          padding-top: 30px;
+          position: absolute;
+          pointer-events: none;
+          left: 0;
+          top: 0;
+          transition: 0.2s ease all;
+          @include media(max-width $mobile){
+            padding-bottom: 0;
+          }
+        }
+        .textinput:focus, .textinput.ng-not-empty,{
+          border-bottom: 3px solid $blue;
+        }
+        .textinput:focus ~ h4, .textinput.ng-not-empty ~ h4 {
+          left: 0;
+          top: -15px;
+          font-size: 11px;
+          opacity: 1;
+          color: $blue;
+        }
+        .login, .signup{
+            float: right;
+            padding: 10px;
+            width: 120px;
+            color: $white;
+            background-color: $green;
+            border: 1px solid $green-dark;
+            border-radius: 3px;
+            font-weight: bold;
+            transition: all 0.1s ease-in-out;
+        }
+        .login:disabled, .signup:disabled{
+            background-color: lightgray;
+            border: 1px solid lightgray;
+        }
+      }
+    }
+    .form_forgot{
+      @include span-columns(12);
+      text-align: center;
+      padding: 20px;
+      p{
+        @include font-size(14px);
+        span{
+          color: $sidebar-icon-color;
+        }
+      }
+    }
+  }
+}

@@ -10,7 +10,7 @@ var app = angular.module('eLearning', ['ui.router', 'ui.select', 'firebase', 'ng
 app.factory('addWord', function addWord(){
   // Registration method
   addWord.submitWord = function(newWord,newAction,newTags){
-    
+
     var user = firebase.auth().currentUser;
     if(user){
       var wordbank = firebase.database().ref('wordbank');
@@ -35,7 +35,7 @@ app.factory('addWord', function addWord(){
       tagbank.set(setNewTags);
 
     }else{
-      console.log("Erorrs");
+      console.log("Errors");
     }
   }
 
@@ -50,14 +50,17 @@ app.factory('authFactory', ['$state', function authFactory($state){
   var auth = firebase.auth(); // creating authentication namespace
 
   // Registration method
-  authFactory.signup = function(email, passwd, username){
+  authFactory.signup = function(email, passwd, username, forvo_register){
     var promise = auth.createUserWithEmailAndPassword(email, passwd); // creating username with pw in firebase
     var date = Math.floor(Date.now());
     promise.then(function(user){
+      if(!forvo_register){
+        forvo_register = 'Type in your Forvo API key.';
+      }
       userRef.child(user.uid).set({
         displayName: username,
         email: email,
-        forvokey: 'Set your Forvo API key',
+        forvokey: forvo_register,
         status: 'student'
       });
       recentActivities.child(user.uid);
@@ -234,7 +237,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
         .state('dashboard.askteacher', {
             url: '/ask',
-            templateUrl: 'templates/mainviews/ask.html'
+            templateUrl: 'templates/mainviews/ask.html',
+            controller: 'AskQuestionCtrl'
+        })
+
+        .state('dashboard.quizmaker', {
+            url: '/quizmaker',
+            templateUrl: 'templates/mainviews/quizmaker.html'
         });
         // urlRouterProvider redirects back to landing page, if url doesn't match /dashboard
         $urlRouterProvider.otherwise('/');
@@ -305,6 +314,16 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
     console.log("Not logged in.");
   }
 
+  $scope.tab = 0;
+
+  $scope.setTab = function(newTab){
+    $scope.tab = newTab;
+  };
+
+  $scope.isSet = function(tabNum){
+    return $scope.tab === tabNum;
+  };
+
   $scope.removeWord = function(key, index){
       console.log($scope.words.indexOf(index));
       $scope.words.splice($scope.words.indexOf(index),1);
@@ -368,6 +387,17 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
 
 }]);
 
+app.controller('AskQuestionCtrl', ['authFactory', '$scope', function(authFactory, $scope){
+
+  $scope.tab = 1;
+  $scope.setTab = function(newTab){
+    $scope.tab = newTab;
+  }
+  $scope.isSet = function(tabNum){
+    return $scope.tab === tabNum;
+  }
+}]);
+
 app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state', function($scope, $rootScope, $timeout, authFactory, $state){
   $scope.assignments = [];
   var user = firebase.auth().currentUser;
@@ -378,6 +408,14 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
     console.log($rootScope.ActiveUser);
   }
 
+  $scope.tab = 1;
+  $scope.setTab = function(newTab){
+    $scope.tab = newTab;
+  }
+  $scope.isSet = function(tabNum){
+    return $scope.tab === tabNum;
+  }
+  
   if(user){
     var currentUser = firebase.database().ref('users').child(user.uid);
     currentUser.once('value', function(snapshot){
@@ -456,11 +494,18 @@ app.controller('DashboardCtrl', ['$scope', '$state', '$timeout', '$window', 'aut
 }]);
 
 app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $scope){
-  $scope.signup = function(email, passwd, username){
-    authFactory.signup(email, passwd, username);
+  $scope.signup = function(email_register, passwd_register, username_register, forvo_register){
+    authFactory.signup(email_register, passwd_register, username_register, forvo_register);
   };
-  $scope.login = function(email, passwd){
-    authFactory.login(email, passwd);
+  $scope.login = function(email_login, passwd_login){
+    authFactory.login(email_login, passwd_login);
+  }
+  $scope.tab = 1;
+  $scope.setTab = function(newTab){
+    $scope.tab = newTab;
+  }
+  $scope.isSet = function(tabNum){
+    return $scope.tab === tabNum;
   }
 }]);
 
@@ -718,7 +763,7 @@ app.directive('addToDeck', function(){
      link: function($scope, $element) {
            $scope.$watch('deckEnable', function() {
                $element.on('click', function(e) {
-                  if ($scope.deckEnable) {
+                  if ($scope.isSet(2)) {
                      e.preventDefault();
                      e.stopImmediatePropagation();
                      e.stopPropagation();
@@ -740,7 +785,7 @@ app.directive('addToDeck', function(){
                     });
                  }
                });
-               if(!$scope.deckEnable){
+               if(!$scope.isSet(2)){
                  $scope.selectedWord = false;
                  $scope.collection.length = 0;
                }

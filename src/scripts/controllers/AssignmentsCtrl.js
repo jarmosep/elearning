@@ -8,6 +8,14 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
     console.log($rootScope.ActiveUser);
   }
 
+  $scope.tab = 1;
+  $scope.setTab = function(newTab){
+    $scope.tab = newTab;
+  }
+  $scope.isSet = function(tabNum){
+    return $scope.tab === tabNum;
+  }
+  
   if(user){
     var currentUser = firebase.database().ref('users').child(user.uid);
     currentUser.once('value', function(snapshot){

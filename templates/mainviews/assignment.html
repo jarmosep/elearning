@@ -7,26 +7,30 @@
       <div class="heading">
         <h1> Assignments </h1>
       </div>
-      <div class="assignments">
-        <div class="block" ng-repeat="assignment in assignments track by $index" ng-if="assignment.cardData.createdBy == currentUser">
-            <div class="delete">
-              <span class="ion-close-circled" ng-click="removeAssignment(assignment.key, assignment)"></span>
-            </div>
-            <div class="title">
-              <h3>{{assignment.cardData.deckName}}</h3>
-            </div>
-            <div class="description">
-              <p>{{assignment.cardData.description}}</p>
-            </div>
-            <div class="date">
-              <p>{{assignment.cardData.date | date: "MMM d ''yy 'at' HH:mm"}}</p>
-            </div>
-            <div class="bottom">
-              <div class="elements">
-                <p>Cards: {{assignment.cardData.cardLength}}</p>
-                <p ui-sref="dashboard.quiz({assignment: assignment.cardData.deckName})">Study</p>
+      <div class="alldecks">
+        <div class="deck-options">
+          <h3 ng-click="setTab(1)" ng-class="{ active: isSet(1) }">
+            My study decks
+          </h3>
+          <h3 ng-click="setTab(2)" ng-class="{ active: isSet(2) }">
+            Teacher decks
+          </h3>
+        </div>
+        <div class="student-assignments">
+          <div class="block" ng-repeat="assignment in assignments track by $index" ng-if="assignment.cardData.createdBy == currentUser">
+              <div class="card-info">
+                <h3>{{assignment.cardData.deckName}}</h3>
+                <p>{{assignment.cardData.description}}</p>
               </div>
-            </div>
+              <div class="card-additional">
+                <p>{{assignment.cardData.date | date: "MMM d ''yy 'at' HH:mm"}}</p>
+                <p>Cards: {{assignment.cardData.cardLength}}</p>
+              </div>
+              <div class="bottom">
+                <i class="ion-trash-a" ng-click="removeAssignment(assignment.key, assignment)"></i>
+                <p class="study" ui-sref="dashboard.quiz({assignment: assignment.cardData.deckName})">Study</p>
+              </div>
+          </div>
         </div>
       </div>
     </div>

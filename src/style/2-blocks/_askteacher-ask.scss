@@ -1,0 +1,46 @@
+.ask{
+  @include span-columns(12);
+  @include boxShadow;
+  background: $white;
+  .field{
+    @include clearfix;
+    padding: 15px;
+    &:last-of-type{
+      border-top: 1px solid #E2E5EB;
+    }
+    .question-type{
+      padding: 0 0 15px 0;
+      p, .qt{
+        display: inline-block;
+      }
+      p{
+        padding-right: 15px;
+      }
+    }
+    .question-text{
+      font-family: inherit;
+      padding: 5px;
+      border: 1px solid $border-color-grey;
+      border-radius: 3px;
+      width: 100%;
+      max-width: 100%;
+      min-height: 100px;
+    }
+    .submit{
+        float: right;
+        cursor:pointer;
+        padding: 10px;
+        width: 120px;
+        color: $white;
+        background-color: $green;
+        border: 1px solid $green-dark;
+        border-radius: 3px;
+        font-weight: bold;
+        transition: all 0.1s ease-in-out;
+    }
+    .submit:disabled{
+        background-color: lightgray;
+        border: 1px solid lightgray;
+    }
+  }
+}

@@ -78,7 +78,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
         .state('dashboard.askteacher', {
             url: '/ask',
-            templateUrl: 'templates/mainviews/ask.html'
+            templateUrl: 'templates/mainviews/ask.html',
+            controller: 'AskQuestionCtrl'
+        })
+
+        .state('dashboard.quizmaker', {
+            url: '/quizmaker',
+            templateUrl: 'templates/mainviews/quizmaker.html'
         });
         // urlRouterProvider redirects back to landing page, if url doesn't match /dashboard
         $urlRouterProvider.otherwise('/');

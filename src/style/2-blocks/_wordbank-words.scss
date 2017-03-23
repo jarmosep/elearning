@@ -1,24 +1,29 @@
+.the-word{
+  margin: 0 5px 5px 5px;
+}
  .wordblock{
   @include clearfix;
-  @include boxShadow;
   position: relative;
   cursor: pointer;
+  border-radius: 3px;
   padding:26px;
   background-color: $blue;
-  border-bottom: 1px solid darken($blue,7%);
-  border-left: 1px solid darken($blue,7%);
-  border-right: 1px solid darken($blue,7%);
+  border-left: 1px solid $blue;
+  border-right: 1px solid $blue;
   transition: all 0.2s ease-in-out;
   -webkit-transform: translate3d(0, 0, 0);
   &:hover{
+    @include boxShadow;
     background-color: #33CFEB;
-    margin: 8px 0 8px;
-    border-bottom: 1px solid $blue;
+    margin: 8px -15px 8px;
     border-left: 1px solid $blue;
     border-right: 1px solid $blue;
   }
   @include media(max-width $mobile){
     margin-top: 5px;
+    &:hover{
+      margin: 5px 0 5px;
+    }
   }
   p{
     color: $white;
@@ -87,7 +92,7 @@
       transform:translateY(-50%);
     }
     .options{
-      box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.2);
+      box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.2);
       background-color: white;
       color: $sidebar-bg;
       position: absolute;
@@ -138,14 +143,26 @@
 }
 
 .more-words{
-  @include hoverColor;
-  background-color: $sidebar-bg;
-  cursor: pointer;
-  p{
-    color: $white;
-    font-size:17px;
-    padding: 20px;
-    text-align: center;
+  @include span-columns(12);
+  padding: 20px;
+  padding-top: 15px;
+  .showmore{
+    width: 130px;
+    cursor: pointer;
+    margin: 0 auto;
+    padding: 5px;
+    background-color: $light-grey;
+    border: 1px solid $border-color-grey;
+    border-radius:3px;
+    transition: all 0.1s ease-in-out;
+    &:hover{
+      background-color: darken($light-grey, 5%);
+    }
+    p{
+      color: $sidebar-bg;
+      font-size:17px;
+      text-align: center;
+    }
   }
 }
 .empty{

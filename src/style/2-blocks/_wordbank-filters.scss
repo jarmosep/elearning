@@ -69,6 +69,10 @@
       padding: 2px 12px 2px 12px;
       margin:0 4px 4px 0;
       cursor:pointer;
+      transition: all 0.1s ease-in-out;
+      &:hover{
+        background-color: darken($light-grey, 5%);
+      }
       @include media(max-width $mobile){
         display:block;
         border-radius: 0;
@@ -88,6 +92,9 @@
     .active{
       background-color: $green;
       border: 1px solid $green-dark;
+      &:hover{
+        background-color: darken($green, 5%);
+      }
       p{
         color: $white;
       }

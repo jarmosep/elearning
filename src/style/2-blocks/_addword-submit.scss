@@ -1,11 +1,11 @@
 .submit-actions{
   @include clearfix;
-  @include span-columns(6);
-  float:right;
+  @include span-columns(4);
+  float: right;
   padding: 15px;
   .erase, .submit{
     @include hoverColor;
-    @include span-columns(6);
+    width: 120px;
     cursor: pointer;
     text-align: center;
     @include media(max-width 540px){

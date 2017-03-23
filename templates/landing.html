@@ -1,5 +1,53 @@
-<input type="text" name="email" value="email" ng-model="email"> </input>
-<input type="text" name="username" value="username" ng-model="username"> </input>
-<input type="text" name="passwd" value="passwd" ng-model="passwd"></input>
-<button class="signup" ng-click="signup(email, passwd, username)">Sign up</button>
-<button class="login" ng-click="login(email, passwd)">Log in </button>
+<div class="landingpage">
+  <div class="form_container">
+    <div class="form_greeting">
+        <h2 ng-if="isSet(1)">Sign in</h2>
+        <h2 ng-if="isSet(2)">Create a new account</h2>
+    </div>
+    <div class="form_options">
+      <h3 ng-class="{ active: isSet(1) }" ng-click="setTab(1)"> Login </h3>
+      <h3 ng-class="{ active: isSet(2) }" ng-click="setTab(2)"> Register </h3>
+    </div>
+    <div class="form_login" ng-show="isSet(1)">
+      <form name="loginForm" novalidate>
+        <div class="field">
+          <input class="textinput" type="text" name="email_login" value="email" ng-model="email_login" required> </input>
+          <h4>Email</h4>
+        </div>
+        <div class="field">
+          <input class="textinput" type="password" name="passwd_login" value="passwd" ng-model="passwd_login" required></input>
+          <h4>Password</h4>
+        </div>
+        <div class="field">
+          <button class="login" ng-click="login(email_login, passwd_login)" ng-disabled="loginForm.$invalid">Log in </button>
+        </div>
+      </form>
+    </div>
+    <div class="form_register" ng-show="isSet(2)">
+      <form name="registerForm" novalidate>
+        <div class="field">
+          <input class="textinput" type="text" name="email_register" value="email_register" ng-model="email_register" required> </input>
+          <h4>Email</h4>
+        </div>
+        <div class="field">
+          <input class="textinput" type="text" name="username_register" value="username_register" ng-model="username_register" required> </input>
+          <h4>Username</h4>
+        </div>
+        <div class="field">
+          <input class="textinput" type="password" name="passwd_register" value="passwd_register" ng-model="passwd_register" required></input>
+          <h4>Password</h4>
+        </div>
+        <div class="field">
+          <input class="textinput" type="text" name="forvo_register" value="forvo" ng-model="forvo_register"></input>
+          <h4>Forvo API key</h4>
+        </div>
+        <div class="field">
+          <button class="signup" ng-click="signup(email_register, passwd_register, username_register, forvo_register)" ng-disabled="registerForm.$invalid">Sign up</button>
+        </div>
+      </form>
+    </div>
+    <div class="form_forgot">
+      <p>Forgot your password? <span>Tough shit.</span></p>
+    </div>
+  </div>
+</div>

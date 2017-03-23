@@ -7,8 +7,6 @@
     margin-bottom: 40px;
   }
 
-  &:last-of-type{  margin-right:0;  }
-
   h2{
     color: $sidebar-bg;
     padding-bottom: 20px;
@@ -19,82 +17,45 @@
     }
   }
   .block__action{
-    @include hoverColor;
     cursor:pointer;
     margin-bottom: 5px;
     margin-left: 15px;
     margin-right: 15px;
+    text-align: center;
 
-    a{
-      @include clearfix;
-      display: block;
-      text-align: center;
-      transition: all 0.1s ease;
-      .info{
-        font-style: italic;
-        font-weight: bold;
-        color: $sidebar-icon-color;
-        font-family: "Times New Roman", Georgia, Serif;
+    .icon_container{
+      @include hoverColor;
+      background: rgb(62,210,224); /* Old browsers */
+      background: -moz-linear-gradient(top,  rgba(62,210,224,1) 0%, rgba(0,195,230,1) 50%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top,  rgba(62,210,224,1) 0%,rgba(0,195,230,1) 50%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom,  rgba(62,210,224,1) 0%,rgba(0,195,230,1) 50%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3ed2e0', endColorstr='#00c3e6',GradientType=0 ); /* IE6-9 */
+      border: 1px solid darken($blue, 5%);
+      border-top: 1px solid $blue;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      height: 220px;
+      position: relative;
+      @include media(max-width 1024px){
+        height: 180px;
       }
-      span{
-        display: block;
-        color: $white;
-        float:right;
-        font-size: 38px;
-        height:80px;
-        line-height:80px;
-        width:80px;
+      h1{
+        color: $blue-light;
+        font-size: 6em;
+        background-color: $blue-dark;
+        border-radius: 100%;
+        min-width: 150px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         @include media(max-width 1024px){
-          display:none;
-        }
-      }
-      p,h4{
-        display: block;
-        padding: 25px 20px 20px 20px;
-        margin-right: 80px;
-        height:80px;
-        color: $white;
-        @include media(max-width 1024px){
-          margin-right: 0;
-        }
-      }
-      h4{
-        @include font-size(24px);
-      }
-    }
-    &:nth-of-type(1){
-      span{
-        background-color: $green-light;
-      }
-      p, h4{
-        background-color: $green;
-       }
-    }
-    &:nth-of-type(2){
-      span{
-        background-color: $blue-light;
-       }
-      p{
-        padding-top:30px;
-        background-color: $blue;
-        @include media(max-width $mobile){
-          text-align:center;
+          font-size: 5em;
+          min-width: 125px;
         }
       }
 
     }
-    &:nth-of-type(3){
-      span{
-        @include font-size(42px);
-        background-color: $sidebar-bg;
-        color: $sidebar-icon-color;
-      }
-      p{
-        padding-top:30px;
-        background-color: $sidebar-bg;
-        color: $white;
-      }
-       margin-bottom: 15px;
-    }
+   margin-bottom: 15px;
   }
 }

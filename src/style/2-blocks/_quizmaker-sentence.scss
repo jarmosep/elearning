@@ -1,0 +1,55 @@
+.corrections{
+  padding: 15px 15px 20px 15px;
+  background-color: $light-grey;
+  .correction{
+    @include span-columns(12);
+    textarea, input{
+      @include font-size(17px);
+      display:block;
+      color: $sidebar-bg;
+      width:100%;
+      border: 1px solid $border-color-grey;
+      border-radius: 3px;
+      padding: 15px;
+    }
+    input{
+      margin-top: 5px;
+    }
+
+  }
+  .fault{
+    @include span-columns(1, block-collapse);
+    margin-right:5px;
+    margin-top: 5px;
+    padding: 10px;
+    background-color: $white;
+    border: 1px solid $border-color-grey;
+    border-radius:3px;
+    input{
+      @include span-columns(12);
+      @include font-size(24px);
+      text-align: center;
+      color:$sidebar-bg;
+      border: none
+    }
+  }
+
+  .add-faults{
+    @include span-columns(1, block-collapse);
+    margin-top: 5px;
+    .add{
+      @include span-columns(12, block-collapse);
+      padding: 5px;
+      background-color: $green;
+      border: 1px solid $green-dark;
+      border-radius: 3px;
+      text-align: center;
+      i{
+        @include font-size(30px);
+        display:block;
+        margin-top: 6px;
+        color: $green-light;
+      }
+    }
+  }
+}

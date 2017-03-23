@@ -14,12 +14,13 @@
   span, p {
     float: right;
     font-size: 16px;
-    padding: 21px;
+    padding: 20px;
   }
   span{
     color: $sidebar-bg;
     cursor: pointer;
     font-size:20px;
+    padding-right: 5px;
   }
   p{
     @include media(max-width $mobile){

@@ -1,18 +1,18 @@
-.assignment{
+.askteacher{
   @include outer-container;
   @include bigHeading;
   @include mediumHeading;
   @include smallHeading;
   @include miniHeading;
   @include paragraph;
-  .alldecks{
+  .allquestions{
     @include span-columns(12);
-    @include boxShadow;
     margin-top: 40px;
-    background: $white;
-    .deck-options{
+    .question-options{
+      @include boxShadow;
       @include span-columns(12);
       display:inline;
+      background: $white;
       h3{
         @include font-size(17px);
         z-index: 44;
@@ -26,6 +26,10 @@
       h3.active{
         border-bottom: 3px solid $blue;
       }
+    }
+    .question-container{
+      @include span-columns(12);
+      border-top: 1px solid #E2E5EB;
     }
   }
 }

@@ -1,0 +1,33 @@
+.quiz-types{
+  @include span-columns(12);
+  padding: 15px;
+  border-top: 1px solid #E2E5EB;
+  background-color: $white;
+  .type{
+    @include span-columns(2);
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: $blue;
+    border: 1px solid $blue-dark;
+    height: 100px;
+    text-align: center;
+    color: $blue-light;
+    transition: all 0.2s ease-in-out;
+    &:hover{
+      transform: scale(0.95, 0.95);
+      border: 1px solid darken($blue-dark, 10%);
+      background-color: $blue-dark;
+      color: $blue;
+    }
+    i{
+      @include font-size(40px);
+      margin-top: 5px;
+      display: block;
+    }
+    .description{
+      @include font-size(14px);
+      margin-top: 10px;
+      color: $white;
+    }
+  }
+}

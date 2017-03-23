@@ -1,7 +1,7 @@
 app.factory('addWord', function addWord(){
   // Registration method
   addWord.submitWord = function(newWord,newAction,newTags){
-    
+
     var user = firebase.auth().currentUser;
     if(user){
       var wordbank = firebase.database().ref('wordbank');
@@ -26,7 +26,7 @@ app.factory('addWord', function addWord(){
       tagbank.set(setNewTags);
 
     }else{
-      console.log("Erorrs");
+      console.log("Errors");
     }
   }
 

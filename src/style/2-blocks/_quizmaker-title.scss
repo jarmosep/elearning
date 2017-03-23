@@ -1,0 +1,18 @@
+.title{
+  @include span-columns(12);
+  background-color: $light-grey;
+  padding: 15px;
+  input{
+    @include font-size(17px);
+    color: $sidebar-bg;
+    padding: 15px;
+    border-radius: 3px;
+    border: 1px solid $border-color-grey;
+  }
+  .quizname{
+    @include span-columns(3);
+  }
+  .quizdesc{
+    @include span-columns(9);
+  }
+}

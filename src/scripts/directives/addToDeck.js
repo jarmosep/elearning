@@ -3,7 +3,7 @@ app.directive('addToDeck', function(){
      link: function($scope, $element) {
            $scope.$watch('deckEnable', function() {
                $element.on('click', function(e) {
-                  if ($scope.deckEnable) {
+                  if ($scope.isSet(2)) {
                      e.preventDefault();
                      e.stopImmediatePropagation();
                      e.stopPropagation();
@@ -25,7 +25,7 @@ app.directive('addToDeck', function(){
                     });
                  }
                });
-               if(!$scope.deckEnable){
+               if(!$scope.isSet(2)){
                  $scope.selectedWord = false;
                  $scope.collection.length = 0;
                }
