@@ -61,10 +61,22 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             controller: 'WordSubmitCtrl',
         })
 
-        .state('dashboard.quiz', {
-            url: '/quiz/:assignment',
-            templateUrl: 'templates/mainviews/quiz.html',
-            controller: 'QuizCtrl'
+        .state('dashboard.quiz-memorize', {
+            url: '/memorize/:assignment',
+            templateUrl: 'templates/mainviews/quiz-memorize.html',
+            controller: 'MemorizeCtrl'
+        })
+
+        .state('dashboard.quiz-type', {
+            url: '/type/:assignment',
+            templateUrl: 'templates/mainviews/quiz-type.html',
+            controller: 'TypeCtrl'
+        })
+
+        .state('dashboard.quiz-listen', {
+            url: '/listen/:assignment',
+            templateUrl: 'templates/mainviews/quiz-listen.html',
+            controller: 'ListenCtrl'
         })
 
         .state('dashboard.assignments', {

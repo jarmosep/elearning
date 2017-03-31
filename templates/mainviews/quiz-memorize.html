@@ -1,0 +1,33 @@
+<div class="word-meanings">
+  <div class="progress">
+    <div class="readiness" ng-style="{ width: progressPercentage + '%'}">
+    </div>
+  </div>
+  <div class="japanese" ng-if="!hide">
+    <p ng-style="answer">{{assignment.words[index].reading}}</p>
+    <h2>{{assignment.words[index].expression}}</h2>
+  </div>
+  <div class="english-translation" ng-if="!hide">
+    <p ng-style="answer">{{assignment.words[index].meaning}}</p>
+  </div>
+  <div class="results" ng-if="quizOver">
+    <h2> Your results: {{ counter }}/{{assignment.cardLength}}</h2>
+  </div>
+</div>
+<div class="wrapper">
+  <div class="container worddeck">
+    <div class="answer_container" ng-if="!hide">
+      <div class="mission">
+        <p ng-click="showAnswer()")>{{showText}}</p>
+      </div>
+      <div class="options" ng-if="answerChoices">
+        <div class="option forgot" ng-click="nextWord(0)">
+          <p>No</p>
+        </div>
+        <div class="option remember" ng-click="nextWord(1)">
+          <p>Yes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

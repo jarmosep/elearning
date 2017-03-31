@@ -4,12 +4,11 @@
 
 html, body {
     background: $light-grey;
-    color: $text-color;
+    color: black;
     font-family: $helvetica;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
-    overflow-x: hidden;
     padding: 0;
     width: 100%;
 }

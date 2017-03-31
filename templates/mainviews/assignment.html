@@ -28,11 +28,33 @@
               </div>
               <div class="bottom">
                 <i class="ion-trash-a" ng-click="removeAssignment(assignment.key, assignment)"></i>
-                <p class="study" ui-sref="dashboard.quiz({assignment: assignment.cardData.deckName})">Study</p>
+                <p class="study" ng-click="toggleModal(assignment.cardData.deckName)">Study</p>
               </div>
           </div>
         </div>
       </div>
+      <div class="modal" ng-if="modalShown" ng-class="{'visible': modalShown}">
+        <div class="description">
+          <p>You are about to study</p>
+          <h2>{{ modal.deckName }}</h2>
+        </div>
+        <div class="content">
+          <p>Choose the type you want to study</p>
+          <div class="memorize" ui-sref="dashboard.quiz-memorize({assignment: modal.deckName })">
+            <p class="study">Recalling</p>
+            <i class="ion-refresh"></i>
+          </div>
+          <div class="type" ui-sref="dashboard.quiz-type({assignment: modal.deckName })">
+            <p class="study">Typing</p>
+            <i class="ion-compose"></i>
+          </div>
+          <div class="listen" ui-sref="dashboard.quiz-listen({assignment: modal.deckName })">
+            <p class="study">Listening</p>
+            <i class="ion-volume-medium"></i>
+          </div>
+        </div>
+      </div>
+      <div class="overlay" ng-if="modalShown" ng-click="toggleModal(false)"></div>
     </div>
   </div>
 </div>

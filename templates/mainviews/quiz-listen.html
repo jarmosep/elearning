@@ -1,0 +1,41 @@
+<div class="word-meanings">
+  <div class="progress">
+    <div class="readiness" ng-style="{ width: progressPercentage + '%'}">
+    </div>
+  </div>
+  <div class="start" ng-style="hideInitial" ng-click="getWord(assignment.words[index].expression)">
+    <p>Start here</p>
+  </div>
+  <div class="listening" ng-style="showVoice">
+    <i class="ion-volume-medium" ng-click="playAudio()"></i>
+  </div>
+  <div class="kanji-answer">
+    <h3 ng-style="answer">{{assignment.words[index].expression}}</h3>
+    <p ng-style="answer">{{assignment.words[index].meaning}}</p>
+  </div>
+  <div class="results" ng-if="quizOver">
+    <h2> Your results: {{ counter }}/{{assignment.cardLength}}</h2>
+  </div>
+</div>
+<div class="wrapper">
+  <div class="container worddeck">
+    <div class="answer_container" ng-if="!hide">
+      <div class="answer-input" ng-if="!listening">
+        <div class="textinput">
+          <input type="text" ng-model="userAnswer"></input>
+        </div>
+        <div class="answer-icon" ng-click="showCorrectExpression(userAnswer, assignment.words[index].expression)">
+          <i class="ion-chevron-right"></i>
+        </div>
+      </div>
+      <div class="answer-feedback">
+        <div class="wrong" ng-if="listeningWrong" ng-click="nextWord(0); getWord(assignment.words[index].expression)">
+          <p> Your answer <strong>{{ showUserAnswer }}</strong> was wrong.</p>
+        </div>
+        <div class="right" ng-if="listeningRight" ng-click="nextWord(1); getWord(assignment.words[index].expression)">
+          <p> Your answer <strong>{{ showUserAnswer }}</strong> was right!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

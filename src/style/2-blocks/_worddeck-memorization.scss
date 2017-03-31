@@ -1,0 +1,59 @@
+.answer_container{
+  @include clearfix;
+  margin-bottom: 40px;
+  .mission{
+    @include boxShadow;
+    @include span-columns(12);
+    @include font-size(24px);
+    text-align: center;
+    background-color: $sidebar-bg;
+    width:100%;
+    min-height:75px;
+    padding-left: 12px;
+    margin-top: 20px;
+    cursor: pointer;
+    p{
+      @include font-size(28px);
+      line-height: 75px;
+      color: $white;
+      @include media(max-width 540px){
+        @include font-size(18px);
+        line-height: 75px;
+      }
+    }
+  }
+  .options{
+    @include clearfix;
+    @include span-columns(12, block-collapse);
+    .option{
+      @include span-columns(6, block-collapse);
+      @include boxShadow;
+      background-color: $white;
+      margin-top: 20px;
+      text-align: center;
+      cursor: pointer;
+      padding: 20px;
+      p{
+        color: $white;
+      }
+      @include media(max-width 768px){
+        @include span-columns(6, block-collapse);
+      }
+    }
+    .forgot{
+      background-color: $red;
+      &:hover{
+        background-color: $red-dark;
+      }
+    }
+    .remember{
+      background-color: $green;
+      &:hover{
+        background-color: $green-dark;
+      }
+    }
+    span{
+      @include font-size(24px);
+    }
+  }
+}

@@ -1,0 +1,61 @@
+.answer_container{
+  .answer-input{
+    @include boxShadow;
+    @include clearfix;
+    margin-top:40px;
+    margin-bottom:40px;
+    .textinput{
+      @include span-columns(10, block-collapse);
+      input{
+        @include font-size(24px);
+        border-style: none;
+        text-align: center;
+        border-right:none;
+        height:75px;
+        color: $sidebar-bg;
+        outline:none;
+        padding-left: 20px;
+        width:100%;
+      }
+    }
+    .answer-icon{
+      @include span-columns(2, block-collapse);
+      background-color:$blue;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+      &:hover{
+        background-color: $blue-dark;
+      }
+      i{
+        @include font-size(30px);
+        display: block;
+        height:75px;
+        line-height: 75px;
+        color: $white;
+        border-left: none;
+        text-align: center;
+      }
+    }
+  }
+  .answer-feedback{
+    margin-top: 40px;
+    .wrong, .right{
+      @include span-columns(12);
+      @include boxShadow;
+      height: 75px;
+      cursor:pointer;
+      p{
+        @include font-size(24px);
+        color: $white;
+        line-height: 75px;
+        text-align: center;
+      }
+    }
+    .wrong{
+      background-color: $red;
+    }
+    .right{
+      background-color: $green;
+    }
+  }
+}

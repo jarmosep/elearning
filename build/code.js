@@ -220,10 +220,22 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             controller: 'WordSubmitCtrl',
         })
 
-        .state('dashboard.quiz', {
-            url: '/quiz/:assignment',
-            templateUrl: 'templates/mainviews/quiz.html',
-            controller: 'QuizCtrl'
+        .state('dashboard.quiz-memorize', {
+            url: '/memorize/:assignment',
+            templateUrl: 'templates/mainviews/quiz-memorize.html',
+            controller: 'MemorizeCtrl'
+        })
+
+        .state('dashboard.quiz-type', {
+            url: '/type/:assignment',
+            templateUrl: 'templates/mainviews/quiz-type.html',
+            controller: 'TypeCtrl'
+        })
+
+        .state('dashboard.quiz-listen', {
+            url: '/listen/:assignment',
+            templateUrl: 'templates/mainviews/quiz-listen.html',
+            controller: 'ListenCtrl'
         })
 
         .state('dashboard.assignments', {
@@ -407,7 +419,11 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
     return $rootScope.ActiveUser;
     console.log($rootScope.ActiveUser);
   }
-
+  $scope.modalShown = false;
+  $scope.toggleModal = function(deckName) {
+    $scope.modal = { deckName:deckName };
+    deckName ? $scope.modalShown = true : $scope.modalShown = false;
+  };
   $scope.tab = 1;
   $scope.setTab = function(newTab){
     $scope.tab = newTab;
@@ -415,7 +431,7 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
   $scope.isSet = function(tabNum){
     return $scope.tab === tabNum;
   }
-  
+
   if(user){
     var currentUser = firebase.database().ref('users').child(user.uid);
     currentUser.once('value', function(snapshot){
@@ -493,6 +509,90 @@ app.controller('DashboardCtrl', ['$scope', '$state', '$timeout', '$window', 'aut
 
 }]);
 
+app.controller("ListenCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'ForvoPronunciation', function($scope, $state, $stateParams, $timeout, ForvoPronunciation){
+  var urlParam = $stateParams.assignment;
+  $scope.apikey = '41e06f6960485179ce1492360c818962';
+  if(!urlParam){
+    $state.go('dashboard.assignment');
+  }
+  var cardsLength, card, url, audiofile, audio, percentage, words, getAudio;
+  var user = firebase.auth().currentUser;
+  var decoded = decodeURIComponent(urlParam);
+  var deck = firebase.database().ref('assignmentsStudent');
+  var assignment = deck.orderByChild("deckName").equalTo(decoded).once("value", function(dataSnapshot) {
+    var assignmentData = dataSnapshot.val();
+    $scope.assignment = assignmentData[Object.keys(assignmentData)];
+    cardsLength = $scope.assignment.words.length;
+    card = (1 / cardsLength) * 100;
+    var currentIndex = $scope.assignment.words.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = $scope.assignment.words[currentIndex];
+      $scope.assignment.words[currentIndex] = $scope.assignment.words[randomIndex];
+      $scope.assignment.words[randomIndex] = temporaryValue;
+    }
+
+  });
+  $scope.hideInitial = { 'opacity': 1 };
+  $scope.showVoice = { 'opacity': 0 };
+  $scope.getWord = function(word){
+     $scope.hideInitial = { 'opacity': 0 };
+     $scope.showVoice = { 'opacity': 1 };
+     getAudio = ForvoPronunciation.getSoundfile($scope.apikey, word);
+     getAudio.then(function(response){
+       audio = new Audio(response.data.items[0].pathmp3);
+     });
+  };
+
+
+  $scope.playAudio = function(){
+      audio.play();
+  };
+
+
+  $scope.index = 0;
+  $scope.answer = {'opacity': 0};
+  $scope.quizOver = false;
+  $scope.counter = 0;
+  $scope.hide = false;
+  $scope.progressPercentage = 0;
+  $scope.listeningWrong = false;
+  $scope.listeningRight = false;
+  $scope.listening = false;
+
+  $scope.showCorrectExpression = function(userAnswer, currentWord){
+    if(userAnswer == currentWord){
+      $scope.showUserAnswer = userAnswer;
+      $scope.listeningRight = true;
+      $scope.listening = true;
+      $scope.answer = {'opacity': 1};
+    }else{
+      $scope.showUserAnswer = userAnswer;
+      $scope.listeningWrong = true;
+      $scope.listening = true;
+      $scope.answer = {'opacity': 1};
+    }
+  }
+
+  $scope.nextWord = function(count, nextSound){
+    if(count === 0){ $scope.counter += 0; }
+    if(count === 1){ $scope.counter += 1; }
+    $scope.listeningRight = false;
+    $scope.listeningWrong = false;
+    $scope.listening = false;
+    $scope.progressPercentage += card;
+    $scope.index = $scope.index + 1;
+    $scope.answer = {'opacity': 0};
+    if($scope.index >= cardsLength){
+      $scope.quizOver = true;
+      $scope.hide = true;
+      console.log("You got " + $scope.counter + " out of " + cardsLength + " right!");
+    }
+  }
+
+}]);
+
 app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $scope){
   $scope.signup = function(email_register, passwd_register, username_register, forvo_register){
     authFactory.signup(email_register, passwd_register, username_register, forvo_register);
@@ -509,35 +609,60 @@ app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $sco
   }
 }]);
 
-app.controller("QuizCtrl", ["$scope", "$state", '$stateParams', '$timeout', function($scope, $state, $stateParams, $timeout){
+app.controller("MemorizeCtrl", ["$scope", "$state", '$stateParams', '$timeout', function($scope, $state, $stateParams, $timeout){
   var urlParam = $stateParams.assignment;
   if(!urlParam){
     $state.go('dashboard.assignment');
   }
+  var cardsLength, card, percentage;
   var user = firebase.auth().currentUser;
-  $scope.hide = false;
   var decoded = decodeURIComponent(urlParam);
-  var deck = firebase.database().ref('assignmentsStudent')
-
+  var deck = firebase.database().ref('assignmentsStudent');
   var assignment = deck.orderByChild("deckName").equalTo(decoded).once("value", function(dataSnapshot) {
     var assignmentData = dataSnapshot.val();
     $scope.assignment = assignmentData[Object.keys(assignmentData)];
+    cardsLength = $scope.assignment.words.length;
+    card = (1 / cardsLength) * 100;
+    var currentIndex = $scope.assignment.words.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = $scope.assignment.words[currentIndex];
+      $scope.assignment.words[currentIndex] = $scope.assignment.words[randomIndex];
+      $scope.assignment.words[randomIndex] = temporaryValue;
+    }
     console.log($scope.assignment);
-
-    /*
-    $timeout(function(){
-      $scope.loading = false;
-    }, 0);
-    */
   });
+
+  $scope.index = 0;
   $scope.answerChoices = false;
   $scope.answer = {'opacity': 0};
   $scope.showText = "Show answer";
+  $scope.quizOver = false;
+  $scope.counter = 0;
+  $scope.hide = false;
+  $scope.progressPercentage = 0;
+
   $scope.showAnswer = function(){
     $scope.answer = {'opacity': 1};
     $scope.showText = "Do you remember this word?";
     $scope.answerChoices = true;
   };
+
+  $scope.nextWord = function(count){
+    if(count === 0){ $scope.counter += 0; }
+    if(count === 1){ $scope.counter += 1; }
+    $scope.progressPercentage += card;
+    $scope.index = $scope.index + 1;
+    $scope.showText = "Show answer";
+    $scope.answerChoices = false;
+    $scope.answer = {'opacity': 0};
+    if($scope.index >= cardsLength){
+      $scope.quizOver = true;
+      $scope.hide = true;
+      console.log("You got " + $scope.counter + " out of " + cardsLength + " right!");
+    }
+  }
 
 }]);
 
@@ -823,6 +948,7 @@ app.directive("outsideClick", ['$document', '$parse', function($document, $parse
     }
   }
 }]);
+
 
 app.directive('word', function(){
   return{

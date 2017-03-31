@@ -26,16 +26,21 @@
     text-align: center;
     color: $white;
   }
-  p{
-    @include paragraph;
-    @include font-size(24px);
-    padding: 20px 20px;
-    @include media(max-width 540px){
-      @include font-size(17px);
+  .progress{
+    @include span-columns(12);
+    height: 15px;
+    background-color: darken($blue, 3%);
+    border-bottom: 1px solid $blue-light;
+    .readiness{
+      height: 15px;
+      width: 0%;
+      background-color: $sidebar-bg;
+      border-bottom: 1px solid $blue-light;
+      transition: all 0.2s ease;
     }
   }
   .japanese{
-    padding: 4% 0 2%;
+    padding: 6% 0 2%;
     h3{
       cursor: pointer;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
@@ -50,6 +55,7 @@
     }
     p{
       @include japanese;
+      @include font-size(24px);
       padding-bottom: 0;
     }
     @include media(max-width 540px){
@@ -59,15 +65,34 @@
       }
     }
   }
-  .english{
+  .english-translation{
     @include outer-container;
-    background-color: $blue;
     border-top: 1px solid $white;
     p{
+      @include font-size(24px);
       padding: 3% 0 8%;
       @include media(max-width 540px){
+        @include font-size(17px);
         padding: 8% 0 12%;
       }
+    }
+  }
+  .kanji-answer{
+    h3{
+      @include japanese;
+      @include font-size(30px);
+    }
+    p{
+      @include font-size(24px);
+    }
+    padding-bottom: 40px;
+  }
+  .listening{
+    padding: 4% 0 0;
+    text-align: center;
+    i{
+      @include font-size(120px);
+      color: $white;
     }
   }
 }

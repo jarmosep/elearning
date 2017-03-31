@@ -1,0 +1,95 @@
+.overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+  left: 0;
+  right: 0;
+	transition: opacity 200ms ease;
+  z-index: 10000;
+  background: rgba(0,0,0,0.4);
+  opacity: 1;
+  &.ng-enter,&.ng-leave {
+    opacity: 0;
+  }
+}
+
+.modal {
+	padding: 15px;
+	opacity: 1;
+	width: 300px;
+  background: #fff;
+	box-shadow: 0 0 50px rgba(0,0,0,0.5);
+	position: fixed;
+  top: 30%;
+  transform: translateY(0px);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 10001;
+  transition: top 300ms ease;
+  &.ng-enter {
+    animation: slideIn 300ms both ease-in-out;
+    z-index: 998;
+  }
+  &.ng-leave {
+    animation: slideOut 300ms both ease-in-out;
+    z-index: 998;
+  }
+  h2, p, i { color: $sidebar-bg }
+  .description {
+    text-align: center;
+    padding: 10px 0 20px 0;
+  }
+  .content{
+     .memorize,.type,.listen{
+      @include clearfix;
+      margin-top: 5px;
+      min-height: 60px;
+      background-color: $blue;
+      transition: background-color 0.2s ease-in-out;
+      cursor:pointer;
+      &:hover{
+        background-color: $blue-dark;
+      }
+      i{
+        @include span-columns(3, block-collapse);
+        @include font-size(24px);
+        text-align: center;
+        line-height: 60px;
+        color: $white;
+      }
+      p{
+        @include span-columns(9, block-collapse);
+        line-height: 60px;
+        color: $white;
+        padding-left: 30px;
+      }
+     }
+   }
+  h2{
+    line-height: 24px;
+  }
+
+  /*
+  .close {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 20px;
+    right: 20px;
+    opacity: 0.8;
+    transition: all 200ms;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #666;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  */
+  .content {
+    max-height: 400px;
+    overflow: auto;
+  }
+}
