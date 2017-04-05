@@ -1,0 +1,8 @@
+.word-listening{
+  .start{
+    cursor: pointer;
+    p{
+      @include font-size(30px);
+    }
+  }
+}

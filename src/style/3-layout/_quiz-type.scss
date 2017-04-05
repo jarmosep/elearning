@@ -1,0 +1,119 @@
+.word-typing{
+  .progress{
+    @include span-columns(12);
+    height: 15px;
+    background-color: darken($blue, 3%);
+    border-bottom: 1px solid $blue-light;
+    .readiness{
+      height: 15px;
+      width: 0%;
+      background-color: $sidebar-bg;
+      border-bottom: 1px solid $blue-light;
+      transition: all 0.2s ease;
+    }
+  }
+  .question{
+    padding: 120px 0 30px;
+    h2{
+      @include font-size(36px);
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    }
+    @include media(max-width 540px){
+      padding: 16% 0 8%;
+      h2{
+        @include font-size(26px);
+      }
+    }
+  }
+  .translation{
+    @include outer-container;
+    border-top: 1px solid $white;
+    p{
+      @include japanese;
+      &:first-of-type{
+        @include font-size(17px);
+        padding: 3% 0 0;
+      }
+      &:last-of-type{
+        @include font-size(22px);
+        padding: 0 0 6%;
+        font-weight: bold;
+      }
+      @include media(max-width 540px){
+        @include font-size(17px);
+        padding: 8% 0 12%;
+      }
+    }
+  }
+  .kanji-answer{
+    h3{
+      @include japanese;
+      @include font-size(30px);
+    }
+    p{
+      @include font-size(24px);
+    }
+    padding-bottom: 40px;
+  }
+}
+.answer_container{
+  .answer-input{
+    @include boxShadow;
+    @include clearfix;
+    margin-top:40px;
+    margin-bottom:40px;
+  }
+  .textinput{
+    @include span-columns(10, block-collapse);
+    input{
+      @include font-size(24px);
+      border-style: none;
+      text-align: center;
+      border-right:none;
+      height:75px;
+      color: $sidebar-bg;
+      outline:none;
+      padding-left: 20px;
+      width:100%;
+    }
+  }
+  .answer-icon{
+    @include span-columns(2, block-collapse);
+    background-color:$blue;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    &:hover{
+      background-color: $blue-dark;
+    }
+    i{
+      @include font-size(30px);
+      display: block;
+      height:75px;
+      line-height: 75px;
+      color: $white;
+      border-left: none;
+      text-align: center;
+    }
+  }
+  .answer-feedback{
+    margin-top: 40px;
+    .wrong, .right{
+      @include span-columns(12);
+      @include boxShadow;
+      height: 75px;
+      cursor:pointer;
+      p{
+        @include font-size(24px);
+        color: $white;
+        line-height: 75px;
+        text-align: center;
+      }
+    }
+    .wrong{
+      background-color: $red;
+    }
+    .right{
+      background-color: $green;
+    }
+  }
+}

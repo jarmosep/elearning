@@ -11,7 +11,7 @@ app.factory('ForvoPronunciation', ['$http', function($http){
         }
       );
       response.then(function(data){
-          console.log('servises', data.data);
+          console.log(data.data);
           return response.data;
       });
 

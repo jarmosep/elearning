@@ -17,8 +17,6 @@
 @import "2-blocks/wordbank-filters";
 @import "2-blocks/addword-inputs";
 @import "2-blocks/addword-submit";
-@import "2-blocks/worddeck-memorization";
-@import "2-blocks/worddeck-listening";
 @import "2-blocks/assignment-decks";
 @import "2-blocks/askteacher-ask";
 @import "2-blocks/askteacher-questions";
@@ -35,6 +33,9 @@
 @import "3-layout/wordbank";
 @import "3-layout/singleword";
 @import "3-layout/worddeck";
+@import "3-layout/quiz-memorization";
+@import "3-layout/quiz-listening";
+@import "3-layout/quiz-type";
 @import "3-layout/addword";
 @import "3-layout/assignment";
 @import "3-layout/askteacher";

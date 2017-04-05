@@ -3,11 +3,11 @@
     <div class="readiness" ng-style="{ width: progressPercentage + '%'}">
     </div>
   </div>
-  <div class="japanese" ng-if="!hide">
+  <div class="question" ng-if="!hide">
     <p ng-style="answer">{{assignment.words[index].reading}}</p>
     <h2>{{assignment.words[index].expression}}</h2>
   </div>
-  <div class="english-translation" ng-if="!hide">
+  <div class="translation" ng-if="!hide">
     <p ng-style="answer">{{assignment.words[index].meaning}}</p>
   </div>
   <div class="results" ng-if="quizOver">

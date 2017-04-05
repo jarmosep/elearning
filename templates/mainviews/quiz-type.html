@@ -1,17 +1,14 @@
-<div class="word-meanings word-listening">
+<div class="word-meanings word-typing">
   <div class="progress">
     <div class="readiness" ng-style="{ width: progressPercentage + '%'}">
     </div>
   </div>
-  <div class="start" ng-style="hideInitial" ng-click="getWord(assignment.words[index].expression)">
-    <p>Start here</p>
+  <div class="question" ng-if="!hide">
+    <h2>{{assignment.words[index].meaning}}</h2>
   </div>
-  <div class="listening" ng-style="showVoice">
-    <i class="ion-volume-medium" ng-click="playAudio()"></i>
-  </div>
-  <div class="kanji-answer">
-    <h3 ng-style="answer">{{assignment.words[index].expression}}</h3>
-    <p ng-style="answer">{{assignment.words[index].meaning}}</p>
+  <div class="translation" ng-if="!hide">
+    <p ng-style="answer">{{assignment.words[index].reading}}</p>
+    <p ng-style="answer">{{assignment.words[index].expression}}</p>
   </div>
   <div class="results" ng-if="quizOver">
     <h2> Your results: {{ counter }}/{{assignment.cardLength}}</h2>
