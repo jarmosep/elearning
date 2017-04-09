@@ -50,17 +50,13 @@ app.factory('authFactory', ['$state', function authFactory($state){
   var auth = firebase.auth(); // creating authentication namespace
 
   // Registration method
-  authFactory.signup = function(email, passwd, username, forvo_register){
+  authFactory.signup = function(email, passwd, username){
     var promise = auth.createUserWithEmailAndPassword(email, passwd); // creating username with pw in firebase
     var date = Math.floor(Date.now());
     promise.then(function(user){
-      if(!forvo_register){
-        forvo_register = 'Type in your Forvo API key.';
-      }
       userRef.child(user.uid).set({
         displayName: username,
         email: email,
-        forvokey: forvo_register,
         status: 'student'
       });
       recentActivities.child(user.uid);
@@ -511,14 +507,18 @@ app.controller('DashboardCtrl', ['$scope', '$state', '$timeout', '$window', 'aut
 
 app.controller("ListenCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'ForvoPronunciation', function($scope, $state, $stateParams, $timeout, ForvoPronunciation){
   var urlParam = $stateParams.assignment;
-  $scope.apikey = '41e06f6960485179ce1492360c818962';
   if(!urlParam){
     $state.go('dashboard.assignment');
   }
-  var cardsLength, card, url, audiofile, audio, percentage, words, getAudio;
+  var cardsLength, card, url, audiofile, audio, percentage, words, getAudio, initialaudio;
   var user = firebase.auth().currentUser;
   var decoded = decodeURIComponent(urlParam);
   var deck = firebase.database().ref('assignmentsStudent');
+  var apikey;
+  var firstword;
+  var getApikey = firebase.database().ref('apikey').once("value", function(dataSnapshot){
+    apikey = dataSnapshot.val();
+  });
   var assignment = deck.orderByChild("deckName").equalTo(decoded).once("value", function(dataSnapshot) {
     var assignmentData = dataSnapshot.val();
     $scope.assignment = assignmentData[Object.keys(assignmentData)];
@@ -532,14 +532,16 @@ app.controller("ListenCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'F
       $scope.assignment.words[currentIndex] = $scope.assignment.words[randomIndex];
       $scope.assignment.words[randomIndex] = temporaryValue;
     }
-
+    firstword = $scope.assignment.words[0].expression;
+    getAudio = ForvoPronunciation.getSoundfile(apikey, firstword);
+    console.log(firstword);
+    getAudio.then(function(response){
+      audio = new Audio(response.data.items[0].pathmp3);
+    });
   });
-  $scope.hideInitial = { 'opacity': 1 };
-  $scope.showVoice = { 'opacity': 0 };
+
   $scope.getWord = function(word){
-     $scope.hideInitial = { 'opacity': 0 };
-     $scope.showVoice = { 'opacity': 1 };
-     getAudio = ForvoPronunciation.getSoundfile($scope.apikey, word);
+     getAudio = ForvoPronunciation.getSoundfile(apikey, word);
      getAudio.then(function(response){
        audio = new Audio(response.data.items[0].pathmp3);
      });
@@ -553,15 +555,19 @@ app.controller("ListenCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'F
 
   $scope.index = 0;
   $scope.answer = {'opacity': 0};
-  $scope.quizOver = false;
   $scope.counter = 0;
   $scope.hide = false;
   $scope.progressPercentage = 0;
   $scope.listeningWrong = false;
   $scope.listeningRight = false;
   $scope.listening = false;
+  $scope.showText = {'opacity': 1};
+  $scope.setClass = '';
+  $scope.showText = '';
 
   $scope.showCorrectExpression = function(userAnswer, currentWord){
+    $scope.setClass = 'shrink';
+    $scope.showText = 'showText';
     if(userAnswer == currentWord){
       $scope.showUserAnswer = userAnswer;
       $scope.listeningRight = true;
@@ -578,14 +584,15 @@ app.controller("ListenCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'F
   $scope.nextWord = function(count, nextSound){
     if(count === 0){ $scope.counter += 0; }
     if(count === 1){ $scope.counter += 1; }
+    $scope.setClass = '';
     $scope.listeningRight = false;
     $scope.listeningWrong = false;
     $scope.listening = false;
+    $scope.showText = '';
     $scope.progressPercentage += card;
     $scope.index = $scope.index + 1;
-    $scope.answer = {'opacity': 0};
+    $scope.answer = {'opacity': 0, 'transition': 'none'};
     if($scope.index >= cardsLength){
-      $scope.quizOver = true;
       $scope.hide = true;
       console.log("You got " + $scope.counter + " out of " + cardsLength + " right!");
     }
@@ -594,8 +601,8 @@ app.controller("ListenCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'F
 }]);
 
 app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $scope){
-  $scope.signup = function(email_register, passwd_register, username_register, forvo_register){
-    authFactory.signup(email_register, passwd_register, username_register, forvo_register);
+  $scope.signup = function(email_register, passwd_register, username_register){
+    authFactory.signup(email_register, passwd_register, username_register);
   };
   $scope.login = function(email_login, passwd_login){
     authFactory.login(email_login, passwd_login);
@@ -803,17 +810,12 @@ app.controller("WordDetailsCtrl", ["$scope", "$http","$state", '$stateParams', '
   var user = firebase.auth().currentUser;
   var decoded = decodeURIComponent(urlParam);
   var word = firebase.database().ref('wordbank');
+  var apikey;
   $scope.loading = true;
 
-  if(user){
-    var currentUser = firebase.database().ref('users').child(user.uid);
-    currentUser.once('value', function(snapshot){
-      var snapshot = snapshot.val();
-          $scope.apikey = snapshot.forvokey;
-        });
-  }else{
-    console.log("Not logged in.");
-  }
+    var getApikey = firebase.database().ref('apikey').once("value", function(dataSnapshot){
+      apikey = dataSnapshot.val();
+    });
 
     var wordbank = word.orderByChild("meaning").equalTo(decoded).once("value", function(dataSnapshot) {
     var worddata = dataSnapshot.val();
@@ -829,7 +831,7 @@ app.controller("WordDetailsCtrl", ["$scope", "$http","$state", '$stateParams', '
       }
     }
     var url, audiofile, audio;
-    var getAudio = ForvoPronunciation.getSoundfile($scope.apikey, $scope.word.expression);
+    var getAudio = ForvoPronunciation.getSoundfile(apikey, $scope.word.expression);
 
     getAudio.then(function(response){
       audio = new Audio(response.data.items[0].pathmp3);

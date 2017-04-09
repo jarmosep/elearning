@@ -5,10 +5,8 @@
   </div>
   <div class="question" ng-if="!hide">
     <h2>{{assignment.words[index].meaning}}</h2>
-  </div>
-  <div class="translation" ng-if="!hide">
-    <p ng-style="answer">{{assignment.words[index].reading}}</p>
-    <p ng-style="answer">{{assignment.words[index].expression}}</p>
+    <p class="hiragana" ng-style="answer">{{assignment.words[index].reading}}</p>
+    <p class="translation" ng-style="answer">{{assignment.words[index].expression}}</p>
   </div>
   <div class="results" ng-if="quizOver">
     <h2> Your results: {{ counter }}/{{assignment.cardLength}}</h2>

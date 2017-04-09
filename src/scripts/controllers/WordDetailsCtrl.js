@@ -6,17 +6,12 @@ app.controller("WordDetailsCtrl", ["$scope", "$http","$state", '$stateParams', '
   var user = firebase.auth().currentUser;
   var decoded = decodeURIComponent(urlParam);
   var word = firebase.database().ref('wordbank');
+  var apikey;
   $scope.loading = true;
 
-  if(user){
-    var currentUser = firebase.database().ref('users').child(user.uid);
-    currentUser.once('value', function(snapshot){
-      var snapshot = snapshot.val();
-          $scope.apikey = snapshot.forvokey;
-        });
-  }else{
-    console.log("Not logged in.");
-  }
+    var getApikey = firebase.database().ref('apikey').once("value", function(dataSnapshot){
+      apikey = dataSnapshot.val();
+    });
 
     var wordbank = word.orderByChild("meaning").equalTo(decoded).once("value", function(dataSnapshot) {
     var worddata = dataSnapshot.val();
@@ -32,7 +27,7 @@ app.controller("WordDetailsCtrl", ["$scope", "$http","$state", '$stateParams', '
       }
     }
     var url, audiofile, audio;
-    var getAudio = ForvoPronunciation.getSoundfile($scope.apikey, $scope.word.expression);
+    var getAudio = ForvoPronunciation.getSoundfile(apikey, $scope.word.expression);
 
     getAudio.then(function(response){
       audio = new Audio(response.data.items[0].pathmp3);

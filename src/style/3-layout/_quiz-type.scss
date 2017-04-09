@@ -13,7 +13,6 @@
     }
   }
   .question{
-    padding: 120px 0 30px;
     h2{
       @include font-size(36px);
       text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
@@ -24,25 +23,16 @@
         @include font-size(26px);
       }
     }
-  }
-  .translation{
-    @include outer-container;
-    border-top: 1px solid $white;
     p{
+      @include font-size(24px);
       @include japanese;
-      &:first-of-type{
-        @include font-size(17px);
-        padding: 3% 0 0;
-      }
-      &:last-of-type{
-        @include font-size(22px);
-        padding: 0 0 6%;
-        font-weight: bold;
-      }
-      @include media(max-width 540px){
-        @include font-size(17px);
-        padding: 8% 0 12%;
-      }
+    }
+    .hiragana{
+      padding-top: 10px;
+    }
+    .translation{
+      @include font-size(30px);
+      font-weight: bold;
     }
   }
   .kanji-answer{
@@ -53,7 +43,6 @@
     p{
       @include font-size(24px);
     }
-    padding-bottom: 40px;
   }
 }
 .answer_container{

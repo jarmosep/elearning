@@ -1,8 +1,64 @@
 .word-listening{
+  cursor: pointer;
   .start{
-    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5000;
     p{
       @include font-size(30px);
+    }
+  }
+  .listening{
+    position: absolute;
+    z-index: 4999;
+    top: 70px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    i{
+      @include font-size(120px);
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: block;
+      color: $white;
+      &:hover{
+        text-shadow: 0px 0px 5px #fff;
+      }
+    }
+    i.shrink{
+      @include font-size(80px);
+      color: $white;
+    }
+  }
+  .clickIt{
+    @include font-size(24px);
+    position: absolute;
+    display:block;
+    left: 0;
+    right:0;
+    bottom: 70px;
+    opacity: 1;
+    transition: opacity 0.1s ease;
+    &.showText{
+      opacity: 0;
+    }
+  }
+  .kanji-answer{
+    position: absolute;
+    bottom: 70px;
+    left: 0;
+    right: 0;
+    h3{
+      @include japanese;
+      @include font-size(30px);
+      transition: opacity 0.2s ease-in;
+    }
+    p{
+      @include font-size(24px);
+      transition: opacity 0.2s ease-in;
     }
   }
 }
