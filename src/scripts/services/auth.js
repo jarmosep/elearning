@@ -3,16 +3,18 @@ app.factory('authFactory', ['$state', function authFactory($state){
   var recentActivities = firebase.database().ref('recentActivities') // initializing 'recentActivities'
   var defaultTags = firebase.database().ref('tagbank'); // initializing 'tagbank'
   var auth = firebase.auth(); // creating authentication namespace
-
+  var status;
   // Registration method
-  authFactory.signup = function(email, passwd, username){
+
+  authFactory.signup = function(email, passwd, username, status){
+    console.log(status);
     var promise = auth.createUserWithEmailAndPassword(email, passwd); // creating username with pw in firebase
     var date = Math.floor(Date.now());
     promise.then(function(user){
       userRef.child(user.uid).set({
         displayName: username,
         email: email,
-        status: 'student'
+        status: status
       });
       recentActivities.child(user.uid);
       recentActivities.push({
@@ -25,10 +27,16 @@ app.factory('authFactory', ['$state', function authFactory($state){
                   'noun', 'particle', 'ichidan-verb', 'godan-verb', 'transitive', 'intransitive', 'suru-verb',
                   'kuru-verb', 'colloquialism', 'honorific', 'onomatopoeic', 'slang', 'vulgar', 'sensitive'];
       defaultTags.set(tags);
-      $state.go('dashboard.front');
+      if(status === 'student'){
+        $state.go('dashboard.front');
+      }else if(status === 'teacher'){
+        $state.go('dashboard.admin');
+      }else{
+        console.log("Can't go.");
+      }
       console.log(user);
-    }).catch(function(err){
-      console.log(err);
+    }).catch(function(error){
+      console.log(error);
     });
     return promise;
   }
@@ -37,10 +45,25 @@ app.factory('authFactory', ['$state', function authFactory($state){
   authFactory.login = function(email, passwd){
     var promise = auth.signInWithEmailAndPassword(email, passwd);
     promise.then(function(user){
-      $state.go('dashboard.front'); // if login is successful, redirect to frontpage
+      if(user){
+        var currentUser = firebase.database().ref('users').child(user.uid);
+        currentUser.once('value', function(snapshot){
+          var value = snapshot.val();
+          status = value.status;
+          console.log(status);
+          if(status === 'student'){
+            $state.go('dashboard.front'); // if login is successful, redirect to frontpage
+          }else if(status === 'teacher'){
+            $state.go('dashboard.admin');
+          }else{
+            console.log("Got nowhere to go.");
+          }
+        });
+      }
+
       console.log(user);
-    }).catch(function(err){
-      console.log(err)
+    }).catch(function(error){
+      console.log(error)
     });
     return promise;
   }

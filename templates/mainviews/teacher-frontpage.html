@@ -1,0 +1,63 @@
+<div class="wrapper">
+  <div class="container frontpage">
+    <div class="heading">
+      <h1>Dashboard</h1>
+    </div>
+    <div class="actions">
+
+      <div class="one-third">
+        <h2>Create a quiz</h2>
+        <div class="block__action">
+          <div class="icon_container">
+            <h1 class="ion-document-text" ui-sref="dashboard.quizmaker"></h1>
+          </div>
+        </div>
+      </div>
+      <!-- Assignments-->
+      <div class="one-third">
+        <h2>Manage quizzes</h2>
+        <div class="block__action">
+          <div class="icon_container">
+            <h1 class="ion-university" ui-sref="dashboard.quizzes"></h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="one-third">
+        <h2>Answer questions</h2>
+        <div class="block__action">
+          <div class="icon_container">
+            <h1 class="ion-chatboxes" ui-sref="dashboard.answer"></h1>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="recent">
+      <div class="subheading">
+        <h4>Recent activity</h4>
+      </div>
+        <div class="activity" ng-repeat="recent in recents | orderBy:'timestamp':true track by $index" recent="recent">
+          <div class="what-and-when">
+              <p class="event">{{ recent.data.activity }}</p>
+              <p class="occurance">{{ recent.data.timestamp | date: "MMM d ''yy 'at' HH:mm"}}</p>
+          </div>
+          <div class="operations" outside-click="$root.popkey = null">
+              <span class="action ion-android-more-vertical" ng-click="$root.popkey = recent.key"></span>
+              <div class="options" ng-show="$root.popkey == recent.key">
+                <li>
+                  <span class="ion-chevron-right"></span>
+                  <p class="delete">View</p>
+                </li>
+                <li ng-click="removeActivity(recent.key, recent);">
+                  <span class="ion-trash-a"></span>
+                  <p class="delete">Delete</p>
+                </li>
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+</div>

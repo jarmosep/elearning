@@ -2,6 +2,7 @@ app.controller('WordSubmitCtrl', ['$scope', 'addWord', '$timeout', function($sco
   $scope.form = {};
   $scope.tags = [];
   $scope.currentUser;
+  
   var user = firebase.auth().currentUser;
 
   firebase.auth().onAuthStateChanged(function(user){

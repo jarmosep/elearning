@@ -1,0 +1,74 @@
+<div class="loader" ng-class="{'show-loader': loading }">
+  <span class="ion-load-d"></span>
+</div>
+<div ng-show="!loading">
+  <div class="wrapper">
+    <div class="container askteacher">
+      <div class="heading">
+        <h1> Ask tutor </h1>
+      </div>
+      <div class="allquestions">
+        <div class="question-options">
+          <h3 ng-click="setTab(1)" ng-class="{ active: isSet(1) }">
+            Answered
+          </h3>
+          <h3 ng-click="setTab(2)" ng-class="{ active: isSet(2) }">
+            Unanswered
+          </h3>
+        </div>
+        <div class="question-container">
+          <div class="answered" ng-show="isSet(1)">
+            <div class="question-block">
+              <div class="field" ng-repeat="question in showQuestions track by $index" ng-if="question.answer != 0">
+                <div class="question-answer-container">
+                  <div class="teacher-answer-field">
+                    <div class="student">
+                      <p>{{ question.askedBy }} asked:</p>
+                    </div>
+                    <div class="question">
+                      <p>{{ question.question }}</p>
+                    </div>
+                    <div class="posted">
+                      <p>{{ question.date | date: "MMM d ''yy 'at' HH:mm" }}</p>
+                    </div>
+                  </div>
+                  <div class="answer-container">
+                    <div class="teacher">
+                      <p>You: </p>
+                    </div>
+                    <div class="answer">
+                      <p>{{ question.answer }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="unanswered" ng-show="isSet(2)">
+            <div class="question-block">
+              <div class="field" ng-repeat="(key, item) in showQuestions track by $index" ng-if="item.answer == 0">
+                  <div class="teacher-answer-field">
+                    <div class="student">
+                      <p>{{ item.askedBy }} asked:</p>
+                    </div>
+                    <div class="question">
+                      <p>{{ item.question }}</p>
+                    </div>
+                    <div class="posted">
+                      <p>{{ item.date | date: "MMM d ''yy 'at' HH:mm" }}</p>
+                    </div>
+                  </div>
+                <form name="typeAnswer" novalidate>
+                  <textarea name="name" class="answer-text" ng-model="answerText" placeholder="Answer this question" required></textarea>
+                  <div class="field-submit">
+                    <button class="submit" ng-click="answerTheQuestion(key, item, answerText)" ng-disabled="typeAnswer.$invalid">Answer</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,13 +3,17 @@
     <div class="readiness" ng-style="{ width: progressPercentage + '%'}">
     </div>
   </div>
-  <div class="listening" ng-click="playAudio()">
-    <i class="ion-volume-high" ng-class="setClass"></i>
-  </div>
-  <p class="clickIt" ng-class="showText" ng-click="playAudio()">Click to listen audio</p>
-  <div class="kanji-answer">
-    <h3 ng-style="answer">{{assignment.words[index].expression}}</h3>
-    <p ng-style="answer">{{assignment.words[index].meaning}}</p>
+  <div class="question">
+    <div class="container">
+      <div class="listening" ng-click="playAudio()">
+        <i class="ion-volume-medium" ng-class="setClass"></i>
+        <p class="clickIt" ng-class="showText">Click to listen</p>
+      </div>
+      <div class="kanji-answer">
+        <h3 ng-style="answer">{{assignment.words[index].expression}}</h3>
+        <p ng-style="answer">{{assignment.words[index].meaning}}</p>
+      </div>
+    </div>
   </div>
   <div class="results" ng-if="hide">
     <h2> Your results: {{ counter }}/{{assignment.cardLength}}</h2>

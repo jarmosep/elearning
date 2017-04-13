@@ -38,7 +38,18 @@
           <h4>Password</h4>
         </div>
         <div class="field">
-          <button class="signup" ng-click="signup(email_register, passwd_register, username_register)" ng-disabled="registerForm.$invalid">Sign up</button>
+          <p>Status</p>
+          <div class="radio">
+            <input type="radio" id="student" name="status" value="student" ng-model="status" required>
+            <label for="student">Student</label>
+          </div>
+          <div class="radio">
+            <input type="radio" id="teacher" name="status" value="teacher" ng-model="status" required>
+            <label for="teacher">Teacher</label>
+          </div>
+        </div>
+        <div class="field">
+          <button class="signup" ng-click="signup(email_register, passwd_register, username_register, status)" ng-disabled="registerForm.$invalid">Sign up</button>
         </div>
       </form>
     </div>

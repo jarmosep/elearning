@@ -1,24 +1,7 @@
-.play{
-  position: absolute;
-  top: 20px;
-  right:30px;
-  @include media(max-width $mobile){
-    position: relative;
-    top: 0;
-    right:0;
-  };
-  @include media(max-width 540px){
-    margin-top: 3%;
-  };
-}
 .single-word-meanings{
   @include paragraph;
-  min-height: 250px;
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#3ed2e0+0,00c3e6+50 */
-  background: rgb(62,210,224); /* Old browsers */
-  background: -moz-linear-gradient(top,  rgba(62,210,224,1) 0%, rgba(0,195,230,1) 50%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top,  rgba(62,210,224,1) 0%,rgba(0,195,230,1) 50%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom,  rgba(62,210,224,1) 0%,rgba(0,195,230,1) 50%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  min-height: 320px;
+  background: linear-gradient(to bottom, $blue-light, $blue);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3ed2e0', endColorstr='#00c3e6',GradientType=0 ); /* IE6-9 */
   position: relative;
   border-bottom: 1px solid darken($blue, 5%);
@@ -26,41 +9,62 @@
     text-align: center;
     color: $white;
   }
-  .japanese{
-    padding: 6% 0 2%;
+  .play{
+    position: absolute;
+    z-index: 10000;
+    width: 50px;
+    top: 20px;
+    right:20px;
     h3{
+      @include font-size(40px);
       cursor: pointer;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-      @include font-size(45px);
     }
-    h2{
-      @include font-size(60px);
-      @include japanese;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-      animation: blink 1.5s ease-in-out forwards;
-      animation-delay: 1s;
-    }
-    p{
-      @include japanese;
-      @include font-size(24px);
-      padding-bottom: 0;
-    }
-    @include media(max-width 540px){
-      padding: 10% 0 8%;
-      h2{
-        @include font-size(26px);
+    @include media(max-width $mobile){
+      position: absolute;
+      width: 100%;
+      right:0;
+      left:0;
+      margin: 0 auto;
+      h3{
+        @include font-size(60px);
       }
     }
   }
-  .english-translation{
-    @include outer-container;
-    border-top: 1px solid $white;
-    padding: 3% 0 5%;
-    p{
-      @include font-size(24px);
+  .container{
+    padding-top: 100px;
+    padding-bottom: 100px;
+    .japanese{
+      h3{
+        cursor: pointer;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+        @include font-size(45px);
       }
-    @include media(max-width $mobile){
-      padding: 6% 0 10%;
-    };
+      h2{
+        @include font-size(60px);
+        @include japanese;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+        animation: blink 1.5s ease-in-out forwards;
+        animation-delay: 1s;
+      }
+      p{
+        @include japanese;
+        @include font-size(24px);
+
+      }
+      @include media(max-width 540px){
+
+        h2{
+          @include font-size(42px);
+        }
+      }
+    }
+    .english-translation{
+      @include outer-container;
+      p{
+        @include font-size(24px);
+      }
+      @include media(max-width $mobile){
+      }
+    }
   }
 }

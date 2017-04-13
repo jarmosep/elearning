@@ -9,77 +9,22 @@
           <input type="text" placeholder="Quiz name" class="quizname"></input>
           <input type="text" placeholder="Quiz description" class="quizdesc"></input>
         </div>
-        <div class="field multiple-choices">
-          <div class="type-selected">
-            <h3> Multiple choice</h3>
-            <div class="settings">
-              <i class="ion-chevron-up"></i>
-              <i class="ion-chevron-down"></i>
-              <i class="ion-trash-a"></i>
-            </div>
-          </div>
-          <div class="multiple-question">
-            <input type="text"></input>
-          </div>
-          <div class="choice">
-            <p>児童中心主義</p>
-            <i class="ion-close"></i>
-          </div>
-          <div class="choice">
-            <p>逆推力装置</p>
-            <i class="ion-close"></i>
-          </div>
-          <div class="add-questions">
-            <input type="text" placeholder="Add options"></input>
-            <div class="add">
-              <i class="ion-android-add-circle"></i>
-            </div>
-          </div>
-        </div>
-        <div class="field corrections">
-          <div class="type-selected">
-            <h3> Sentence corrections</h3>
-            <div class="settings">
-              <i class="ion-chevron-up"></i>
-              <i class="ion-chevron-down"></i>
-              <i class="ion-trash-a"></i>
-            </div>
-          </div>
-          <div class="correction">
-            <textarea></textarea>
-            <input type="text"></input>
-          </div>
-          <div class="fault">
-            <input type="text"></input>
-          </div>
-          <div class="fault">
-            <input type="text"></input>
-          </div>
-          <div class="fault">
-            <input type="text"></input>
-          </div>
-          <div class="fault">
-            <input type="text"></input>
-          </div>
-          <div class="add-faults">
-            <div class="add">
-              <i class="ion-android-add-circle"></i>
-            </div>
-          </div>
-        </div>
+      </div>
+      <div class="all-quizzes" ng-repeat="quiz in quizzes track by $index">
+        <div class="field multiple-choices" ng-include="'templates/quizBlocks/multiplechoices.html'" ng-if="quiz == 'multiplechoices'"></div>
       </div>
       <div class="quiz-types">
-        <div class="type">
-          <p class="description"> Corrections </p>
+        <div class="type" ng-click="addQuiz('multiplechoices')">
           <i class="ion-wand"></i>
+          <p class="description"> Corrections </p>
         </div>
         <div class="type">
-          <p class="description"> Listening </p>
           <i class="ion-volume-medium"></i>
+          <p class="description"> Listening </p>
         </div>
-        <div class="type">
-          <p class="description"> Multiple choice</p>
+        <div class="type" ng-click="addQuiz('sentenceCorrections')">
           <i class="ion-android-checkbox"></i>
+          <p class="description"> Multiple choice</p>
         </div>
       </div>
       <div class="actions">

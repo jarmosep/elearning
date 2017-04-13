@@ -41,7 +41,8 @@ label[for="nav-trigger"] {
     left: -100px;
   }
   .logo {
-    background-color: $blue;
+    background: linear-gradient(to bottom right, $blue-light, $blue);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3ed2e0', endColorstr='#00c3e6',GradientType=0 ); /* IE6-9 */
     height: 65px;
     width: 100px;
   }

@@ -9,34 +9,10 @@
   <div class="logo">&nbsp;</div>
   <div class="navigation-side__nav">
     <ul>
-      <li>
-        <a ui-sref="dashboard.front">
-          <span class="ion ion-home"></span>
-          <p class="small">Dashboard</p>
-        </a>
-      </li>
-      <li>
-        <a ui-sref="dashboard.wordbank">
-          <span class="ion ion-filing"></span>
-          <p class="small">Wordbank</p>
-        </a>
-      </li>
-      <li>
-        <a ui-sref="dashboard.addword">
-          <span class="ion ion-plus-circled"></span>
-          <p class="small">Add words</p>
-        </a>
-      </li>
-      <li>
-        <a ui-sref="dashboard.assignments">
-          <span class="ion ion-university"></span>
-          <p class="small">Assignments</p>
-        </a>
-      </li>
-      <li >
-        <a ui-sref="dashboard.askteacher">
-          <span class="ion ion-chatboxes"></span>
-          <p class="small">Ask teacher</p>
+      <li ng-repeat="button in navbar">
+        <a ui-sref="{{ button.stateName }}">
+          <span class="ion {{ button.icon }}"></span>
+          <p class="small">{{ button.description }}</p>
         </a>
       </li>
     </ul>

@@ -4,15 +4,17 @@
 
 <div ng-show="!loading">
 <div class="single-word-meanings">
-  <div class="japanese">
-    <div class="play" ng-click="playAudio()">
-      <h3 class="ion-volume-medium"></h3>
-    </div>
-    <p>{{word.reading}}</p>
-    <h2>{{word.expression}}</h2>
+  <div class="play" ng-click="playAudio()">
+    <h3 class="ion-volume-medium"></h3>
   </div>
-  <div class="english-translation">
-    <p>{{word.meaning}}</p>
+  <div class="container">
+    <div class="japanese">
+      <p>{{word.reading}}</p>
+      <h2>{{word.expression}}</h2>
+    </div>
+    <div class="english-translation">
+      <p>{{word.meaning}}</p>
+    </div>
   </div>
 </div>
 <div class="wrapper">

@@ -20,6 +20,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             templateUrl: 'templates/landing.html', // in this state, landingpage.html is being used.
             controller: 'LoginCtrl'
         })
+
+        /*------------------------ */
+        /*      Student views      */
+        /*------------------------ */
+
         .state('dashboard', {
             url: '/dashboard',
             abstract: true, // abstract: {boolean} provides inherited properties to its common children states.
@@ -39,13 +44,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             templateUrl: 'templates/mainviews/frontpage.html',
             controller: 'RecentActivityCtrl'
         })
-
         .state('dashboard.wordbank', {
             url: '/wordbank',
             templateUrl: 'templates/mainviews/wordbank.html',
             controller: 'AllWordsCtrl',
         })
-
         .state('dashboard.word', {
             url: '/wordbank/word/:word',
             templateUrl: 'templates/mainviews/singleword.html',
@@ -54,31 +57,26 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
                 obj: null
             }
         })
-
         .state('dashboard.addword', {
             url: '/addword',
             templateUrl: 'templates/mainviews/addword.html',
             controller: 'WordSubmitCtrl',
         })
-
         .state('dashboard.quiz-memorize', {
             url: '/memorize/:assignment',
             templateUrl: 'templates/mainviews/quiz-memorize.html',
             controller: 'MemorizeCtrl'
         })
-
         .state('dashboard.quiz-type', {
             url: '/type/:assignment',
             templateUrl: 'templates/mainviews/quiz-type.html',
             controller: 'TypeCtrl'
         })
-
         .state('dashboard.quiz-listen', {
             url: '/listen/:assignment',
             templateUrl: 'templates/mainviews/quiz-listen.html',
             controller: 'ListenCtrl'
         })
-
         .state('dashboard.assignments', {
             url: '/assignment',
             templateUrl: 'templates/mainviews/assignment.html',
@@ -87,16 +85,36 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
                 obj: null
             }
         })
-
         .state('dashboard.askteacher', {
             url: '/ask',
             templateUrl: 'templates/mainviews/ask.html',
             controller: 'AskQuestionCtrl'
         })
 
+        /*------------------------ */
+        /*      Teacher views      */
+        /*------------------------ */
+
+        .state('dashboard.admin', {
+            url: '/admin',
+            page: 'DashboardAdmin',
+            templateUrl: 'templates/mainviews/teacher-frontpage.html',
+            controller: 'RecentActivityCtrl'
+        })
         .state('dashboard.quizmaker', {
-            url: '/quizmaker',
-            templateUrl: 'templates/mainviews/quizmaker.html'
+            url: '/admin/quizmaker',
+            templateUrl: 'templates/mainviews/quizmaker.html',
+            controller: 'CreateTeacherQuizCtrl'
+        })
+        .state('dashboard.quizzes', {
+            url: '/admin/quizzes',
+            templateUrl: 'templates/mainviews/teacher-quizzes.html',
+            controller: 'TeacherQuizzesCtrl'
+        })
+        .state('dashboard.answer', {
+            url: '/admin/answer',
+            templateUrl: 'templates/mainviews/teacher-answer.html',
+            controller: 'AskQuestionCtrl'
         });
         // urlRouterProvider redirects back to landing page, if url doesn't match /dashboard
         $urlRouterProvider.otherwise('/');

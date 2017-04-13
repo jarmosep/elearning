@@ -4,29 +4,26 @@
   border-top: 1px solid #E2E5EB;
   background-color: $white;
   .type{
-    @include span-columns(2);
+    @include span-columns(3);
     cursor: pointer;
     border-radius: 3px;
-    background-color: $blue;
-    border: 1px solid $blue-dark;
-    height: 100px;
+    background: linear-gradient(to bottom right, $blue-light, $blue);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3ed2e0', endColorstr='#00c3e6',GradientType=0 ); /* IE6-9 */
+    height: 125px;
     text-align: center;
-    color: $blue-light;
+    color: $blue-dark;
     transition: all 0.2s ease-in-out;
     &:hover{
-      transform: scale(0.95, 0.95);
-      border: 1px solid darken($blue-dark, 10%);
-      background-color: $blue-dark;
-      color: $blue;
+      @include hoverColor;
     }
     i{
-      @include font-size(40px);
-      margin-top: 5px;
+      @include font-size(50px);
+      margin-top: 25px;
       display: block;
     }
     .description{
-      @include font-size(14px);
-      margin-top: 10px;
+      @include font-size(17px);
+      padding:5px;
       color: $white;
     }
   }

@@ -48,16 +48,14 @@
       position: relative;
       border-top: 1px solid #E2E5EB;
       padding:15px;
-      input{
-        @include span-columns(12);
-        display:block
-      }
       .field{
         @include clearfix;
         padding: 25px 0 10px 0;
         position: relative;
         .textinput{
           @include font-size(16px);
+          @include span-columns(12);
+          display:block;
           position: relative;
           border:none;
           border-bottom: 1px solid #E2E5EB;
@@ -78,6 +76,10 @@
             padding-bottom: 0;
           }
         }
+        p{
+          display: inline-block;
+          width: 120px;
+        }
         .textinput:focus, .textinput.ng-not-empty,{
           border-bottom: 3px solid $blue;
         }
@@ -87,6 +89,14 @@
           font-size: 11px;
           opacity: 1;
           color: $blue;
+        }
+        .radio{
+          display:inline-block;
+          width: 120px;
+          label{
+            @include paragraph;
+            @include font-size(15px);
+          }
         }
         .login, .signup{
             float: right;

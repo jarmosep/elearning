@@ -19,47 +19,67 @@
             Unanswered
           </h3>
         </div>
+
         <div class="question-container">
           <div class="ask" ng-show="isSet(1)">
-            <div class="field">
-              <div class="question-type">
-                <p>Question relates to</p>
-                <select name="qt" id="qt">
-                  <option value="general">General issues</option>
-                  <option value="correction">Word bank</option>
-                  <option value="assignment">Assignments</option>
-                </select>
+            <form class="submitQuestion" name="submitQuestion" novalidate>
+              <div class="field">
+                  <div class="question-type">
+                    <p>Question relates to</p>
+                    <select name="qt" id="qt" ng-model="form.questionType" required>
+                      <option value="general">General issues</option>
+                      <option value="correction">Word bank</option>
+                      <option value="assignment">Assignments</option>
+                    </select>
+                  </div>
+                  <textarea name="name" class="question-text" ng-model="form.questionText" placeholder="Type your question here" required></textarea>
               </div>
-              <textarea name="name" class="question-text" placeholder="Type your question here"></textarea>
-            </div>
-            <div class="field">
-              <button class="submit">Submit</button>
-            </div>
+              <div class="field">
+                <button class="submit" ng-click="onSubmit()" ng-disabled="submitQuestion.$invalid">Submit</button>
+              </div>
+            </form>
           </div>
+
           <div class="answered" ng-show="isSet(2)">
-            fag
+            <div class="question-block">
+              <div class="field" ng-repeat="question in showQuestions" ng-show="currentUser == question.askedBy" ng-if="question.answer != 0">
+                <div class="question-answer-container">
+                  <div class="student-question">
+                    <div class="question">
+                      <p>{{ question.question }}</p>
+                    </div>
+                    <div class="posted">
+                      <p>{{ question.date | date: "MMM d ''yy 'at' HH:mm" }}</p>
+                    </div>
+                  </div>
+                  <div class="answer-container">
+                    <div class="teacher">
+                      <p>Teacher: </p>
+                    </div>
+                    <div class="answer">
+                      <p>{{ question.answer }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
           <div class="unanswered" ng-show="isSet(3)">
             <div class="question-block">
               <div class="field">
-                <div class="student-question">
-                  <div class="user">
-                    <p>jarmo asked:</p>
-                  </div>
+                <div class="student-question" ng-repeat="question in showQuestions" ng-show="currentUser == question.askedBy" ng-if="question.answer == 0">
                   <div class="question">
-                    <p>test</p>
+                    <p>{{ question.question }}</p>
                   </div>
                   <div class="posted">
-                    <p>Mar 22 '17 at 10:37</p>
+                    <p>{{ question.date | date: "MMM d ''yy 'at' HH:mm" }}</p>
                   </div>
                 </div>
-                <textarea name="name" class="answer-text" placeholder="Answer this question"></textarea>
-              </div>
-              <div class="field field-submit">
-                <button class="submit">Answer</button>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

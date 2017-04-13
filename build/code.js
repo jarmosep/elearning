@@ -48,16 +48,18 @@ app.factory('authFactory', ['$state', function authFactory($state){
   var recentActivities = firebase.database().ref('recentActivities') // initializing 'recentActivities'
   var defaultTags = firebase.database().ref('tagbank'); // initializing 'tagbank'
   var auth = firebase.auth(); // creating authentication namespace
-
+  var status;
   // Registration method
-  authFactory.signup = function(email, passwd, username){
+
+  authFactory.signup = function(email, passwd, username, status){
+    console.log(status);
     var promise = auth.createUserWithEmailAndPassword(email, passwd); // creating username with pw in firebase
     var date = Math.floor(Date.now());
     promise.then(function(user){
       userRef.child(user.uid).set({
         displayName: username,
         email: email,
-        status: 'student'
+        status: status
       });
       recentActivities.child(user.uid);
       recentActivities.push({
@@ -70,10 +72,16 @@ app.factory('authFactory', ['$state', function authFactory($state){
                   'noun', 'particle', 'ichidan-verb', 'godan-verb', 'transitive', 'intransitive', 'suru-verb',
                   'kuru-verb', 'colloquialism', 'honorific', 'onomatopoeic', 'slang', 'vulgar', 'sensitive'];
       defaultTags.set(tags);
-      $state.go('dashboard.front');
+      if(status === 'student'){
+        $state.go('dashboard.front');
+      }else if(status === 'teacher'){
+        $state.go('dashboard.admin');
+      }else{
+        console.log("Can't go.");
+      }
       console.log(user);
-    }).catch(function(err){
-      console.log(err);
+    }).catch(function(error){
+      console.log(error);
     });
     return promise;
   }
@@ -82,10 +90,25 @@ app.factory('authFactory', ['$state', function authFactory($state){
   authFactory.login = function(email, passwd){
     var promise = auth.signInWithEmailAndPassword(email, passwd);
     promise.then(function(user){
-      $state.go('dashboard.front'); // if login is successful, redirect to frontpage
+      if(user){
+        var currentUser = firebase.database().ref('users').child(user.uid);
+        currentUser.once('value', function(snapshot){
+          var value = snapshot.val();
+          status = value.status;
+          console.log(status);
+          if(status === 'student'){
+            $state.go('dashboard.front'); // if login is successful, redirect to frontpage
+          }else if(status === 'teacher'){
+            $state.go('dashboard.admin');
+          }else{
+            console.log("Got nowhere to go.");
+          }
+        });
+      }
+
       console.log(user);
-    }).catch(function(err){
-      console.log(err)
+    }).catch(function(error){
+      console.log(error)
     });
     return promise;
   }
@@ -175,6 +198,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             templateUrl: 'templates/landing.html', // in this state, landingpage.html is being used.
             controller: 'LoginCtrl'
         })
+
+        /*------------------------ */
+        /*      Student views      */
+        /*------------------------ */
+
         .state('dashboard', {
             url: '/dashboard',
             abstract: true, // abstract: {boolean} provides inherited properties to its common children states.
@@ -194,13 +222,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             templateUrl: 'templates/mainviews/frontpage.html',
             controller: 'RecentActivityCtrl'
         })
-
         .state('dashboard.wordbank', {
             url: '/wordbank',
             templateUrl: 'templates/mainviews/wordbank.html',
             controller: 'AllWordsCtrl',
         })
-
         .state('dashboard.word', {
             url: '/wordbank/word/:word',
             templateUrl: 'templates/mainviews/singleword.html',
@@ -209,31 +235,26 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
                 obj: null
             }
         })
-
         .state('dashboard.addword', {
             url: '/addword',
             templateUrl: 'templates/mainviews/addword.html',
             controller: 'WordSubmitCtrl',
         })
-
         .state('dashboard.quiz-memorize', {
             url: '/memorize/:assignment',
             templateUrl: 'templates/mainviews/quiz-memorize.html',
             controller: 'MemorizeCtrl'
         })
-
         .state('dashboard.quiz-type', {
             url: '/type/:assignment',
             templateUrl: 'templates/mainviews/quiz-type.html',
             controller: 'TypeCtrl'
         })
-
         .state('dashboard.quiz-listen', {
             url: '/listen/:assignment',
             templateUrl: 'templates/mainviews/quiz-listen.html',
             controller: 'ListenCtrl'
         })
-
         .state('dashboard.assignments', {
             url: '/assignment',
             templateUrl: 'templates/mainviews/assignment.html',
@@ -242,16 +263,36 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
                 obj: null
             }
         })
-
         .state('dashboard.askteacher', {
             url: '/ask',
             templateUrl: 'templates/mainviews/ask.html',
             controller: 'AskQuestionCtrl'
         })
 
+        /*------------------------ */
+        /*      Teacher views      */
+        /*------------------------ */
+
+        .state('dashboard.admin', {
+            url: '/admin',
+            page: 'DashboardAdmin',
+            templateUrl: 'templates/mainviews/teacher-frontpage.html',
+            controller: 'RecentActivityCtrl'
+        })
         .state('dashboard.quizmaker', {
-            url: '/quizmaker',
-            templateUrl: 'templates/mainviews/quizmaker.html'
+            url: '/admin/quizmaker',
+            templateUrl: 'templates/mainviews/quizmaker.html',
+            controller: 'CreateTeacherQuizCtrl'
+        })
+        .state('dashboard.quizzes', {
+            url: '/admin/quizzes',
+            templateUrl: 'templates/mainviews/teacher-quizzes.html',
+            controller: 'TeacherQuizzesCtrl'
+        })
+        .state('dashboard.answer', {
+            url: '/admin/answer',
+            templateUrl: 'templates/mainviews/teacher-answer.html',
+            controller: 'AskQuestionCtrl'
         });
         // urlRouterProvider redirects back to landing page, if url doesn't match /dashboard
         $urlRouterProvider.otherwise('/');
@@ -395,7 +436,7 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
 
 }]);
 
-app.controller('AskQuestionCtrl', ['authFactory', '$scope', function(authFactory, $scope){
+app.controller('AnswerQuestionsCtrl', ['authFactory', '$scope', function(authFactory, $scope){
 
   $scope.tab = 1;
   $scope.setTab = function(newTab){
@@ -403,6 +444,63 @@ app.controller('AskQuestionCtrl', ['authFactory', '$scope', function(authFactory
   }
   $scope.isSet = function(tabNum){
     return $scope.tab === tabNum;
+  }
+}]);
+
+app.controller('AskQuestionCtrl', ['authFactory', '$scope', function(authFactory, $scope){
+  $scope.form = {};
+  $scope.showQuestions = "";
+  $scope.currentUser;
+  $scope.tab = 1;
+
+  $scope.setTab = function(newTab){
+    $scope.tab = newTab;
+  }
+  $scope.isSet = function(tabNum){
+    return $scope.tab === tabNum;
+  }
+
+  var user = firebase.auth().currentUser;
+  var currentUser;
+  var studentQuestions;
+
+  if(user){
+    currentUser = firebase.database().ref('users').child(user.uid);
+    studentQuestions = firebase.database().ref('studentQuestions');
+    currentUser.once('value', function(snapshot){
+      var snapshot = snapshot.val();
+          console.log(snapshot);
+          $scope.currentUser = snapshot.displayName;
+    });
+    studentQuestions.on('value', function(snapshot){
+      var snapshot = snapshot.val();
+          $scope.showQuestions = snapshot;
+          console.log($scope.showQuestions);
+    });
+  }else{
+    console.log("Not logged in.");
+  }
+
+
+  var date = Math.floor(Date.now());
+
+  $scope.onSubmit = function(){
+    var newQuestion = {
+      type: $scope.form.questionType,
+      question: $scope.form.questionText,
+      askedBy: $scope.currentUser,
+      date: date,
+      answer: 0
+    };
+    studentQuestions.push(newQuestion);
+    $scope.form.questionType = null;
+    $scope.form.questionText = null;
+  };
+  $scope.answerTheQuestion = function(key, item, answerText){
+    item.answer = answerText;
+    console.log(key);
+    var item = item.answer;
+    studentQuestions.child(key).update({answer: item});
   }
 }]);
 
@@ -475,10 +573,20 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
 
 }]);
 
+app.controller('CreateTeacherQuizCtrl', ['authFactory', '$scope', function(authFactory, $scope){
+  $scope.quizzes = [];
+  $scope.addQuiz = function(quiztype){
+
+    $scope.quizzes.push(quiztype);
+
+
+  };
+}]);
+
 app.controller('DashboardCtrl', ['$scope', '$state', '$timeout', '$window', 'authFactory', function($scope, $state, $timeout, $window, authFactory){
     $scope.state = $state;
+    $scope.navbar = "";
     $scope.obj = {};
-    console.log(firebase);
     firebase.auth().onAuthStateChanged(function(user){
       if(user){
         var currentUser = firebase.database().ref('users').child(user.uid);
@@ -486,15 +594,85 @@ app.controller('DashboardCtrl', ['$scope', '$state', '$timeout', '$window', 'aut
         currentUser.on('value', function(snapshot){
           $timeout(function(){
             $scope.obj = {
-              "displayName": snapshot.val().displayName
+              "displayName": snapshot.val().displayName,
+            }
+            var status = snapshot.val().status;
+            if(status === 'student'){
+              $scope.navbar = studentNav;
+            }else if(status === 'teacher'){
+              $scope.navbar = teacherNav;
+            }else{
+              $scope.navbar = error;
             }
           }, 0);
         });
+
+        var studentNav = [
+          {
+            stateName: 'dashboard.front',
+            icon: 'ion-home',
+            description: 'Dashboard'
+          },
+          {
+            stateName: 'dashboard.addword',
+            icon: 'ion-plus-circled',
+            description: 'Add words'
+          },
+          {
+            stateName: 'dashboard.wordbank',
+            icon: 'ion-filing',
+            description: 'Wordbank'
+          },
+          {
+            stateName: 'dashboard.assignments',
+            icon: 'ion-university',
+            description: 'Assignments'
+          },
+          {
+            stateName: 'dashboard.askteacher',
+            icon: 'ion-chatboxes',
+            description: 'Ask teacher'
+          }
+        ];
+        var teacherNav = [
+          {
+            stateName: 'dashboard.admin',
+            icon: 'ion-home',
+            description: 'Dashboard'
+          },
+          {
+            stateName: 'dashboard.addword',
+            icon: 'ion-plus-circled',
+            description: 'Add words'
+          },
+          {
+            stateName: 'dashboard.wordbank',
+            icon: 'ion-filing',
+            description: 'Wordbank'
+          },
+          {
+            stateName: 'dashboard.quizmaker',
+            icon: 'ion-document-text',
+            description: 'Create quiz'
+          },
+          {
+            stateName: 'dashboard.quizzes',
+            icon: 'ion-university',
+            description: 'Quizzes'
+          },
+          {
+            stateName: 'dashboard.answer',
+            icon: 'ion-chatboxes',
+            description: 'Answer questions'
+          }
+        ];
+
+      var error = "Error";
+
       }else{
         console.log("Not logged in.");
       }
     });
-
 
     $scope.logout = function(){
       var promise = firebase.auth().signOut(); // signing the user out
@@ -601,8 +779,8 @@ app.controller("ListenCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'F
 }]);
 
 app.controller('LoginCtrl', ['authFactory', '$scope', function(authFactory, $scope){
-  $scope.signup = function(email_register, passwd_register, username_register){
-    authFactory.signup(email_register, passwd_register, username_register);
+  $scope.signup = function(email_register, passwd_register, username_register, status){
+    authFactory.signup(email_register, passwd_register, username_register, status);
   };
   $scope.login = function(email_login, passwd_login){
     authFactory.login(email_login, passwd_login);
@@ -734,6 +912,7 @@ app.filter('unique', function() {
    };
 });
 */
+
 
 app.controller("TypeCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'ForvoPronunciation', function($scope, $state, $stateParams, $timeout, ForvoPronunciation){
   var urlParam = $stateParams.assignment;
@@ -885,6 +1064,7 @@ app.controller('WordSubmitCtrl', ['$scope', 'addWord', '$timeout', function($sco
   $scope.form = {};
   $scope.tags = [];
   $scope.currentUser;
+  
   var user = firebase.auth().currentUser;
 
   firebase.auth().onAuthStateChanged(function(user){
@@ -1017,7 +1197,6 @@ app.directive("outsideClick", ['$document', '$parse', function($document, $parse
     }
   }
 }]);
-
 
 app.directive('word', function(){
   return{

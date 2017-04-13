@@ -4,19 +4,30 @@
     @include boxShadow;
     background: $white;
     margin-bottom: 15px;
-    .field-submit{
-      border-top: 1px solid #E2E5EB;
-    }
     .field{
       @include clearfix;
       padding: 15px;
-      .student-question{
-        padding: 25px 10px 25px 10px;
-        margin-bottom: 5px;
-        border-radius: 3px;
-        background-color: #F1F4FA;
+      border-bottom: 1px solid #E2E5EB;
+      &:last-of-type{
+        border-bottom: none;
+      }
+      .student-question, .teacher-answer-field{
         @include clearfix;
-        .user{
+        background-color: #F1F4FA;
+        border-radius: 3px;
+        margin-bottom: 5px;
+        padding: 25px 10px 25px 10px;
+        .question{
+          @include span-columns(9);
+        }
+        .posted{
+          @include span-columns(3);
+          text-align: center;
+          color: $sidebar-icon-color;
+        }
+      }
+      .teacher-answer-field{
+        .student{
           @include span-columns(2);
         }
         .question{
@@ -24,9 +35,27 @@
         }
         .posted{
           @include span-columns(3);
-          text-align: center;
-          color: $sidebar-icon-color;
         }
+      }
+      .answer-container{
+        @include clearfix;
+        background-color: #e9f4f3;
+        border-radius: 3px;
+        margin-bottom: 5px;
+        padding: 25px 10px 25px 10px;
+        p{
+          color: $green-dark;
+        }
+        .teacher{
+          @include span-columns(2);
+        }
+        .answer{
+          @include span-columns(10);
+        }
+      }
+      .field-submit{
+        @include clearfix;
+        padding-top: 10px;
       }
       .answer-text{
         @include font-size(17px);
