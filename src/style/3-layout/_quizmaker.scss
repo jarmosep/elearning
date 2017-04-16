@@ -10,42 +10,53 @@
       outline:none;
     }
   }
+  textarea{
+    padding-top:12px;
+    font-family: arial;
+    min-height: 120px;
+    resize: vertical;
+  }
 }
 .quiz-template{
   @include boxShadow;
   @include span-columns(12);
   margin-top: 40px;
   margin-bottom: 40px;
-  .fields{
+  .all-quizzes{
+    @include span-columns(12);
+    padding: 0 15px 15px 15px;
+    border-top: 1px solid #E2E5EB;
+    background-color: $white;
+    .singular-quiz{
+      @include span-columns(12);
+      padding: 15px 0 0 0;
+    }
+  }
+  .type-selected{
+    @include span-columns(12);
+    color: $sidebar-bg;
+    padding: 0 0 15px 0;
+    h3{
+      @include span-columns(9);
+      display: block;
+    }
+    .settings{
+      @include span-columns(3);
+      text-align: right;
+      i{
+        @include font-size(24px);
+        padding: 0 5px 0 5px;
+        line-height: 36px;
+      }
+    }
+  }
+  .field-container{
     @include span-columns(12);
     background-color: $white;
     padding: 15px;
     .field{
       @include span-columns(12);
       position: relative;
-      margin-bottom: 15px;
-      &:last-of-type{
-        border: none;
-        margin-bottom: 0;
-      }
-      .type-selected{
-        @include span-columns(12);
-        color: $sidebar-bg;
-        padding: 0 0 15px 0;
-        h3{
-          @include span-columns(10);
-          display: block;
-        }
-        .settings{
-          @include span-columns(2);
-          text-align: right;
-          i{
-            @include font-size(24px);
-            padding: 0 5px 0 5px;
-            line-height: 36px;
-          }
-        }
-      }
       .textinput{
         @include font-size(16px);
         position: relative;
@@ -65,12 +76,6 @@
         @include media(max-width $mobile){
           padding-bottom: 0;
         }
-      }
-      textarea{
-        padding-top:12px;
-        font-family: arial;
-        min-height: 120px;
-        resize: vertical;
       }
     }
   }

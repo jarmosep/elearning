@@ -4,17 +4,22 @@
       <h1> Create quiz</h1>
     </div>
     <form class="quiz-template" name="submitWord" novalidate>
-      <div class="fields">
+      <div class="field-container">
         <div class="field title">
           <input type="text" placeholder="Quiz name" class="quizname"></input>
           <input type="text" placeholder="Quiz description" class="quizdesc"></input>
         </div>
       </div>
-      <div class="all-quizzes" ng-repeat="quiz in quizzes track by $index">
-        <div class="field multiple-choices" ng-include="'templates/quizBlocks/multiplechoices.html'" ng-if="quiz == 'multiplechoices'"></div>
+      <div class="all-quizzes">
+        <div class="singular-quiz" ng-repeat="quiz in quizzes track by $index">
+          <div class="field multiple-choices" ng-include="'templates/quizBlocks/multiplechoices.html'"
+             ng-if="quiz == 'multiplechoices'" ng-controller="MultipleChoiceCtrl"></div>
+            <div class="field corrections" ng-include="'templates/quizBlocks/sentenceCorrections.html'"
+               ng-if="quiz == 'sentenceCorrections'" ng-controller="SentenceCorrectionsCtrl"></div>
+        </div>
       </div>
       <div class="quiz-types">
-        <div class="type" ng-click="addQuiz('multiplechoices')">
+        <div class="type" ng-click="addQuiz('sentenceCorrections')">
           <i class="ion-wand"></i>
           <p class="description"> Corrections </p>
         </div>
@@ -22,7 +27,7 @@
           <i class="ion-volume-medium"></i>
           <p class="description"> Listening </p>
         </div>
-        <div class="type" ng-click="addQuiz('sentenceCorrections')">
+        <div class="type" ng-click="addQuiz('multiplechoices')">
           <i class="ion-android-checkbox"></i>
           <p class="description"> Multiple choice</p>
         </div>
@@ -30,7 +35,7 @@
       <div class="actions">
         <div class="action-container">
           <p class="remove">Remove all</p>
-          <p class="submit">Submit</p>
+          <p class="submit" ng-click="submit()">Submit</p>
         </div>
       </div>
     </form>

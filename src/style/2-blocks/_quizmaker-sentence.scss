@@ -1,54 +1,71 @@
-.corrections{
-  padding: 15px 15px 20px 15px;
-  background-color: $light-grey;
-  .correction{
+.all-quizzes{
+  .corrections{
     @include span-columns(12);
-    textarea, input{
-      @include font-size(17px);
-      display:block;
-      color: $sidebar-bg;
-      width:100%;
-      border: 1px solid $border-color-grey;
-      border-radius: 3px;
-      padding: 15px;
-    }
-    input{
-      margin-top: 5px;
-    }
-
-  }
-  .fault{
-    @include span-columns(1, block-collapse);
-    margin-right:5px;
-    margin-top: 5px;
-    padding: 10px;
-    background-color: $white;
-    border: 1px solid $border-color-grey;
-    border-radius:3px;
-    input{
+    padding: 15px 15px 20px 15px;
+    background-color: $light-grey;
+    .correction{
       @include span-columns(12);
-      @include font-size(24px);
-      text-align: center;
-      color:$sidebar-bg;
-      border: none
-    }
-  }
-
-  .add-faults{
-    @include span-columns(1, block-collapse);
-    margin-top: 5px;
-    .add{
-      @include span-columns(12, block-collapse);
-      padding: 5px;
-      background-color: $green;
-      border: 1px solid $green-dark;
-      border-radius: 3px;
-      text-align: center;
-      i{
-        @include font-size(30px);
+      textarea, input{
+        @include font-size(17px);
         display:block;
-        margin-top: 6px;
-        color: $green-light;
+        color: $sidebar-bg;
+        width:100%;
+        border: 1px solid $border-color-grey;
+        border-radius: 3px;
+        padding: 15px;
+      }
+      input{
+        margin-top: 5px;
+      }
+
+    }
+    .fault{
+      @include span-columns(2, block-collapse);
+      margin-right:5px;
+      margin-top: 5px;
+      input{
+        @include span-columns(12);
+        @include font-size(17px);
+        line-height: 50px;
+        text-align: center;
+        color:$sidebar-bg;
+        background-color: $white;
+        border: 1px solid $border-color-grey;
+        border-radius:3px;
+        height: 50px;
+      }
+    }
+
+    .add-faults{
+      @include span-columns(3, block-collapse);
+      margin-top: 5px;
+      height: 50px;
+      input{
+        @include font-size(17px);
+        @include span-columns(8, block-collapse);
+        background-color: $white;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        border: 1px solid $border-color-grey;
+        border-right: none;
+        color:$sidebar-bg;
+        line-height: 47px;
+        text-align: center;
+      }
+      .add{
+        @include span-columns(4, block-collapse);
+        cursor: pointer;
+        height: 50px;
+        background-color: $green;
+        border: 1px solid $green-dark;
+        border-radius: 3px;
+        text-align: center;
+        i{
+          @include font-size(30px);
+          display:block;
+          line-height: 50px;
+          color: $green-light;
+        }
       }
     }
   }

@@ -573,14 +573,18 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
 
 }]);
 
-app.controller('CreateTeacherQuizCtrl', ['authFactory', '$scope', function(authFactory, $scope){
+app.controller('CreateTeacherQuizCtrl', ['authFactory', '$scope', '$rootScope', function(authFactory, $scope, $rootScope){
   $scope.quizzes = [];
   $scope.addQuiz = function(quiztype){
 
     $scope.quizzes.push(quiztype);
 
-
   };
+
+  $scope.submit = function(){
+    console.log($rootScope.multipleQuestionOptions);
+  }
+
 }]);
 
 app.controller('DashboardCtrl', ['$scope', '$state', '$timeout', '$window', 'authFactory', function($scope, $state, $timeout, $window, authFactory){
@@ -851,6 +855,19 @@ app.controller("MemorizeCtrl", ["$scope", "$state", '$stateParams', '$timeout', 
 
 }]);
 
+app.controller('MultipleChoiceCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
+  $scope.multipleQuestionOptions = [];
+  $scope.multipleChoice;
+  $scope.moreChoices = function(value){
+    $scope.multipleQuestionOptions.push(value);
+    $scope.multipleChoice = "";
+  }
+  $scope.removeChoice = function(index){
+    $scope.multipleQuestionOptions.splice($scope.multipleQuestionOptions.indexOf(index),1);
+  }
+
+}]);
+
 app.controller('RecentActivityCtrl', ['authFactory', '$rootScope', '$scope', '$timeout', function(authFactory, $rootScope, $scope, $timeout){
   $scope.recents = [];
     var getAuth = authFactory.auth();
@@ -912,6 +929,19 @@ app.filter('unique', function() {
    };
 });
 */
+
+app.controller('SentenceCorrectionsCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
+  $scope.sentenceFaults = [];
+  $scope.sentenceFault;
+  $scope.addFault = function(value){
+    $scope.sentenceFaults.push(value);
+    $scope.sentenceFault = "";
+  }
+  $scope.removeChoice = function(index){
+    $scope.sentenceFaults.splice($scope.sentenceFaults.indexOf(index),1);
+  }
+
+}]);
 
 
 app.controller("TypeCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'ForvoPronunciation', function($scope, $state, $stateParams, $timeout, ForvoPronunciation){

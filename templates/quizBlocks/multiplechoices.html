@@ -1,25 +1,21 @@
-  <div class="type-selected">
-    <h3> Multiple choice</h3>
-    <div class="settings">
-      <i class="ion-chevron-up"></i>
-      <i class="ion-chevron-down"></i>
-      <i class="ion-trash-a"></i>
-    </div>
+<div class="type-selected">
+  <h3> Multiple choice</h3>
+  <div class="settings">
+    <i class="ion-chevron-up"></i>
+    <i class="ion-chevron-down"></i>
+    <i class="ion-trash-a"></i>
   </div>
-  <div class="multiple-question">
-    <input type="text" placeholder="Type in the question"></input>
+</div>
+<div class="multiple-question">
+  <input type="text" placeholder="Type in the question"></input>
+</div>
+<div class="choice" ng-repeat="option in multipleQuestionOptions track by $index">
+  <p>{{ option }}</p>
+  <i class="ion-close" ng-click="removeChoice(option)"></i>
+</div>
+<div class="add-questions">
+  <input type="text" ng-model="$parent.multipleChoice" placeholder="Add options"></input>
+  <div class="add" ng-click="moreChoices(multipleChoice)">
+    <i class="ion-android-add-circle"></i>
   </div>
-  <div class="choice">
-    <p>児童中心主義</p>
-    <i class="ion-close"></i>
-  </div>
-  <div class="choice">
-    <p>逆推力装置</p>
-    <i class="ion-close"></i>
-  </div>
-  <div class="add-questions">
-    <input type="text" placeholder="Add options"></input>
-    <div class="add">
-      <i class="ion-android-add-circle"></i>
-    </div>
-  </div>
+</div>
