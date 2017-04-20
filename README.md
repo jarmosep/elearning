@@ -1,6 +1,6 @@
 # Student-centred language learning environment
 
-## Japanese language learning environment for the use of Sendai National College of Technology and its exchange students.
+Japanese language learning environment for the use of Sendai National College of Technology and its exchange students.
 
 ### Get started
 Once you have pulled the branch to your computer, follow these steps:
