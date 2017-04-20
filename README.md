@@ -1,8 +1,8 @@
-## Student-centred language learning environment
+# Student-centred language learning environment
 
-### Japanese language learning environment for the use of Sendai National College of Technology and its exchange students.
+## Japanese language learning environment for the use of Sendai National College of Technology and its exchange students.
 
-##### Get started
+### Get started
 Once you have pulled the branch to your computer, follow these steps:
 1. in bash, navigate to the /elearning root
 2. install bower and npm by typing in the following commands
