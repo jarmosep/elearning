@@ -16,3 +16,6 @@ npm install
 grunt server
 ```
 6. start developing! No XAMPP or other compilers are needed, as Grunt provides a localhost and automatic SASS/JS compiling.
+
+
+_NOTICE: pronunciations fetched from the Forvo Pronunciation service won't necessarily work in a local environment, since the JSON data comes from an HTTPS site. Installing a Chrome extension, such as "Allow-Control-Allow-Origin:* can fix the problem in local developing."_
