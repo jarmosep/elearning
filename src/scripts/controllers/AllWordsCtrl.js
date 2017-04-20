@@ -5,6 +5,7 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
   $scope.loading = true;
   $scope.collection = [];
   $scope.currentUser;
+  $scope.userStatus;
   $scope.showMore = function(){
     $scope.limit += 5;
     $timeout(function() {
@@ -47,11 +48,17 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
     currentUser.once('value', function(snapshot){
       var snapshot = snapshot.val();
         $scope.currentUser = snapshot.displayName;
+        $scope.userStatus = snapshot.status;
     });
 
   }else{
     console.log("Not logged in.");
   }
+
+  $scope.modalShown = false;
+  $scope.toggleModal = function() {
+    $scope.modalShown = !$scope.modalShown;
+  };
 
   $scope.tab = 0;
 
@@ -78,21 +85,24 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
       });
   };
 
-  $scope.newDeck = function(){
+  $scope.newDeck = function(deckName, description){
     var usersRoot = firebase.database().ref('assignmentsStudent');
     var date = Math.floor(Date.now());
     var deck = {
-      deckName: $scope.deckName,
-      description: $scope.description,
+      deckName: deckName,
+      description: description,
       words: $scope.collection,
       cardLength: $scope.collection.length,
       createdBy: $scope.currentUser,
       date: date
     };
+    console.log(deck);
     createDeck.submitDeck(deck);
     $scope.deckName = null;
     $scope.description = null;
-    $scope.collection.length = 0;
+    $scope.collection = [];
+    $scope.modalShown = false;
+    $scope.selectedWord = false;
   }
 
   $rootScope.activeFilters = [];

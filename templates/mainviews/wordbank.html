@@ -20,13 +20,11 @@
       <input type="checkbox" id="filter-trigger" class="filter-trigger" />
       <label for="filter-trigger" class="toggle"><span class="ion-arrow-left-b"></span></label>
       <div class="action-box">
-        <h4 ng-click="setTab(1)"
-            ng-class="{ active: isSet(1) }">
-            Filters <span ng-class="{'ion-arrow-up-b': filtersEnable, 'ion-arrow-down-b': !filtersEnable}"></span>
+        <h4 ng-click="setTab(1)" ng-class="{ active: isSet(1) }">
+            Filters <span ng-class="{'ion-arrow-up-b': isSet(1), 'ion-arrow-down-b': !isSet(1)}"></span>
         </h4>
-        <h4 ng-click="setTab(2)"
-            ng-class="{ active: isSet(2) }">
-            Create deck <span ng-class="{'ion-arrow-up-b': deckEnable, 'ion-arrow-down-b': !deckEnable}"></span>
+        <h4 ng-click="setTab(2)" ng-class="{ active: isSet(2) }" ng-hide="userStatus == 'teacher'">
+            Create deck <span ng-class="{'ion-arrow-up-b': isSet(2), 'ion-arrow-down-b': !isSet(2)}"></span>
         </h4>
         <div class="filter-container" ng-show="isSet(1)">
           <div class="filter" ng-repeat="filter in filters[0] track by $index" ng-click="toggleFilter($event, filter)">
@@ -34,20 +32,10 @@
           </div>
         </div>
         <div class="deck-container" ng-show="isSet(2)">
-          <form name="setDeckInfo" novalidate>
-            <div class="deck-info">
-              <p>Deck name:</p>
-              <input type="text" class="input" ng-model="deckName" required></input>
-            </div>
-            <div class="deck-info">
-              <p>Description:</p>
-              <input type="text" class="input" ng-model="description" required></input>
-            </div>
             <div class="submit">
-              <p>Card count: {{ collection.length }}</p>
-              <button ng-click="newDeck()" ng-disabled="setDeckInfo.$invalid">Save deck</button>
+              <p>Select words for study deck</p>
+              <button ng-click="toggleModal()">Save</button>
             </div>
-          </form>
         </div>
       </div>
       <div class="word-container">
@@ -55,14 +43,14 @@
           <div class="the-word" ng-init="word.visible = true" ng-repeat="word in words | orderBy:'dateAdded':true | limitTo: limit | filter: searchWord track by $index"
           word="word" ng-show="word.visible">
 
-            <div class="wordblock" ui-sref="dashboard.word({word: word.data.meaning})" ng-class="{ selectedWord }"
+            <div class="wordblock" ui-sref="dashboard.word({word: word.data.meaning})" ng-class="{ 'selectedWord': collection.indexOf(word.data) != -1 }"
                   add-to-deck="{{ selectEnable }}">
               <div class="word-data">
                 <p class="japanese"><b>{{word.data.expression}}</b></p>
                 <p class="english">{{word.data.meaning}}</p>
               </div>
               <div class="operations" outside-click="$root.popkey = null" ng-style="{ 'pointer-events' : isSet(2) == true ? 'none' : 'initial' }">
-                  <span class="action" ng-if="isSet(2)" ng-class="{'ion-ios-checkmark': selectedWord, 'ion-ios-checkmark-outline': !selectedWord }"></span>
+                  <span class="action" ng-if="isSet(2)" ng-class="{'ion-ios-checkmark': collection.indexOf(word.data) != -1, 'ion-ios-checkmark-outline': collection.indexOf(word.data) == -1 }"></span>
                   <span class="action ion-android-more-vertical" ng-if="!isSet(2)" ng-click="$root.popkey = word.key"></span>
                   <div class="options" ng-show="$root.popkey == word.key">
                     <a ui-sref="dashboard.word({word: word.data.meaning})">
@@ -90,6 +78,30 @@
           </div>
         </div>
       </div>
+      <div class="modal" ng-if="modalShown" ng-class="{'visible': modalShown}">
+        <form name="setDeckInfo" novalidate>
+          <div class="description">
+            <h2>Save your word deck</h2>
+          </div>
+          <div class="deck-info">
+            <div class="field">
+              <input type="text" class="input" ng-model="deckName" required></input>
+              <p>Deck name</p>
+            </div>
+            <div class="field">
+              <input type="text" class="input" ng-model="description" required></input>
+              <p>Description</p>
+            </div>
+            <div class="count">
+              <p>Word count: {{ collection.length }}</p>
+            </div>
+          </div>
+          <div class="submit">
+            <button ng-click="newDeck(deckName, description)" ng-disabled="setDeckInfo.$invalid">Submit</button>
+          </div>
+        </form>
+      </div>
+      <div class="overlay" ng-if="modalShown" ng-click="toggleModal(false)"></div>
     </div>
     <div class="empty">
     </div>

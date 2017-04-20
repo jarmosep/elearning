@@ -62,6 +62,14 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             templateUrl: 'templates/mainviews/addword.html',
             controller: 'WordSubmitCtrl',
         })
+        .state('dashboard.assignments', {
+            url: '/assignment',
+            templateUrl: 'templates/mainviews/assignment.html',
+            controller: 'AssignmentsCtrl',
+            params: {
+                obj: null
+            }
+        })
         .state('dashboard.quiz-memorize', {
             url: '/memorize/:assignment',
             templateUrl: 'templates/mainviews/quiz-memorize.html',
@@ -77,13 +85,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             templateUrl: 'templates/mainviews/quiz-listen.html',
             controller: 'ListenCtrl'
         })
-        .state('dashboard.assignments', {
-            url: '/assignment',
-            templateUrl: 'templates/mainviews/assignment.html',
-            controller: 'AssignmentsCtrl',
-            params: {
-                obj: null
-            }
+        .state('dashboard.quiz-teacher', {
+            url: '/quiz/:assignment',
+            templateUrl: 'templates/mainviews/quiz-teacher.html',
+            controller: 'QuizCtrl'
         })
         .state('dashboard.askteacher', {
             url: '/ask',
@@ -125,7 +130,7 @@ app.run(['$rootScope', '$state', function($rootScope, $state) {
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         // if not signed in, redirect to login page
         if (error === "AUTH_REQUIRED") {
-            $state.go('/'); // tms login state
+            $state.go('landing'); // tms login state
         }
     });
 }]);

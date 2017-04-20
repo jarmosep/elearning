@@ -23,7 +23,7 @@
       @include span-columns(2, block-collapse);
       margin-right:5px;
       margin-top: 5px;
-      input{
+      p{
         @include span-columns(12);
         @include font-size(17px);
         line-height: 50px;

@@ -7,15 +7,17 @@
   </div>
 </div>
 <div class="multiple-question">
-  <input type="text" placeholder="Type in the question"></input>
+  <input type="text" ng-model="items[$index].multipleQuestion" placeholder="Type in the question"></input>
 </div>
-<div class="choice" ng-repeat="option in multipleQuestionOptions track by $index">
-  <p>{{ option }}</p>
-  <i class="ion-close" ng-click="removeChoice(option)"></i>
+<div class="choice" ng-repeat="option in items[$index].multipleQuestionOptions track by $index">
+  <div class="choice-container" ng-model="items[$index].correctOption" ng-class="{ 'correct': isButtonClicked }" ng-click="isButtonClicked = !isButtonClicked; addToCorrect($parent.$index, option)">
+    <p>{{ option }}</p>
+    <i class="ion-close" ng-click="removeChoice($parent.$index, option)"></i>
+  </div>
 </div>
 <div class="add-questions">
-  <input type="text" ng-model="$parent.multipleChoice" placeholder="Add options"></input>
-  <div class="add" ng-click="moreChoices(multipleChoice)">
+  <input type="text" ng-model="multipleChoice" placeholder="Add options"></input>
+  <div class="add" ng-click="moreChoices($index, multipleChoice); multipleChoice = ''">
     <i class="ion-android-add-circle"></i>
   </div>
 </div>

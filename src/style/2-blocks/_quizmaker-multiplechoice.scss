@@ -20,21 +20,28 @@
       }
       .choice{
         @include span-columns(12);
-        background-color: darken($light-grey,3%);
-        border: 1px solid $border-color-grey;
-        color:$sidebar-bg;
-        border-radius:3px;
-        cursor:pointer;
-        padding: 10px;
-        margin-top: 5px;
-        p{
-          float:left;
+        .choice-container{
+          @include span-columns(12);
+          background-color: darken($light-grey,3%);
+          border: 1px solid $border-color-grey;
+          color:$sidebar-bg;
+          border-radius:3px;
+          cursor:pointer;
+          margin-top: 5px;
+          padding: 10px;
+          p{
+            float:left;
+          }
+          i{
+            float:right;
+            margin-top:4px;
+          }
         }
-        i{
-          float:right;
-          margin-top:4px;
+        .correct{
+          background-color: $green;
+          border: 1px solid $green-dark;
+          color:$white;
         }
-
       }
 
       .add-questions{

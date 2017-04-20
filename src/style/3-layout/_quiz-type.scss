@@ -1,17 +1,4 @@
 .word-typing{
-  .progress{
-    @include span-columns(12);
-    height: 15px;
-    background-color: darken($blue, 3%);
-    border-bottom: 1px solid $blue-light;
-    .readiness{
-      height: 15px;
-      width: 0%;
-      background-color: $sidebar-bg;
-      border-bottom: 1px solid $blue-light;
-      transition: all 0.2s ease;
-    }
-  }
   .question{
     h2{
       @include font-size(36px);
@@ -49,8 +36,8 @@
   .answer-input{
     @include boxShadow;
     @include clearfix;
-    margin-top:40px;
-    margin-bottom:40px;
+    margin-top:20px;
+    margin-bottom:20px;
   }
   .textinput{
     @include span-columns(10, block-collapse);

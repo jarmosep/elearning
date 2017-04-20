@@ -10,16 +10,28 @@
     color: $white;
   }
   .progress{
-    @include span-columns(12);
-    height: 15px;
+    position: absolute;
+    right: 15px;
+    top:15px;
+    width: 200px;
+    height: 10px;
     background-color: darken($blue, 3%);
     border-bottom: 1px solid $blue-light;
     .readiness{
-      height: 15px;
+      height: 10px;
       width: 0%;
       background-color: $sidebar-bg;
       border-bottom: 1px solid $blue-light;
       transition: all 0.2s ease;
+    }
+    @include media(max-width $mobile){
+      width:95%;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+    };
+    @include media(max-width 540px){
+      width:90%;
     }
   }
   .question{

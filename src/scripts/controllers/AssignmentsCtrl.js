@@ -1,5 +1,6 @@
-app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state', function($scope, $rootScope, $timeout, authFactory, $state){
+app.controller('AssignmentsCtrl', ['$scope', '$rootScope', '$timeout','authFactory', '$state', function($scope, $rootScope, $timeout, authFactory, $state){
   $scope.assignments = [];
+  $scope.teacherQuizzes = [];
   var user = firebase.auth().currentUser;
   $scope.loading = true;
   $scope.currentUser;
@@ -41,15 +42,22 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
         $scope.loading = false;
       });
     });
-
-
+    var teacherQuizzes = firebase.database().ref('assignmentsTeacher');
+    teacherQuizzes.once('value', function(snapshots){
+      var snap = snapshots.val();
+      angular.forEach(snap, function(value, key) {
+        var recentObj = {
+          "cardData": value,
+          "key": key,
+          "visible": true
+        };
+        $scope.teacherQuizzes.push(recentObj);
+        console.log($scope.teacherQuizzes);
+        $scope.loading = false;
+      });
+    });
   }else{
     console.log("Not logged in.");
-  }
-
-  $scope.go = function(assignment) {
-    console.log(assignment);
-    $state.go('dashboard.quiz', {obj:assignments.cardData.words});
   }
 
   $scope.removeAssignment = function(key, index){

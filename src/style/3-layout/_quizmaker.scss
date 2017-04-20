@@ -79,6 +79,25 @@
       }
     }
   }
+  .done-editing{
+    @include span-columns(12);
+    .done-editing-container{
+      @include span-columns(3);
+      float:right;
+      .remove,.submit{
+        padding:5px 15px 5px 15px;
+        text-align: center;
+        border-radius:3px;
+      }
+      .remove, .submit{
+        @include span-columns(6);
+        float:right;
+        background-color: $green;
+        border: 1px solid $green-dark;
+        color: white;
+      }
+    }
+  }
   .actions{
     @include span-columns(12);
     border-top: 1px solid #E2E5EB;

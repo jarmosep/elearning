@@ -5,6 +5,7 @@
   </div>
   <div class="question" ng-if="!hide">
     <p class="hiragana" ng-style="answer">{{assignment.words[index].reading}}</p>
+    <p class="hiragana" ng-show="!assignment.words[index].reading">&nbsp;</p>
     <h2>{{assignment.words[index].expression}}</h2>
     <p class="translation" ng-style="answer">{{assignment.words[index].meaning}}</p>
   </div>

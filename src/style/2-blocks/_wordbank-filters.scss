@@ -129,15 +129,19 @@
         border-bottom: 3px solid $blue;
       }
     }
-    form{ margin:0; }
     .submit{
-      @include span-columns(4);
+      @include span-columns(12);
       @include media(max-width $mobile){
         @include span-columns(12);
         padding: 12px;
       }
+      p{
+        @include span-columns(10);
+      }
       button{
+        @include span-columns(2);
         @include font-size(15px);
+        cursor:pointer;
         line-height: 25px;
         padding: 0 15px;
         margin-right: 0;

@@ -16,7 +16,7 @@
             Teacher decks
           </h3>
         </div>
-        <div class="student-assignments">
+        <div class="student-assignments" ng-show="isSet(1)">
           <div class="block" ng-repeat="assignment in assignments track by $index" ng-if="assignment.cardData.createdBy == currentUser">
               <div class="card-info">
                 <h3>{{assignment.cardData.deckName}}</h3>
@@ -29,6 +29,20 @@
               <div class="bottom">
                 <i class="ion-trash-a" ng-click="removeAssignment(assignment.key, assignment)"></i>
                 <p class="study" ng-click="toggleModal(assignment.cardData.deckName)">Study</p>
+              </div>
+          </div>
+        </div>
+        <div class="student-assignments" ng-show="isSet(2)">
+          <div class="block" ng-repeat="quiz in teacherQuizzes track by $index">
+              <div class="card-info">
+                <h3>{{quiz.cardData.quizName}}</h3>
+                <p>{{quiz.cardData.quizDescription}}</p>
+              </div>
+              <div class="card-additional">
+                <p>Questions: {{quiz.cardData.quizItems.length}}</p>
+              </div>
+              <div class="bottom">
+                <p class="study" ui-sref="dashboard.quiz-teacher({assignment: quiz.cardData.quizName })">Study</p>
               </div>
           </div>
         </div>

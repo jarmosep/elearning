@@ -14,7 +14,7 @@
   -webkit-transform: translate3d(0, 0, 0);
   &:hover{
     @include boxShadow;
-    background-color: lighten($blue, 15%);
+    background-color: lighten($blue, 10%);
     margin: 8px -15px 8px;
     border-left: 1px solid $blue;
     border-right: 1px solid $blue;

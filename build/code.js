@@ -240,6 +240,14 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             templateUrl: 'templates/mainviews/addword.html',
             controller: 'WordSubmitCtrl',
         })
+        .state('dashboard.assignments', {
+            url: '/assignment',
+            templateUrl: 'templates/mainviews/assignment.html',
+            controller: 'AssignmentsCtrl',
+            params: {
+                obj: null
+            }
+        })
         .state('dashboard.quiz-memorize', {
             url: '/memorize/:assignment',
             templateUrl: 'templates/mainviews/quiz-memorize.html',
@@ -255,13 +263,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             templateUrl: 'templates/mainviews/quiz-listen.html',
             controller: 'ListenCtrl'
         })
-        .state('dashboard.assignments', {
-            url: '/assignment',
-            templateUrl: 'templates/mainviews/assignment.html',
-            controller: 'AssignmentsCtrl',
-            params: {
-                obj: null
-            }
+        .state('dashboard.quiz-teacher', {
+            url: '/quiz/:assignment',
+            templateUrl: 'templates/mainviews/quiz-teacher.html',
+            controller: 'QuizCtrl'
         })
         .state('dashboard.askteacher', {
             url: '/ask',
@@ -303,10 +308,43 @@ app.run(['$rootScope', '$state', function($rootScope, $state) {
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
         // if not signed in, redirect to login page
         if (error === "AUTH_REQUIRED") {
-            $state.go('/'); // tms login state
+            $state.go('landing'); // tms login state
         }
     });
 }]);
+
+app.factory('submitTeacherQuiz', function submitTeacherQuiz(){
+  // Registration method
+  submitTeacherQuiz.submit = function(items){
+    var user = firebase.auth().currentUser;
+    var date = Math.floor(Date.now());
+    var currentUser;
+    if(user){
+      var currentUser = firebase.database().ref('users').child(user.uid);
+      currentUser.once('value', function(snapshot){
+        var snapshot = snapshot.val();
+        console.log(snapshot);
+        currentUser = snapshot.displayName;
+      });
+      console.log(currentUser);
+      var assignmentsTeacher = firebase.database().ref('assignmentsTeacher');
+      var recentActivities = firebase.database().ref('recentActivities');
+      var newAction = {
+        activity: currentUser + ' added a new assignment',
+        timestamp: date,
+        addedBy: currentUser
+      }
+      assignmentsTeacher.push(items);
+      recentActivities.push(newAction);
+
+    }else{
+      console.log("Errors");
+    }
+  }
+
+  return submitTeacherQuiz;
+
+});
 
 app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootScope', '$timeout', '$state', function(authFactory, createDeck, $scope, $rootScope, $timeout, $state){
   $scope.words = [];
@@ -315,6 +353,7 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
   $scope.loading = true;
   $scope.collection = [];
   $scope.currentUser;
+  $scope.userStatus;
   $scope.showMore = function(){
     $scope.limit += 5;
     $timeout(function() {
@@ -357,11 +396,17 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
     currentUser.once('value', function(snapshot){
       var snapshot = snapshot.val();
         $scope.currentUser = snapshot.displayName;
+        $scope.userStatus = snapshot.status;
     });
 
   }else{
     console.log("Not logged in.");
   }
+
+  $scope.modalShown = false;
+  $scope.toggleModal = function() {
+    $scope.modalShown = !$scope.modalShown;
+  };
 
   $scope.tab = 0;
 
@@ -388,21 +433,24 @@ app.controller('AllWordsCtrl', ['authFactory', 'createDeck', '$scope', '$rootSco
       });
   };
 
-  $scope.newDeck = function(){
+  $scope.newDeck = function(deckName, description){
     var usersRoot = firebase.database().ref('assignmentsStudent');
     var date = Math.floor(Date.now());
     var deck = {
-      deckName: $scope.deckName,
-      description: $scope.description,
+      deckName: deckName,
+      description: description,
       words: $scope.collection,
       cardLength: $scope.collection.length,
       createdBy: $scope.currentUser,
       date: date
     };
+    console.log(deck);
     createDeck.submitDeck(deck);
     $scope.deckName = null;
     $scope.description = null;
-    $scope.collection.length = 0;
+    $scope.collection = [];
+    $scope.modalShown = false;
+    $scope.selectedWord = false;
   }
 
   $rootScope.activeFilters = [];
@@ -504,8 +552,9 @@ app.controller('AskQuestionCtrl', ['authFactory', '$scope', function(authFactory
   }
 }]);
 
-app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state', function($scope, $rootScope, $timeout, authFactory, $state){
+app.controller('AssignmentsCtrl', ['$scope', '$rootScope', '$timeout','authFactory', '$state', function($scope, $rootScope, $timeout, authFactory, $state){
   $scope.assignments = [];
+  $scope.teacherQuizzes = [];
   var user = firebase.auth().currentUser;
   $scope.loading = true;
   $scope.currentUser;
@@ -547,15 +596,22 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
         $scope.loading = false;
       });
     });
-
-
+    var teacherQuizzes = firebase.database().ref('assignmentsTeacher');
+    teacherQuizzes.once('value', function(snapshots){
+      var snap = snapshots.val();
+      angular.forEach(snap, function(value, key) {
+        var recentObj = {
+          "cardData": value,
+          "key": key,
+          "visible": true
+        };
+        $scope.teacherQuizzes.push(recentObj);
+        console.log($scope.teacherQuizzes);
+        $scope.loading = false;
+      });
+    });
   }else{
     console.log("Not logged in.");
-  }
-
-  $scope.go = function(assignment) {
-    console.log(assignment);
-    $state.go('dashboard.quiz', {obj:assignments.cardData.words});
   }
 
   $scope.removeAssignment = function(key, index){
@@ -573,16 +629,60 @@ app.controller('AssignmentsCtrl', ['$scope', '$timeout','authFactory', '$state',
 
 }]);
 
-app.controller('CreateTeacherQuizCtrl', ['authFactory', '$scope', '$rootScope', function(authFactory, $scope, $rootScope){
+app.controller('CreateTeacherQuizCtrl', ['authFactory', 'submitTeacherQuiz', '$scope', function(authFactory, submitTeacherQuiz, $scope){
   $scope.quizzes = [];
+  $scope.items = [];
   $scope.addQuiz = function(quiztype){
-
     $scope.quizzes.push(quiztype);
-
   };
 
+  $scope.sentenceFaults = [];
+  $scope.multipleQuestionOptions = [];
+
+
+  $scope.addNewFault = function(index, value){
+
+    if (!$scope.items[index].sentenceFaults) {
+      $scope.items[index]['sentenceFaults'] = [];
+    }
+    $scope.items[index].sentenceFaults.push(value);
+    console.log($scope.items[index]);
+    $scope.addFault = "";
+  }
+
+  $scope.moreChoices = function(index, value){
+
+    if (!$scope.items[index].multipleQuestionOptions) {
+      $scope.items[index]['multipleQuestionOptions'] = [];
+    }
+    $scope.items[index].multipleQuestionOptions.push(value);
+    console.log($scope.items[index]);
+    $scope.addFault = "";
+  }
+  $scope.addToCorrect = function(index, option){
+    if (!$scope.items[index].correctOption) {
+      $scope.items[index]['correctOption'] = [];
+    }
+    if($scope.items[index].correctOption.includes(option)){
+      $scope.items[index]['correctOption'].splice($scope.items[index]['correctOption'].indexOf(option),1);
+      console.log($scope.items[index]);
+    }else{
+      $scope.items[index].correctOption.push(option);
+      console.log($scope.items[index]);
+    }
+  }
+
+  $scope.removeChoice = function(index, value){
+    $scope.items[index]['multipleQuestionOptions'].splice($scope.items[index]['multipleQuestionOptions'].indexOf(value),1);
+    $scope.items[index]['correctOption'].splice($scope.items[index]['correctOption'].indexOf(value),1);
+  }
+
+
   $scope.submit = function(){
-    console.log($rootScope.multipleQuestionOptions);
+    submitTeacherQuiz.submit({'quizName':$scope.quizName, 'quizDescription':$scope.quizDescription, 'quizItems': $scope.items});
+    console.log($scope.items);
+    $scope.items = [];
+    $scope.quizzes = [];
   }
 
 }]);
@@ -855,15 +955,90 @@ app.controller("MemorizeCtrl", ["$scope", "$state", '$stateParams', '$timeout', 
 
 }]);
 
-app.controller('MultipleChoiceCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
-  $scope.multipleQuestionOptions = [];
-  $scope.multipleChoice;
-  $scope.moreChoices = function(value){
-    $scope.multipleQuestionOptions.push(value);
-    $scope.multipleChoice = "";
+app.controller("QuizCtrl", ["$scope", "$state", '$stateParams', '$timeout', function($scope, $state, $stateParams, $timeout){
+  var urlParam = $stateParams.assignment;
+  if(!urlParam){
+    $state.go('dashboard.front');
   }
-  $scope.removeChoice = function(index){
-    $scope.multipleQuestionOptions.splice($scope.multipleQuestionOptions.indexOf(index),1);
+  var cardsLength, card, url, audio, percentage, words;
+  var user = firebase.auth().currentUser;
+  var decoded = decodeURIComponent(urlParam);
+  var deck = firebase.database().ref('assignmentsTeacher');
+  var quiz = deck.orderByChild("quizName").equalTo(decoded).once("value", function(dataSnapshot) {
+    var quizData = dataSnapshot.val();
+    $scope.quiz = quizData[Object.keys(quizData)];
+    cardsLength = $scope.quiz.quizItems.length;
+    $scope.length = cardsLength;
+    card = (1 / cardsLength) * 100;
+    var currentIndex = $scope.quiz.quizItems.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = $scope.quiz.quizItems[currentIndex];
+      $scope.quiz.quizItems[currentIndex] = $scope.quiz.quizItems[randomIndex];
+      $scope.quiz.quizItems[randomIndex] = temporaryValue;
+    }
+
+  });
+  $scope.faultyItems = [];
+  $scope.index = 0;
+  $scope.answer = {'opacity': 0};
+  $scope.answered = false;
+  $scope.quizOver = false;
+  $scope.quizRight = false;
+  $scope.quizWrong = false;
+  $scope.counter = 0;
+  $scope.hide = false;
+  $scope.progressPercentage = 0;
+
+  $scope.showCorrectionAnswer = function(userAnswer, sentenceFaults){
+    var comparision = userAnswer.length == sentenceFaults.length && userAnswer.every(function(element, index){
+      return element === sentenceFaults[index];
+    })
+    console.log(comparision);
+    if(comparision){
+      $scope.answered = true;
+      $scope.quizRight = true;
+      $scope.showUserAnswer = userAnswer;
+      $scope.answer = {'opacity': 1};
+    }else{
+      $scope.answered = true;
+      $scope.quizWrong = true;
+      $scope.showUserAnswer = userAnswer;
+      $scope.answer = {'opacity': 1};
+    }
+  }
+
+  $scope.showMultipleAnswer = function(userAnswer, correct){
+    correct_fetched = correct.join();
+    console.log(correct_fetched);
+    if(userAnswer == correct_fetched){
+      $scope.answered = true;
+      $scope.quizRight = true;
+      $scope.showUserAnswer = userAnswer;
+      $scope.answer = {'opacity': 1};
+    }else{
+      $scope.answered = true;
+      $scope.quizWrong = true;
+      $scope.showUserAnswer = userAnswer;
+      $scope.answer = {'opacity': 1};
+    }
+  }
+
+  $scope.nextQuiz = function(count){
+    if(count === 0){ $scope.counter += 0; }
+    if(count === 1){ $scope.counter += 1; }
+    $scope.quizRight = false;
+    $scope.quizWrong = false;
+    $scope.answered = false;
+    $scope.progressPercentage += card;
+    $scope.index = $scope.index + 1;
+    $scope.answer = {'opacity': 0};
+    if($scope.index >= cardsLength){
+      $scope.quizOver = true;
+      $scope.hide = true;
+      console.log("You got " + $scope.counter + " out of " + cardsLength + " right!");
+    }
   }
 
 }]);
@@ -930,19 +1105,55 @@ app.filter('unique', function() {
 });
 */
 
-app.controller('SentenceCorrectionsCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
-  $scope.sentenceFaults = [];
-  $scope.sentenceFault;
-  $scope.addFault = function(value){
-    $scope.sentenceFaults.push(value);
-    $scope.sentenceFault = "";
+app.controller('TeacherQuizzesCtrl', ['$scope', '$timeout','authFactory', '$state', function($scope, $timeout, authFactory, $state){
+  $scope.quizzes = [];
+  var user = firebase.auth().currentUser;
+  $scope.loading = true;
+  $scope.currentUser;
+
+
+  if(user){
+    var currentUser = firebase.database().ref('users').child(user.uid);
+    currentUser.once('value', function(snapshot){
+      var snapshot = snapshot.val();
+          $scope.currentUser = snapshot.displayName;
+          console.log($scope.currentUser);
+    });
+    var assignments = firebase.database().ref('assignmentsTeacher');
+    assignments.once('value', function(snapshots){
+      var snap = snapshots.val();
+      angular.forEach(snap, function(value, key) {
+        var recentObj = {
+          "cardData": value,
+          "key": key,
+          "visible": true
+        };
+        $scope.quizzes.push(recentObj);
+        console.log($scope.quizzes);
+        $scope.loading = false;
+      });
+    });
+
+
+  }else{
+    console.log("Not logged in.");
   }
-  $scope.removeChoice = function(index){
-    $scope.sentenceFaults.splice($scope.sentenceFaults.indexOf(index),1);
-  }
+
+
+  $scope.removeQuizzes = function(key, index){
+    console.log($scope.quizzes.indexOf(index));
+    $scope.quizzes.splice($scope.quizzes.indexOf(index),1);
+    var quiz = firebase.database().ref('assignmentsTeacher').child(key);
+    var promise = quiz.remove();
+    console.log(quiz.child(key));
+    promise.then(function(){
+      console.log('bye');
+    }).catch(function(e){
+      console.log(e);
+    });
+  };
 
 }]);
-
 
 app.controller("TypeCtrl", ["$scope", "$state", '$stateParams', '$timeout', 'ForvoPronunciation', function($scope, $state, $stateParams, $timeout, ForvoPronunciation){
   var urlParam = $stateParams.assignment;
@@ -1187,12 +1398,12 @@ app.directive('addToDeck', function(){
                     $scope.$apply(function(){
                       $scope.selectedWord = !$scope.selectedWord;
                     });
+                 }else{
+                   $scope.selectedWord = false;
+                   $scope.collection = [];
                  }
                });
-               if(!$scope.isSet(2)){
-                 $scope.selectedWord = false;
-                 $scope.collection.length = 0;
-               }
+
            });
 
 

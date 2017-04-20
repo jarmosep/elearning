@@ -1,0 +1,54 @@
+<div class="word-meanings quiz-teacher">
+  <div class="progress">
+    <div class="readiness" ng-style="{ width: progressPercentage + '%'}">
+    </div>
+  </div>
+  <div class="question" ng-show="quiz.quizItems[index].assignment">
+    <h2>"{{quiz.quizItems[index].description}}"</h2>
+    <p ng-style="answer">Correct answer: <i>{{quiz.quizItems[index].sentenceFaults.join(", ")}}</i></p>
+  </div>
+  <div class="question" ng-show="quiz.quizItems[index].multipleQuestion">
+    <h2>{{quiz.quizItems[index].multipleQuestion}}</h2>
+    <p ng-style="answer">Correct answer: <i>{{quiz.quizItems[index].correctOption.join(", ")}}</i></p>
+  </div>
+  <div class="results" ng-if="quizOver">
+    <h2> Your results: {{ counter }}/{{ length }}</h2>
+  </div>
+</div>
+<div class="wrapper">
+  <div class="container worddeck">
+    <div class="quiz-answer-container" ng-if="!hide">
+      <div class="current-correction-quiz" ng-show="quiz.quizItems[index].assignment">
+        <div class="correction-assignment" ng-hide="answered">
+          <p>{{quiz.quizItems[index].assignment}}</p>
+        </div>
+        <form name="currentCorrectionQuiz" class="correction-form" ng-hide="answered" novalidate>
+          <div class="quiz-answer-input" ng-repeat="fault in quiz.quizItems[index].sentenceFaults">
+              <input type="text" ng-model="faultyItems[$index]" autofocus required></input>
+          </div>
+          <div class="options">
+            <p ng-repeat="option in quiz.quizItems[index].multipleQuestionOptions">{{option}}</p>
+          </div>
+          <button class="answer-icon" ng-click="showCorrectionAnswer(faultyItems, quiz.quizItems[index].sentenceFaults)"
+                  ng-disabled="currentCorrectionQuiz.$invalid">
+            <p>Submit</p>
+          </button>
+        </form>
+      </div>
+      <div class="current-multiple-quiz" ng-show="quiz.quizItems[index].multipleQuestion">
+        <div class="multiple-options" ng-hide="answered">
+          <p ng-repeat="option in quiz.quizItems[index].multipleQuestionOptions"
+             ng-click="showMultipleAnswer(option, quiz.quizItems[index].correctOption)">{{option}}</p>
+        </div>
+      </div>
+      <div class="answer-feedback">
+        <div class="wrong" ng-if="quizWrong" ng-click="nextQuiz(0)">
+          <p> Your answer <strong>{{ showUserAnswer.join(", ") }}</strong> was wrong.</p>
+        </div>
+        <div class="right" ng-if="quizRight" ng-click="nextQuiz(1)">
+          <p> Your answer <strong>{{ showUserAnswer.join(", ") }}</strong> was right!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

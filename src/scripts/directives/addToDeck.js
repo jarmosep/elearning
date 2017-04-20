@@ -23,12 +23,12 @@ app.directive('addToDeck', function(){
                     $scope.$apply(function(){
                       $scope.selectedWord = !$scope.selectedWord;
                     });
+                 }else{
+                   $scope.selectedWord = false;
+                   $scope.collection = [];
                  }
                });
-               if(!$scope.isSet(2)){
-                 $scope.selectedWord = false;
-                 $scope.collection.length = 0;
-               }
+
            });
 
 

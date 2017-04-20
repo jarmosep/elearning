@@ -3,19 +3,19 @@
     <div class="heading">
       <h1> Create quiz</h1>
     </div>
-    <form class="quiz-template" name="submitWord" novalidate>
+    <form class="quiz-template" name="submitQuiz" novalidate>
       <div class="field-container">
         <div class="field title">
-          <input type="text" placeholder="Quiz name" class="quizname"></input>
-          <input type="text" placeholder="Quiz description" class="quizdesc"></input>
+          <input type="text" placeholder="Quiz name" class="quizname" ng-model="quizName"></input>
+          <input type="text" placeholder="Quiz description" class="quizdesc" ng-model="quizDescription"></input>
         </div>
       </div>
-      <div class="all-quizzes">
+      <div class="all-quizzes" >
         <div class="singular-quiz" ng-repeat="quiz in quizzes track by $index">
           <div class="field multiple-choices" ng-include="'templates/quizBlocks/multiplechoices.html'"
-             ng-if="quiz == 'multiplechoices'" ng-controller="MultipleChoiceCtrl"></div>
-            <div class="field corrections" ng-include="'templates/quizBlocks/sentenceCorrections.html'"
-               ng-if="quiz == 'sentenceCorrections'" ng-controller="SentenceCorrectionsCtrl"></div>
+             ng-if="quiz == 'multiplechoices'"></div>
+          <div class="field corrections" ng-include="'templates/quizBlocks/sentenceCorrections.html'"
+             ng-if="quiz == 'sentenceCorrections'"></div>
         </div>
       </div>
       <div class="quiz-types">

@@ -14,44 +14,21 @@
           </h3>
         </div>
         <div class="student-assignments">
-          <div class="block" ng-repeat="assignment in assignments track by $index" ng-if="assignment.cardData.createdBy == currentUser">
+          <div class="block" ng-repeat="quiz in quizzes track by $index">
               <div class="card-info">
-                <h3>{{assignment.cardData.deckName}}</h3>
-                <p>{{assignment.cardData.description}}</p>
+                <h3>{{quiz.cardData.quizName}}</h3>
+                <p>{{quiz.cardData.quizDescription}}</p>
               </div>
               <div class="card-additional">
-                <p>{{assignment.cardData.date | date: "MMM d ''yy 'at' HH:mm"}}</p>
-                <p>Cards: {{assignment.cardData.cardLength}}</p>
+                <p>Questions: {{quiz.cardData.quizItems.length}}</p>
               </div>
               <div class="bottom">
-                <i class="ion-trash-a" ng-click="removeAssignment(assignment.key, assignment)"></i>
-                <p class="study" ng-click="toggleModal(assignment.cardData.deckName)">Study</p>
+                <i class="ion-trash-a" ng-click="removeQuizzes(quiz.key, quiz)"></i>
+                <p class="study" ui-sref="dashboard.quiz-teacher({assignment: quiz.cardData.quizName })">Study</p>
               </div>
           </div>
         </div>
       </div>
-      <div class="modal" ng-if="modalShown" ng-class="{'visible': modalShown}">
-        <div class="description">
-          <p>You are about to study</p>
-          <h2>{{ modal.deckName }}</h2>
-        </div>
-        <div class="content">
-          <p>Choose the type you want to study</p>
-          <div class="memorize" ui-sref="dashboard.quiz-memorize({assignment: modal.deckName })">
-            <p class="study">Recalling</p>
-            <i class="ion-refresh"></i>
-          </div>
-          <div class="type" ui-sref="dashboard.quiz-type({assignment: modal.deckName })">
-            <p class="study">Typing</p>
-            <i class="ion-compose"></i>
-          </div>
-          <div class="listen" ui-sref="dashboard.quiz-listen({assignment: modal.deckName })">
-            <p class="study">Listening</p>
-            <i class="ion-volume-medium"></i>
-          </div>
-        </div>
-      </div>
-      <div class="overlay" ng-if="modalShown" ng-click="toggleModal(false)"></div>
     </div>
   </div>
 </div>
